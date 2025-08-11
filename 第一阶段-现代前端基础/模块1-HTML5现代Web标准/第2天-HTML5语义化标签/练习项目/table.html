@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML表格练习</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        caption {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .center {
+            text-align: center;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>HTML表格练习</h1>
+        <nav>
+            <ul>
+                <li><a href="blog.html">返回博客</a></li>
+                <li><a href="form.html">表单练习</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section>
+            <h2>学习进度跟踪表</h2>
+            
+            <table>
+                <caption>前端学习进度统计表</caption>
+                <thead>
+                    <tr>
+                        <th>技术栈</th>
+                        <th>学习状态</th>
+                        <th>完成度</th>
+                        <th>预计完成时间</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>HTML5基础</td>
+                        <td class="highlight">学习中</td>
+                        <td class="center">70%</td>
+                        <td>2024-01-20</td>
+                        <td>语义化标签重点掌握</td>
+                    </tr>
+                    <tr>
+                        <td>CSS3基础</td>
+                        <td>计划中</td>
+                        <td class="center">10%</td>
+                        <td>2024-02-15</td>
+                        <td>布局和响应式设计</td>
+                    </tr>
+                    <tr>
+                        <td>JavaScript基础</td>
+                        <td>未开始</td>
+                        <td class="center">0%</td>
+                        <td>2024-03-15</td>
+                        <td>ES6语法重点</td>
+                    </tr>
+                    <tr>
+                        <td>Vue.js框架</td>
+                        <td>未开始</td>
+                        <td class="center">0%</td>
+                        <td>2024-05-01</td>
+                        <td>组件化开发</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"><strong>总体进度</strong></td>
+                        <td class="center"><strong>20%</strong></td>
+                        <td colspan="2">预计2024年6月完成基础学习</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+        
+        <section>
+            <h2>今日学习记录</h2>
+            
+            <table>
+                <caption>2024年1月15日学习记录</caption>
+                <thead>
+                    <tr>
+                        <th>时间段</th>
+                        <th colspan="2">学习内容</th>
+                        <th>学习方式</th>
+                        <th>效果评价</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="2">上午<br>9:00-12:00</td>
+                        <td>HTML5语义化标签</td>
+                        <td>article, section, aside</td>
+                        <td>理论学习</td>
+                        <td class="center">★★★★☆</td>
+                    </tr>
+                    <tr>
+                        <td>实践练习</td>
+                        <td>创建博客页面</td>
+                        <td>动手编码</td>
+                        <td class="center">★★★★★</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">下午<br>14:00-17:00</td>
+                        <td>HTML表格</td>
+                        <td>table, thead, tbody, tfoot</td>
+                        <td>理论+实践</td>
+                        <td class="center">★★★★☆</td>
+                    </tr>
+                    <tr>
+                        <td>HTML表单</td>
+                        <td>form, input, fieldset</td>
+                        <td>理论+实践</td>
+                        <td class="center">★★★☆☆</td>
+                    </tr>
+                    <tr>
+                        <td>晚上<br>19:00-21:00</td>
+                        <td colspan="2">复习总结</td>
+                        <td>笔记整理</td>
+                        <td class="center">★★★★☆</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4"><strong>今日学习总时长</strong></td>
+                        <td class="center"><strong>8小时</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+        
+        <section>
+            <h2>课程安排表</h2>
+            
+            <table>
+                <caption>第一阶段学习计划（HTML5现代Web标准）</caption>
+                <thead>
+                    <tr>
+                        <th>天数</th>
+                        <th>主题</th>
+                        <th>核心内容</th>
+                        <th>实践项目</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight">
+                        <td>第1天</td>
+                        <td>HTML5基础语法</td>
+                        <td>文档结构、常用标签、开发环境</td>
+                        <td>个人介绍页面</td>
+                        <td>✅ 已完成</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>第2天</td>
+                        <td>HTML5语义化标签</td>
+                        <td>语义化标签、表格、表单、多媒体</td>
+                        <td>博客页面</td>
+                        <td>🔄 进行中</td>
+                    </tr>
+                    <tr>
+                        <td>第3天</td>
+                        <td>Web标准与无障碍性</td>
+                        <td>W3C标准、HTML验证、无障碍性</td>
+                        <td>无障碍网站</td>
+                        <td>⏳ 待开始</td>
+                    </tr>
+                    <tr>
+                        <td>第4天</td>
+                        <td>SEO优化基础</td>
+                        <td>meta标签、语义化与SEO、结构化数据</td>
+                        <td>SEO优化页面</td>
+                        <td>⏳ 待开始</td>
+                    </tr>
+                    <tr>
+                        <td>第5天</td>
+                        <td>网页性能优化基础</td>
+                        <td>Core Web Vitals、HTML性能优化</td>
+                        <td>性能优化实践</td>
+                        <td>⏳ 待开始</td>
+                    </tr>
+                    <tr>
+                        <td>第6天</td>
+                        <td>现代HTML工具和工作流</td>
+                        <td>代码质量工具、构建工具、组件化</td>
+                        <td>现代化项目</td>
+                        <td>⏳ 待开始</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section>
+            <h2>表格使用技巧总结</h2>
+            
+            <article>
+                <h3>表格结构标签</h3>
+                <ul>
+                    <li><code>&lt;table&gt;</code> - 表格容器</li>
+                    <li><code>&lt;caption&gt;</code> - 表格标题</li>
+                    <li><code>&lt;thead&gt;</code> - 表格头部</li>
+                    <li><code>&lt;tbody&gt;</code> - 表格主体</li>
+                    <li><code>&lt;tfoot&gt;</code> - 表格底部</li>
+                    <li><code>&lt;tr&gt;</code> - 表格行</li>
+                    <li><code>&lt;th&gt;</code> - 表头单元格</li>
+                    <li><code>&lt;td&gt;</code> - 数据单元格</li>
+                </ul>
+            </article>
+            
+            <article>
+                <h3>单元格合并</h3>
+                <ul>
+                    <li><code>colspan</code> - 跨列合并</li>
+                    <li><code>rowspan</code> - 跨行合并</li>
+                </ul>
+                <p><strong>注意：</strong>合并单元格时要注意调整其他行的单元格数量。</p>
+            </article>
+            
+            <article>
+                <h3>表格无障碍性</h3>
+                <ul>
+                    <li>使用 <code>&lt;caption&gt;</code> 为表格提供描述</li>
+                    <li>使用 <code>&lt;th&gt;</code> 标记表头</li>
+                    <li>为复杂表格添加 <code>scope</code> 属性</li>
+                    <li>使用 <code>summary</code> 属性描述表格结构（HTML5中已废弃，可用aria-describedby替代）</li>
+                </ul>
+            </article>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 HTML学习练习</p>
+        <p>学习进度：HTML5语义化标签 - 表格部分</p>
+    </footer>
+</body>
+</html>

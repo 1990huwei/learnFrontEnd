@@ -1,0 +1,64 @@
+{
+  "name": "modern-html-workflow",
+  "version": "1.0.0",
+  "description": "现代HTML开发工作流练习项目",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint:html": "htmlhint src/**/*.html",
+    "lint:css": "stylelint src/**/*.css",
+    "format": "prettier --write src/**/*.{html,css,js}",
+    "validate": "html-validate src/**/*.html",
+    "serve": "live-server src --port=3000",
+    "build:gulp": "gulp build",
+    "watch:gulp": "gulp watch",
+    "clean": "rimraf dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "html5",
+    "modern-workflow",
+    "vite",
+    "gulp",
+    "prettier",
+    "htmlhint",
+    "stylelint"
+  ],
+  "author": "HTML5学习者",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "gulp": "^4.0.2",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-uglify": "^3.0.2",
+    "gulp-imagemin": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-sass": "^5.1.0",
+    "sass": "^1.69.0",
+    "htmlhint": "^1.1.4",
+    "stylelint": "^15.11.0",
+    "stylelint-config-standard": "^34.0.0",
+    "prettier": "^3.0.0",
+    "html-validate": "^8.7.0",
+    "live-server": "^1.2.2",
+    "rimraf": "^5.0.0",
+    "browser-sync": "^2.29.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0",
+    "cssnano": "^6.0.0"
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

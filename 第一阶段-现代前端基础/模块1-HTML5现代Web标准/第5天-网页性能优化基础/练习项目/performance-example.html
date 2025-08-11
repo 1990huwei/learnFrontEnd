@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- 基础元数据 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页性能优化示例 | HTML5性能最佳实践</title>
+    <meta name="description" content="展示HTML5网页性能优化的最佳实践，包括资源预加载、图片优化、Core Web Vitals优化等技术。">
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="#critical-css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" as="style">
+    <link rel="preload" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDgwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjZjNmNGY2Ii8+Cjx0ZXh0IHg9IjQwMCIgeT0iMjAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiM2YjdiODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7ooajnpLrlm77niYc8L3RleHQ+Cjwvc3ZnPgo=" as="image">
+    
+    <!-- DNS预解析 -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    
+    <!-- 预连接到重要的第三方域名 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- 关键CSS内联 -->
+    <style id="critical-css">
+        /* 关键渲染路径CSS - 首屏内容样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #ffffff;
+        }
+        
+        /* 防止布局偏移的占位符样式 */
+        .hero {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航样式 */
+        nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2563eb;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: #374151;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+        }
+    </style>
+    
+    <!-- 非关键CSS异步加载 -->
+    <link rel="preload" href="data:text/css;base64,LyogTm9uLWNyaXRpY2FsIENTUyAqLwouY29udGVudCB7CiAgICBwYWRkaW5nOiAycmVtIDA7Cn0KCi5zZWN0aW9uIHsKICAgIG1hcmdpbjogM3JlbSAwOwogICAgcGFkZGluZzogMnJlbTsKICAgIGJhY2tncm91bmQ6IHdoaXRlOwogICAgYm9yZGVyLXJhZGl1czogMTBweDsKICAgIGJveC1zaGFkb3c6IDAgMiAxMHB4IHJnYmEoMCwwLDAsMC4xKTsKfQoKLnNlY3Rpb24gaDIgewogICAgY29sb3I6ICMyNTYzZWI7CiAgICBtYXJnaW4tYm90dG9tOiAxcmVtOwogICAgZm9udC1zaXplOiAyLjVyZW07Cn0KCi5ncmlkIHsKICAgIGRpc3BsYXk6IGdyaWQ7CiAgICBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IHJlcGVhdChhdXRvLWZpdCwgbWlubWF4KDMwMHB4LCAxZnIpKTsKICAgIGdhcDogMnJlbTsKICAgIG1hcmdpbjogMnJlbSAwOwp9CgouY2FyZCB7CiAgICBwYWRkaW5nOiAxLjVyZW07CiAgICBiYWNrZ3JvdW5kOiAjZjlmYWZiOwogICAgYm9yZGVyLXJhZGl1czogOHB4OwogICAgYm9yZGVyOiAxcHggc29saWQgI2U1ZTdlYjsKICAgIHRyYW5zaXRpb246IHRyYW5zZm9ybSAwLjNzIGVhc2UsIGJveC1zaGFkb3cgMC4zcyBlYXNlOwp9CgouY2FyZDpob3ZlciB7CiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZVkoLTVweCk7CiAgICBib3gtc2hhZG93OiAwIDEwIDI1cHggcmdiYSgwLDAsMCwwLjE1KTsKfQoKLmNhcmQgaDMgewogICAgY29sb3I6ICMzNzQxNTE7CiAgICBtYXJnaW4tYm90dG9tOiAwLjVyZW07Cn0KCi5jYXJkIHAgewogICAgY29sb3I6ICM2YjdiODA7CiAgICBsaW5lLWhlaWdodDogMS42Owp9CgouYnRuIHsKICAgIGRpc3BsYXk6IGlubGluZS1ibG9jazsKICAgIHBhZGRpbmc6IDAuNzVyZW0gMS41cmVtOwogICAgYmFja2dyb3VuZDogIzI1NjNlYjsKICAgIGNvbG9yOiB3aGl0ZTsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIGJvcmRlci1yYWRpdXM6IDVweDsKICAgIGZvbnQtd2VpZ2h0OiA1MDA7CiAgICB0cmFuc2l0aW9uOiBiYWNrZ3JvdW5kLWNvbG9yIDAuM3MgZWFzZTsKfQoKLmJ0bjpob3ZlciB7CiAgICBiYWNrZ3JvdW5kOiAjMWQ0ZWQ4Owp9Cgpmb290ZXIgewogICAgYmFja2dyb3VuZDogIzM3NDE1MTsKICAgIGNvbG9yOiB3aGl0ZTsKICAgIHBhZGRpbmc6IDJyZW0gMDsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIG1hcmdpbi10b3A6IDNyZW07Cn0=" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="non-critical.css"></noscript>
+    
+    <!-- 字体优化 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- 性能监控脚本 -->
+    <script>
+        // Web Vitals 监控
+        function measureWebVitals() {
+            // LCP (Largest Contentful Paint)
+            new PerformanceObserver((entryList) => {
+                const entries = entryList.getEntries();
+                const lastEntry = entries[entries.length - 1];
+                console.log('LCP:', lastEntry.startTime);
+            }).observe({entryTypes: ['largest-contentful-paint']});
+            
+            // FID (First Input Delay)
+            new PerformanceObserver((entryList) => {
+                for (const entry of entryList.getEntries()) {
+                    console.log('FID:', entry.processingStart - entry.startTime);
+                }
+            }).observe({entryTypes: ['first-input']});
+            
+            // CLS (Cumulative Layout Shift)
+            let clsValue = 0;
+            new PerformanceObserver((entryList) => {
+                for (const entry of entryList.getEntries()) {
+                    if (!entry.hadRecentInput) {
+                        clsValue += entry.value;
+                    }
+                }
+                console.log('CLS:', clsValue);
+            }).observe({entryTypes: ['layout-shift']});
+        }
+        
+        // 页面加载完成后开始监控
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', measureWebVitals);
+        } else {
+            measureWebVitals();
+        }
+    </script>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <div class="container">
+            <div class="logo">性能优化示例</div>
+            <ul class="nav-links">
+                <li><a href="#performance">性能优化</a></li>
+                <li><a href="#images">图片优化</a></li>
+                <li><a href="#resources">资源优化</a></li>
+                <li><a href="#vitals">Core Web Vitals</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="container">
+            <h1>网页性能优化</h1>
+            <p>HTML5性能最佳实践示例</p>
+        </div>
+    </section>
+    
+    <!-- 主要内容 -->
+    <main class="container">
+        <div class="content">
+            <!-- 性能优化概述 -->
+            <section id="performance" class="section">
+                <h2>🚀 性能优化概述</h2>
+                <p>网页性能直接影响用户体验和搜索引擎排名。本页面展示了HTML5层面的各种性能优化技术。</p>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h3>关键渲染路径优化</h3>
+                        <p>通过内联关键CSS、预加载重要资源、优化JavaScript加载来减少首屏渲染时间。</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>资源加载优化</h3>
+                        <p>使用预加载、预连接、DNS预解析等技术来优化资源加载性能。</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Core Web Vitals</h3>
+                        <p>优化LCP、FID、CLS三大核心指标，提升用户体验和SEO排名。</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 图片优化 -->
+            <section id="images" class="section">
+                <h2>🖼️ 图片优化技术</h2>
+                <p>图片通常是网页中最大的资源，正确的图片优化可以显著提升页面性能。</p>
+                
+                <h3>1. 响应式图片</h3>
+                <p>使用srcset和sizes属性为不同设备提供合适尺寸的图片：</p>
+                
+                <!-- 响应式图片示例 -->
+                <picture>
+                    <source media="(max-width: 600px)" 
+                            srcset="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZGJlYWZlIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMyNTYzZWIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7np7vliqjnq69 NDAweDIwMDwvdGV4dD4KPC9zdmc+Cg==">
+                    <source media="(max-width: 900px)" 
+                            srcset="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDYwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZmVmM2M3Ii8+Cjx0ZXh0IHg9IjMwMCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiNmNTllMGIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7kuK3nrYkgNjAweDMwMDwvdGV4dD4KPC9zdmc+Cg==">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDgwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjZjNmNGY2Ii8+Cjx0ZXh0IHg9IjQwMCIgeT0iMjAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiM2YjdiODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7moYjpnaIgODAweDQwMDwvdGV4dD4KPC9zdmc+Cg==" 
+                         alt="响应式图片示例 - 根据屏幕尺寸显示不同大小的图片" 
+                         width="800" 
+                         height="400"
+                         style="width: 100%; height: auto; border-radius: 8px; margin: 1rem 0;">
+                </picture>
+                
+                <h3>2. 懒加载图片</h3>
+                <p>使用loading="lazy"属性延迟加载非首屏图片：</p>
+                
+                <!-- 懒加载图片示例 -->
+                <div class="grid">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZWZmNmZmIi8+Cjx0ZXh0IHg9IjE1MCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiNhODU1ZjciIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7mh5LliqDovb3lm77niYcgMTwvdGV4dD4KPC9zdmc+Cg==" 
+                         alt="懒加载图片示例1" 
+                         width="300" 
+                         height="200" 
+                         loading="lazy"
+                         style="width: 100%; height: auto; border-radius: 8px;">
+                    
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjBmZGY0Ii8+Cjx0ZXh0IHg9IjE1MCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMyMmM1NWUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7mh5LliqDovb3lm77niYcgMjwvdGV4dD4KPC9zdmc+Cg==" 
+                         alt="懒加载图片示例2" 
+                         width="300" 
+                         height="200" 
+                         loading="lazy"
+                         style="width: 100%; height: auto; border-radius: 8px;">
+                    
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZmVmMmYyIi8+Cjx0ZXh0IHg9IjE1MCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiNlZjQ0NDQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7mh5LliqDovb3lm77niYcgMzwvdGV4dD4KPC9zdmc+Cg==" 
+                         alt="懒加载图片示例3" 
+                         width="300" 
+                         height="200" 
+                         loading="lazy"
+                         style="width: 100%; height: auto; border-radius: 8px;">
+                </div>
+                
+                <h3>3. 现代图片格式</h3>
+                <p>使用WebP等现代格式可以显著减少文件大小：</p>
+                
+                <picture>
+                    <source type="image/webp" srcset="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZGJlYWZlIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMyNTYzZWIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5XZWJQ5qC85byPPC90ZXh0Pgo8L3N2Zz4K">
+                    <source type="image/jpeg" srcset="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZmVmM2M3Ii8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmNTllMGIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5KUEVH5qC85byPPC90ZXh0Pgo8L3N2Zz4K">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjNmNGY2Ii8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2YjdiODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7lm77niYfmoLzlvI/lkJHkuIvlhbzlrrkgUE5HPC90ZXh0Pgo8L3N2Zz4K" 
+                         alt="现代图片格式示例 - 浏览器会自动选择支持的最佳格式" 
+                         width="400" 
+                         height="200"
+                         style="width: 100%; max-width: 400px; height: auto; border-radius: 8px; margin: 1rem 0;">
+                </picture>
+            </section>
+            
+            <!-- 资源优化 -->
+            <section id="resources" class="section">
+                <h2>📦 资源加载优化</h2>
+                <p>通过各种预加载技术和资源优化策略来提升页面性能。</p>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h3>预加载 (Preload)</h3>
+                        <p>预加载当前页面需要的关键资源，如关键CSS、字体、重要图片等。</p>
+                        <code style="background: #f3f4f6; padding: 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem; font-size: 0.9rem;">
+                            &lt;link rel="preload" href="critical.css" as="style"&gt;
+                        </code>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>预连接 (Preconnect)</h3>
+                        <p>提前建立与重要第三方域名的连接，减少DNS查询和连接建立时间。</p>
+                        <code style="background: #f3f4f6; padding: 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem; font-size: 0.9rem;">
+                            &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+                        </code>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>DNS预解析 (DNS-prefetch)</h3>
+                        <p>提前解析第三方域名的DNS，减少后续请求的延迟。</p>
+                        <code style="background: #f3f4f6; padding: 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem; font-size: 0.9rem;">
+                            &lt;link rel="dns-prefetch" href="//cdn.example.com"&gt;
+                        </code>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>关键CSS内联</h3>
+                        <p>将首屏渲染所需的CSS直接内联到HTML中，避免额外的网络请求。</p>
+                        <code style="background: #f3f4f6; padding: 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem; font-size: 0.9rem;">
+                            &lt;style&gt;/* 关键CSS */&lt;/style&gt;
+                        </code>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>异步CSS加载</h3>
+                        <p>非关键CSS异步加载，避免阻塞页面渲染。</p>
+                        <code style="background: #f3f4f6; padding: 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem; font-size: 0.9rem;">
+                            &lt;link rel="preload" href="style.css" as="style" onload="this.rel='stylesheet'"&gt;
+                        </code>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>JavaScript优化</h3>
+                        <p>使用async和defer属性优化JavaScript加载，避免阻塞HTML解析。</p>
+                        <code style="background: #f3f4f6; padding: 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem; font-size: 0.9rem;">
+                            &lt;script src="script.js" async&gt;&lt;/script&gt;
+                        </code>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Core Web Vitals -->
+            <section id="vitals" class="section">
+                <h2>📊 Core Web Vitals 优化</h2>
+                <p>Core Web Vitals是Google用来衡量用户体验的核心指标，直接影响SEO排名。</p>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h3>LCP - 最大内容绘制</h3>
+                        <p><strong>目标：&lt; 2.5秒</strong></p>
+                        <p>优化方法：</p>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                            <li>优化服务器响应时间</li>
+                            <li>预加载关键资源</li>
+                            <li>优化图片和视频</li>
+                            <li>移除阻塞渲染的资源</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>FID - 首次输入延迟</h3>
+                        <p><strong>目标：&lt; 100毫秒</strong></p>
+                        <p>优化方法：</p>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                            <li>减少JavaScript执行时间</li>
+                            <li>拆分长任务</li>
+                            <li>使用Web Workers</li>
+                            <li>优化第三方代码</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>CLS - 累积布局偏移</h3>
+                        <p><strong>目标：&lt; 0.1</strong></p>
+                        <p>优化方法：</p>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                            <li>为图片指定尺寸</li>
+                            <li>避免在现有内容上方插入内容</li>
+                            <li>使用transform动画</li>
+                            <li>预加载字体</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 实时性能监控 -->
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-top: 2rem;">
+                    <h3>📈 实时性能监控</h3>
+                    <p>本页面已集成Web Vitals监控，请打开浏览器控制台查看实时性能数据：</p>
+                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                        <li><strong>LCP</strong>：最大内容绘制时间</li>
+                        <li><strong>FID</strong>：首次输入延迟</li>
+                        <li><strong>CLS</strong>：累积布局偏移值</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><em>提示：与页面交互（点击、滚动等）后可以看到FID数据。</em></p>
+                </div>
+            </section>
+            
+            <!-- 性能检测工具 -->
+            <section class="section">
+                <h2>🔧 性能检测工具</h2>
+                <p>使用以下工具检测和优化网页性能：</p>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h3>Lighthouse</h3>
+                        <p>Chrome内置的综合性能审计工具，提供性能、SEO、无障碍性等多方面的评分和建议。</p>
+                        <a href="#" class="btn" onclick="alert('请在Chrome开发者工具中使用Lighthouse'); return false;">使用Lighthouse</a>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>PageSpeed Insights</h3>
+                        <p>Google的在线页面速度测试工具，提供移动端和桌面端的性能分析。</p>
+                        <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener noreferrer" class="btn">访问PageSpeed</a>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>WebPageTest</h3>
+                        <p>详细的网页性能测试工具，提供瀑布图、视频分析等高级功能。</p>
+                        <a href="https://www.webpagetest.org/" target="_blank" rel="noopener noreferrer" class="btn">访问WebPageTest</a>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>GTmetrix</h3>
+                        <p>综合性能分析工具，结合多种测试引擎提供详细的优化建议。</p>
+                        <a href="https://gtmetrix.com/" target="_blank" rel="noopener noreferrer" class="btn">访问GTmetrix</a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 性能优化清单 -->
+            <section class="section">
+                <h2>✅ 性能优化清单</h2>
+                <p>使用以下清单检查你的网页性能优化情况：</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                    <div>
+                        <h3>HTML优化</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 0.5rem 0;">☐ 使用语义化HTML标签</li>
+                            <li style="margin: 0.5rem 0;">☐ 压缩HTML代码</li>
+                            <li style="margin: 0.5rem 0;">☐ 减少DOM深度和复杂性</li>
+                            <li style="margin: 0.5rem 0;">☐ 避免内联样式和脚本</li>
+                            <li style="margin: 0.5rem 0;">☐ 使用适当的meta标签</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3>CSS优化</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 0.5rem 0;">☐ 内联关键CSS</li>
+                            <li style="margin: 0.5rem 0;">☐ 异步加载非关键CSS</li>
+                            <li style="margin: 0.5rem 0;">☐ 压缩CSS文件</li>
+                            <li style="margin: 0.5rem 0;">☐ 移除未使用的CSS</li>
+                            <li style="margin: 0.5rem 0;">☐ 使用CSS Sprites</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3>JavaScript优化</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 0.5rem 0;">☐ 使用async/defer属性</li>
+                            <li style="margin: 0.5rem 0;">☐ 压缩JavaScript文件</li>
+                            <li style="margin: 0.5rem 0;">☐ 代码分割和懒加载</li>
+                            <li style="margin: 0.5rem 0;">☐ 移除未使用的JavaScript</li>
+                            <li style="margin: 0.5rem 0;">☐ 使用现代JavaScript语法</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3>图片优化</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 0.5rem 0;">☐ 使用现代图片格式</li>
+                            <li style="margin: 0.5rem 0;">☐ 实现响应式图片</li>
+                            <li style="margin: 0.5rem 0;">☐ 图片懒加载</li>
+                            <li style="margin: 0.5rem 0;">☐ 指定图片尺寸</li>
+                            <li style="margin: 0.5rem 0;">☐ 优化图片压缩</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3>资源加载</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 0.5rem 0;">☐ 预加载关键资源</li>
+                            <li style="margin: 0.5rem 0;">☐ 预连接第三方域名</li>
+                            <li style="margin: 0.5rem 0;">☐ DNS预解析</li>
+                            <li style="margin: 0.5rem 0;">☐ 启用浏览器缓存</li>
+                            <li style="margin: 0.5rem 0;">☐ 使用CDN</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3>Core Web Vitals</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin: 0.5rem 0;">☐ LCP < 2.5秒</li>
+                            <li style="margin: 0.5rem 0;">☐ FID < 100毫秒</li>
+                            <li style="margin: 0.5rem 0;">☐ CLS < 0.1</li>
+                            <li style="margin: 0.5rem 0;">☐ 监控性能指标</li>
+                            <li style="margin: 0.5rem 0;">☐ 定期性能审计</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <!-- 页面底部 -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 网页性能优化示例. 本页面展示了HTML5性能优化的最佳实践.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">使用浏览器开发者工具查看性能指标和优化效果</p>
+        </div>
+    </footer>
+    
+    <!-- 非关键JavaScript异步加载 -->
+    <script async>
+        // 页面交互增强
+        document.addEventListener('DOMContentLoaded', function() {
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // 性能提示
+            setTimeout(() => {
+                console.log('💡 性能优化提示：');
+                console.log('1. 检查Network面板查看资源加载情况');
+                console.log('2. 使用Lighthouse进行综合性能审计');
+                console.log('3. 关注Core Web Vitals指标');
+                console.log('4. 定期监控和优化性能');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

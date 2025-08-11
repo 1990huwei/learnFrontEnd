@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- 基础SEO元数据 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 页面标题 - 最重要的SEO元素 -->
+    <title>前端开发学习指南 | HTML5现代Web标准教程 - 学习前端</title>
+    
+    <!-- 页面描述 -->
+    <meta name="description" content="全面的前端开发学习指南，涵盖HTML5现代Web标准、语义化标签、无障碍性设计和SEO优化。适合初学者和进阶开发者的完整教程。">
+    
+    <!-- 关键词（现代SEO中重要性降低，但仍可使用） -->
+    <meta name="keywords" content="前端开发,HTML5,Web标准,语义化标签,SEO优化,无障碍性,前端教程">
+    
+    <!-- 作者信息 -->
+    <meta name="author" content="前端学习团队">
+    
+    <!-- 页面主题颜色 -->
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- Open Graph 元数据（社交媒体分享） -->
+    <meta property="og:title" content="前端开发学习指南 | HTML5现代Web标准教程">
+    <meta property="og:description" content="全面的前端开发学习指南，涵盖HTML5现代Web标准、语义化标签、无障碍性设计和SEO优化。">
+    <meta property="og:image" content="https://example.com/images/frontend-guide-cover.jpg">
+    <meta property="og:url" content="https://example.com/frontend-guide">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="学习前端">
+    
+    <!-- Twitter Card 元数据 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="前端开发学习指南 | HTML5现代Web标准教程">
+    <meta name="twitter:description" content="全面的前端开发学习指南，涵盖HTML5现代Web标准、语义化标签、无障碍性设计和SEO优化。">
+    <meta name="twitter:image" content="https://example.com/images/frontend-guide-cover.jpg">
+    
+    <!-- 规范链接 -->
+    <link rel="canonical" href="https://example.com/frontend-guide">
+    
+    <!-- 网站图标 -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- 结构化数据 (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "前端开发学习指南 | HTML5现代Web标准教程",
+        "description": "全面的前端开发学习指南，涵盖HTML5现代Web标准、语义化标签、无障碍性设计和SEO优化。",
+        "author": {
+            "@type": "Organization",
+            "name": "前端学习团队"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "学习前端",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://example.com/logo.png"
+            }
+        },
+        "datePublished": "2024-01-15",
+        "dateModified": "2024-01-20",
+        "image": "https://example.com/images/frontend-guide-cover.jpg",
+        "url": "https://example.com/frontend-guide"
+    }
+    </script>
+    
+    <!-- 样式 -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+        
+        nav {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        nav a {
+            color: #2563eb;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        nav a:hover {
+            background-color: #e5e7eb;
+        }
+        
+        main {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        article {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        aside {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            height: fit-content;
+        }
+        
+        h2 {
+            color: #2563eb;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+        
+        h3 {
+            color: #374151;
+            margin-top: 1.5rem;
+        }
+        
+        .meta-info {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 0.25rem;
+        }
+        
+        .breadcrumb {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+        
+        .breadcrumb a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        
+        .toc {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .toc h4 {
+            margin-top: 0;
+            color: #374151;
+        }
+        
+        .toc ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+        
+        .toc a {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            background: #374151;
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 跳转链接（无障碍性） -->
+    <a href="#main-content" class="skip-link" style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;">跳转到主要内容</a>
+    
+    <!-- 页面头部 -->
+    <header>
+        <h1>前端开发学习指南</h1>
+        <p class="subtitle">HTML5现代Web标准完整教程</p>
+    </header>
+    
+    <!-- 面包屑导航 -->
+    <nav aria-label="面包屑导航">
+        <div class="breadcrumb">
+            <a href="/">首页</a> > 
+            <a href="/courses">课程</a> > 
+            <a href="/courses/frontend">前端开发</a> > 
+            <span>HTML5现代Web标准</span>
+        </div>
+    </nav>
+    
+    <!-- 主导航 -->
+    <nav aria-label="主导航">
+        <ul>
+            <li><a href="#introduction">课程介绍</a></li>
+            <li><a href="#curriculum">课程大纲</a></li>
+            <li><a href="#features">课程特色</a></li>
+            <li><a href="#requirements">学习要求</a></li>
+            <li><a href="#resources">学习资源</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 主要内容区域 -->
+    <main>
+        <!-- 主要文章内容 -->
+        <article id="main-content">
+            <!-- 文章元信息 -->
+            <div class="meta-info">
+                <strong>发布时间：</strong><time datetime="2024-01-15">2024年1月15日</time> |
+                <strong>更新时间：</strong><time datetime="2024-01-20">2024年1月20日</time> |
+                <strong>阅读时间：</strong>约15分钟 |
+                <strong>难度级别：</strong>初级到中级
+            </div>
+            
+            <!-- 课程介绍 -->
+            <section id="introduction">
+                <h2>课程介绍</h2>
+                <p>欢迎来到<strong>HTML5现代Web标准</strong>学习指南！这是一个全面、系统的前端开发基础课程，专为想要掌握现代Web开发技术的学习者设计。</p>
+                
+                <p>在这个课程中，你将学习到：</p>
+                <ul>
+                    <li><strong>HTML5基础语法</strong> - 掌握现代HTML的核心概念和语法规则</li>
+                    <li><strong>语义化标签</strong> - 学会使用语义化标签构建结构清晰的网页</li>
+                    <li><strong>Web标准与无障碍性</strong> - 了解Web标准的重要性和无障碍性设计原则</li>
+                    <li><strong>SEO优化基础</strong> - 掌握搜索引擎优化的基本技巧和最佳实践</li>
+                    <li><strong>网页性能优化</strong> - 学习提升网页加载速度和用户体验的方法</li>
+                    <li><strong>现代开发工具</strong> - 熟悉现代前端开发工具和工作流</li>
+                </ul>
+            </section>
+            
+            <!-- 课程大纲 -->
+            <section id="curriculum">
+                <h2>课程大纲</h2>
+                
+                <h3>第1天：HTML5基础语法</h3>
+                <p>学习HTML5的基本语法、文档结构、常用标签和属性。通过实际练习掌握HTML的核心概念。</p>
+                <ul>
+                    <li>HTML5文档结构</li>
+                    <li>常用HTML标签</li>
+                    <li>文本格式化</li>
+                    <li>链接和导航</li>
+                    <li>实践项目：个人介绍页面</li>
+                </ul>
+                
+                <h3>第2天：HTML5语义化标签</h3>
+                <p>深入学习HTML5的语义化标签，了解如何构建结构清晰、语义明确的网页。</p>
+                <ul>
+                    <li>语义化标签的重要性</li>
+                    <li>页面结构标签</li>
+                    <li>表格和表单</li>
+                    <li>多媒体标签</li>
+                    <li>实践项目：技术博客页面</li>
+                </ul>
+                
+                <h3>第3天：Web标准与无障碍性</h3>
+                <p>学习Web标准的重要性，掌握无障碍性设计的基本原则和实践方法。</p>
+                <ul>
+                    <li>Web标准概述</li>
+                    <li>HTML文档验证</li>
+                    <li>无障碍性设计原则</li>
+                    <li>ARIA标签使用</li>
+                    <li>实践项目：无障碍性网页</li>
+                </ul>
+                
+                <h3>第4天：SEO优化基础</h3>
+                <p>了解搜索引擎优化的基本概念，学习如何通过HTML优化提升网页的搜索排名。</p>
+                <ul>
+                    <li>SEO基本概念</li>
+                    <li>HTML中的SEO元素</li>
+                    <li>元数据优化</li>
+                    <li>结构化数据</li>
+                    <li>实践项目：SEO优化页面</li>
+                </ul>
+                
+                <h3>第5天：网页性能优化基础</h3>
+                <p>学习网页性能优化的基本原理，掌握HTML层面的性能优化技巧。</p>
+                <ul>
+                    <li>性能优化概述</li>
+                    <li>Core Web Vitals</li>
+                    <li>HTML性能优化</li>
+                    <li>资源加载优化</li>
+                    <li>实践项目：高性能网页</li>
+                </ul>
+                
+                <h3>第6天：现代HTML工具和工作流</h3>
+                <p>熟悉现代前端开发工具，建立高效的开发工作流。</p>
+                <ul>
+                    <li>代码编辑器配置</li>
+                    <li>HTML验证工具</li>
+                    <li>构建工具介绍</li>
+                    <li>版本控制基础</li>
+                    <li>实践项目：完整开发环境</li>
+                </ul>
+            </section>
+            
+            <!-- 课程特色 -->
+            <section id="features">
+                <h2>课程特色</h2>
+                
+                <h3>🎯 实践导向</h3>
+                <p>每天都有实际的编程练习和项目，让你在实践中掌握知识。</p>
+                
+                <h3>📚 系统完整</h3>
+                <p>从基础语法到高级应用，涵盖HTML5开发的各个方面。</p>
+                
+                <h3>🔧 工具齐全</h3>
+                <p>介绍现代开发工具和最佳实践，让你的开发更高效。</p>
+                
+                <h3>♿ 注重标准</h3>
+                <p>强调Web标准和无障碍性，培养良好的开发习惯。</p>
+                
+                <h3>🚀 面向未来</h3>
+                <p>学习最新的HTML5特性和现代Web开发趋势。</p>
+            </section>
+            
+            <!-- 学习要求 -->
+            <section id="requirements">
+                <h2>学习要求</h2>
+                
+                <h3>前置知识</h3>
+                <ul>
+                    <li>基本的计算机操作能力</li>
+                    <li>对网页和互联网的基本了解</li>
+                    <li>无需编程经验（从零开始）</li>
+                </ul>
+                
+                <h3>学习环境</h3>
+                <ul>
+                    <li>现代浏览器（Chrome、Firefox、Safari、Edge）</li>
+                    <li>代码编辑器（推荐VS Code）</li>
+                    <li>稳定的网络连接</li>
+                </ul>
+                
+                <h3>时间安排</h3>
+                <ul>
+                    <li>总学习时间：6天</li>
+                    <li>每天学习时间：2-4小时</li>
+                    <li>建议连续学习，保持学习节奏</li>
+                </ul>
+            </section>
+            
+            <!-- 学习资源 -->
+            <section id="resources">
+                <h2>学习资源</h2>
+                
+                <h3>官方文档</h3>
+                <ul>
+                    <li><a href="https://html.spec.whatwg.org/" rel="noopener noreferrer" target="_blank">HTML Living Standard</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML" rel="noopener noreferrer" target="_blank">MDN HTML文档</a></li>
+                    <li><a href="https://www.w3.org/WAI/WCAG21/quickref/" rel="noopener noreferrer" target="_blank">WCAG 2.1快速参考</a></li>
+                </ul>
+                
+                <h3>在线工具</h3>
+                <ul>
+                    <li><a href="https://validator.w3.org/" rel="noopener noreferrer" target="_blank">W3C HTML验证器</a></li>
+                    <li><a href="https://wave.webaim.org/" rel="noopener noreferrer" target="_blank">WAVE无障碍性检测工具</a></li>
+                    <li><a href="https://pagespeed.web.dev/" rel="noopener noreferrer" target="_blank">PageSpeed Insights</a></li>
+                </ul>
+                
+                <h3>推荐阅读</h3>
+                <ul>
+                    <li>《HTML5权威指南》</li>
+                    <li>《Web标准设计》</li>
+                    <li>《无障碍Web设计》</li>
+                </ul>
+            </section>
+            
+            <!-- 标签 -->
+            <div style="margin-top: 2rem;">
+                <h3>相关标签</h3>
+                <span class="tag">HTML5</span>
+                <span class="tag">前端开发</span>
+                <span class="tag">Web标准</span>
+                <span class="tag">语义化</span>
+                <span class="tag">无障碍性</span>
+                <span class="tag">SEO优化</span>
+                <span class="tag">性能优化</span>
+                <span class="tag">现代工具</span>
+            </div>
+        </article>
+        
+        <!-- 侧边栏 -->
+        <aside>
+            <!-- 目录 -->
+            <div class="toc">
+                <h4>📋 目录</h4>
+                <ul>
+                    <li><a href="#introduction">课程介绍</a></li>
+                    <li><a href="#curriculum">课程大纲</a>
+                        <ul>
+                            <li><a href="#curriculum">第1天：HTML5基础语法</a></li>
+                            <li><a href="#curriculum">第2天：语义化标签</a></li>
+                            <li><a href="#curriculum">第3天：Web标准</a></li>
+                            <li><a href="#curriculum">第4天：SEO优化</a></li>
+                            <li><a href="#curriculum">第5天：性能优化</a></li>
+                            <li><a href="#curriculum">第6天：现代工具</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#features">课程特色</a></li>
+                    <li><a href="#requirements">学习要求</a></li>
+                    <li><a href="#resources">学习资源</a></li>
+                </ul>
+            </div>
+            
+            <!-- 快速信息 -->
+            <div class="toc">
+                <h4>📊 课程信息</h4>
+                <p><strong>课程时长：</strong>6天</p>
+                <p><strong>难度级别：</strong>初级-中级</p>
+                <p><strong>学习方式：</strong>在线自学</p>
+                <p><strong>证书：</strong>完成证书</p>
+                <p><strong>更新频率：</strong>定期更新</p>
+            </div>
+            
+            <!-- 相关课程 -->
+            <div class="toc">
+                <h4>🔗 相关课程</h4>
+                <ul>
+                    <li><a href="#">CSS3现代样式设计</a></li>
+                    <li><a href="#">JavaScript基础编程</a></li>
+                    <li><a href="#">响应式Web设计</a></li>
+                    <li><a href="#">前端框架入门</a></li>
+                </ul>
+            </div>
+        </aside>
+    </main>
+    
+    <!-- 页面底部 -->
+    <footer>
+        <p>&copy; 2024 学习前端. 保留所有权利.</p>
+        <p>本课程内容遵循 <a href="#" style="color: #93c5fd;">CC BY-SA 4.0</a> 许可协议</p>
+    </footer>
+</body>
+</html>

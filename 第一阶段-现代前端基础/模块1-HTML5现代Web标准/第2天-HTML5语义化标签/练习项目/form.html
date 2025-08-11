@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML表单练习</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        fieldset {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        legend {
+            font-weight: bold;
+            padding: 0 10px;
+            color: #333;
+        }
+        
+        label {
+            display: block;
+            margin: 10px 0 5px 0;
+            font-weight: bold;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        
+        input[type="radio"], input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .form-group {
+            margin: 15px 0;
+        }
+        
+        .inline-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .inline-group > div {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .required {
+            color: red;
+        }
+        
+        .help-text {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>HTML表单练习</h1>
+        <nav>
+            <ul>
+                <li><a href="blog.html">返回博客</a></li>
+                <li><a href="table.html">表格练习</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section>
+            <h2>学员注册表单</h2>
+            
+            <form action="#" method="post" enctype="multipart/form-data">
+                <fieldset>
+                    <legend>基本信息</legend>
+                    
+                    <div class="form-group">
+                        <label for="fullname">姓名 <span class="required">*</span></label>
+                        <input type="text" id="fullname" name="fullname" required 
+                               placeholder="请输入您的真实姓名" maxlength="20">
+                    </div>
+                    
+                    <div class="inline-group">
+                        <div>
+                            <label for="email">邮箱地址 <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required 
+                                   placeholder="example@email.com">
+                            <div class="help-text">用于接收学习通知和资料</div>
+                        </div>
+                        
+                        <div>
+                            <label for="phone">手机号码</label>
+                            <input type="tel" id="phone" name="phone" 
+                                   placeholder="13800138000" pattern="[0-9]{11}">
+                            <div class="help-text">11位手机号码</div>
+                        </div>
+                    </div>
+                    
+                    <div class="inline-group">
+                        <div>
+                            <label for="birthday">出生日期</label>
+                            <input type="date" id="birthday" name="birthday">
+                        </div>
+                        
+                        <div>
+                            <label for="age">年龄</label>
+                            <input type="number" id="age" name="age" min="16" max="100" 
+                                   placeholder="请输入年龄">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>性别</label>
+                        <div>
+                            <input type="radio" id="male" name="gender" value="male">
+                            <label for="male" style="display: inline; font-weight: normal;">男</label>
+                            
+                            <input type="radio" id="female" name="gender" value="female">
+                            <label for="female" style="display: inline; font-weight: normal;">女</label>
+                            
+                            <input type="radio" id="other" name="gender" value="other">
+                            <label for="other" style="display: inline; font-weight: normal;">其他</label>
+                        </div>
+                    </div>
+                </fieldset>
+                
+                <fieldset>
+                    <legend>学习信息</legend>
+                    
+                    <div class="form-group">
+                        <label for="education">学历背景</label>
+                        <select id="education" name="education">
+                            <option value="">请选择学历</option>
+                            <option value="highschool">高中及以下</option>
+                            <option value="college">大专</option>
+                            <option value="bachelor">本科</option>
+                            <option value="master">硕士</option>
+                            <option value="doctor">博士</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experience">编程经验</label>
+                        <select id="experience" name="experience">
+                            <option value="none">零基础</option>
+                            <option value="beginner">初学者（1年以下）</option>
+                            <option value="intermediate">中级（1-3年）</option>
+                            <option value="advanced">高级（3年以上）</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>感兴趣的技术方向（可多选）</label>
+                        <div>
+                            <input type="checkbox" id="frontend" name="interests[]" value="frontend">
+                            <label for="frontend" style="display: inline; font-weight: normal;">前端开发</label><br>
+                            
+                            <input type="checkbox" id="backend" name="interests[]" value="backend">
+                            <label for="backend" style="display: inline; font-weight: normal;">后端开发</label><br>
+                            
+                            <input type="checkbox" id="mobile" name="interests[]" value="mobile">
+                            <label for="mobile" style="display: inline; font-weight: normal;">移动开发</label><br>
+                            
+                            <input type="checkbox" id="ai" name="interests[]" value="ai">
+                            <label for="ai" style="display: inline; font-weight: normal;">人工智能</label><br>
+                            
+                            <input type="checkbox" id="data" name="interests[]" value="data">
+                            <label for="data" style="display: inline; font-weight: normal;">数据科学</label>
+                        </div>
+                    </div>
+                    
+                    <div class="inline-group">
+                        <div>
+                            <label for="study-time">每日学习时间</label>
+                            <input type="range" id="study-time" name="study_time" 
+                                   min="1" max="8" value="2" 
+                                   oninput="document.getElementById('time-display').textContent = this.value + '小时'">
+                            <div class="help-text">当前选择：<span id="time-display">2小时</span></div>
+                        </div>
+                        
+                        <div>
+                            <label for="start-date">计划开始时间</label>
+                            <input type="datetime-local" id="start-date" name="start_date">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="motivation">学习动机</label>
+                        <textarea id="motivation" name="motivation" rows="4" 
+                                  placeholder="请简述您学习前端开发的动机和目标..."></textarea>
+                    </div>
+                </fieldset>
+                
+                <fieldset>
+                    <legend>附加信息</legend>
+                    
+                    <div class="form-group">
+                        <label for="website">个人网站/作品集</label>
+                        <input type="url" id="website" name="website" 
+                               placeholder="https://your-website.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="favorite-color">喜欢的颜色主题</label>
+                        <input type="color" id="favorite-color" name="favorite_color" value="#007bff">
+                        <div class="help-text">用于个性化学习界面</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resume">简历文件</label>
+                        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx">
+                        <div class="help-text">支持PDF、Word格式，最大5MB</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">设置密码 <span class="required">*</span></label>
+                        <input type="password" id="password" name="password" required 
+                               minlength="8" placeholder="至少8位字符">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">确认密码 <span class="required">*</span></label>
+                        <input type="password" id="confirm-password" name="confirm_password" required 
+                               minlength="8" placeholder="请再次输入密码">
+                    </div>
+                </fieldset>
+                
+                <fieldset>
+                    <legend>协议确认</legend>
+                    
+                    <div class="form-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms" style="display: inline; font-weight: normal;">
+                            我已阅读并同意 <a href="#" target="_blank">用户协议</a> 和 <a href="#" target="_blank">隐私政策</a> <span class="required">*</span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="checkbox" id="newsletter" name="newsletter">
+                        <label for="newsletter" style="display: inline; font-weight: normal;">
+                            订阅学习资讯和技术文章推送
+                        </label>
+                    </div>
+                </fieldset>
+                
+                <div class="form-group">
+                    <button type="submit">提交注册</button>
+                    <button type="reset">重置表单</button>
+                    <button type="button" onclick="validateForm()">验证表单</button>
+                </div>
+            </form>
+        </section>
+        
+        <section>
+            <h2>HTML5表单新特性总结</h2>
+            
+            <article>
+                <h3>新增输入类型</h3>
+                <ul>
+                    <li><code>email</code> - 邮箱地址，自动验证格式</li>
+                    <li><code>tel</code> - 电话号码</li>
+                    <li><code>url</code> - 网址，自动验证URL格式</li>
+                    <li><code>number</code> - 数字，支持min、max、step属性</li>
+                    <li><code>range</code> - 滑块，用于选择数值范围</li>
+                    <li><code>date</code> - 日期选择器</li>
+                    <li><code>datetime-local</code> - 本地日期时间</li>
+                    <li><code>time</code> - 时间选择器</li>
+                    <li><code>color</code> - 颜色选择器</li>
+                    <li><code>search</code> - 搜索框</li>
+                    <li><code>file</code> - 文件上传，支持accept属性</li>
+                </ul>
+            </article>
+            
+            <article>
+                <h3>表单验证属性</h3>
+                <ul>
+                    <li><code>required</code> - 必填字段</li>
+                    <li><code>pattern</code> - 正则表达式验证</li>
+                    <li><code>minlength/maxlength</code> - 字符长度限制</li>
+                    <li><code>min/max</code> - 数值范围限制</li>
+                    <li><code>step</code> - 数值步长</li>
+                    <li><code>placeholder</code> - 占位符文本</li>
+                </ul>
+            </article>
+            
+            <article>
+                <h3>表单结构标签</h3>
+                <ul>
+                    <li><code>&lt;form&gt;</code> - 表单容器</li>
+                    <li><code>&lt;fieldset&gt;</code> - 表单字段分组</li>
+                    <li><code>&lt;legend&gt;</code> - 字段组标题</li>
+                    <li><code>&lt;label&gt;</code> - 标签，提升无障碍性</li>
+                    <li><code>&lt;input&gt;</code> - 输入控件</li>
+                    <li><code>&lt;textarea&gt;</code> - 多行文本</li>
+                    <li><code>&lt;select&gt;</code> - 下拉选择</li>
+                    <li><code>&lt;option&gt;</code> - 选项</li>
+                    <li><code>&lt;button&gt;</code> - 按钮</li>
+                </ul>
+            </article>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 HTML学习练习</p>
+        <p>学习进度：HTML5语义化标签 - 表单部分</p>
+    </footer>
+    
+    <script>
+        function validateForm() {
+            const form = document.querySelector('form');
+            const isValid = form.checkValidity();
+            
+            if (isValid) {
+                alert('表单验证通过！所有必填字段都已正确填写。');
+            } else {
+                alert('表单验证失败！请检查必填字段和格式要求。');
+                form.reportValidity();
+            }
+        }
+        
+        // 密码确认验证
+        document.getElementById('confirm-password').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (password !== confirmPassword) {
+                this.setCustomValidity('密码不匹配');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    </script>
+</body>
+</html>

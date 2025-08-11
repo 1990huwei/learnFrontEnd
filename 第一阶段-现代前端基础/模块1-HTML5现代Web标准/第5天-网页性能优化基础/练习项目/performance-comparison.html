@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>性能优化对比示例 | 好的实践 vs 坏的实践</title>
+    <meta name="description" content="通过对比展示网页性能优化的好坏实践，帮助理解性能优化的重要性。">
+    
+    <!-- 基础样式 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .comparison-section {
+            margin: 3rem 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            background: #2563eb;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .section-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 400px;
+        }
+        
+        .good-practice, .bad-practice {
+            padding: 2rem;
+        }
+        
+        .good-practice {
+            background: #f0fdf4;
+            border-right: 2px solid #e5e7eb;
+        }
+        
+        .bad-practice {
+            background: #fef2f2;
+        }
+        
+        .practice-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .good-practice .practice-header {
+            color: #16a34a;
+        }
+        
+        .bad-practice .practice-header {
+            color: #dc2626;
+        }
+        
+        .icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+        
+        .code-block {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        
+        .good-practice .code-block {
+            border-left: 4px solid #16a34a;
+        }
+        
+        .bad-practice .code-block {
+            border-left: 4px solid #dc2626;
+        }
+        
+        .explanation {
+            background: rgba(255,255,255,0.7);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            border-left: 4px solid #6b7280;
+        }
+        
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .metric {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-good .metric-value {
+            color: #16a34a;
+        }
+        
+        .metric-bad .metric-value {
+            color: #dc2626;
+        }
+        
+        .metric-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .tips {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .tips h3 {
+            color: #1d4ed8;
+            margin-bottom: 1rem;
+        }
+        
+        .tips ul {
+            padding-left: 1.5rem;
+        }
+        
+        .tips li {
+            margin: 0.5rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .good-practice {
+                border-right: none;
+                border-bottom: 2px solid #e5e7eb;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>网页性能优化对比</h1>
+            <p>通过实际例子学习性能优化的好坏实践</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <!-- 资源加载优化 -->
+        <section class="comparison-section">
+            <div class="section-header">
+                <h2>📦 资源加载优化</h2>
+                <p>正确的资源加载策略可以显著提升页面性能</p>
+            </div>
+            
+            <div class="comparison-grid">
+                <div class="good-practice">
+                    <div class="practice-header">
+                        <span class="icon">✅</span>
+                        好的实践
+                    </div>
+                    
+                    <h4>预加载关键资源</h4>
+                    <div class="code-block">&lt;!-- 预加载关键CSS --&gt;
+&lt;link rel="preload" href="critical.css" as="style"&gt;
+
+&lt;!-- 预加载重要字体 --&gt;
+&lt;link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin&gt;
+
+&lt;!-- 预连接第三方域名 --&gt;
+&lt;link rel="preconnect" href="https://fonts.googleapis.com" crossorigin&gt;
+
+&lt;!-- DNS预解析 --&gt;
+&lt;link rel="dns-prefetch" href="//cdn.example.com"&gt;</div>
+                    
+                    <div class="explanation">
+                        <strong>优势：</strong>
+                        <ul>
+                            <li>减少关键资源的加载时间</li>
+                            <li>提前建立网络连接</li>
+                            <li>优化关键渲染路径</li>
+                            <li>改善用户体验</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bad-practice">
+                    <div class="practice-header">
+                        <span class="icon">❌</span>
+                        坏的实践
+                    </div>
+                    
+                    <h4>没有资源优化</h4>
+                    <div class="code-block">&lt;!-- 直接加载所有资源 --&gt;
+&lt;link rel="stylesheet" href="all-styles.css"&gt;
+&lt;script src="jquery.js"&gt;&lt;/script&gt;
+&lt;script src="bootstrap.js"&gt;&lt;/script&gt;
+&lt;script src="plugins.js"&gt;&lt;/script&gt;
+&lt;script src="main.js"&gt;&lt;/script&gt;
+
+&lt;!-- 没有任何预加载优化 --&gt;</div>
+                    
+                    <div class="explanation">
+                        <strong>问题：</strong>
+                        <ul>
+                            <li>阻塞页面渲染</li>
+                            <li>增加首屏加载时间</li>
+                            <li>没有利用浏览器预加载能力</li>
+                            <li>用户体验差</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CSS优化 -->
+        <section class="comparison-section">
+            <div class="section-header">
+                <h2>🎨 CSS加载优化</h2>
+                <p>CSS加载策略直接影响页面渲染性能</p>
+            </div>
+            
+            <div class="comparison-grid">
+                <div class="good-practice">
+                    <div class="practice-header">
+                        <span class="icon">✅</span>
+                        好的实践
+                    </div>
+                    
+                    <h4>关键CSS内联 + 异步加载</h4>
+                    <div class="code-block">&lt;!-- 关键CSS内联 --&gt;
+&lt;style&gt;
+/* 首屏渲染必需的CSS */
+body { font-family: sans-serif; }
+.header { background: #333; color: white; }
+.hero { height: 100vh; }
+&lt;/style&gt;
+
+&lt;!-- 非关键CSS异步加载 --&gt;
+&lt;link rel="preload" href="non-critical.css" as="style" 
+      onload="this.onload=null;this.rel='stylesheet'"&gt;
+&lt;noscript&gt;&lt;link rel="stylesheet" href="non-critical.css"&gt;&lt;/noscript&gt;</div>
+                    
+                    <div class="explanation">
+                        <strong>优势：</strong>
+                        <ul>
+                            <li>首屏快速渲染</li>
+                            <li>避免FOUC（无样式内容闪烁）</li>
+                            <li>优化关键渲染路径</li>
+                            <li>更好的用户体验</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bad-practice">
+                    <div class="practice-header">
+                        <span class="icon">❌</span>
+                        坏的实践
+                    </div>
+                    
+                    <h4>阻塞式CSS加载</h4>
+                    <div class="code-block">&lt;!-- 所有CSS都阻塞渲染 --&gt;
+&lt;link rel="stylesheet" href="bootstrap.css"&gt;
+&lt;link rel="stylesheet" href="font-awesome.css"&gt;
+&lt;link rel="stylesheet" href="animations.css"&gt;
+&lt;link rel="stylesheet" href="responsive.css"&gt;
+&lt;link rel="stylesheet" href="theme.css"&gt;
+&lt;link rel="stylesheet" href="custom.css"&gt;
+
+&lt;!-- 大量未使用的CSS --&gt;</div>
+                    
+                    <div class="explanation">
+                        <strong>问题：</strong>
+                        <ul>
+                            <li>阻塞页面渲染</li>
+                            <li>增加首屏时间</li>
+                            <li>加载大量未使用的样式</li>
+                            <li>影响Core Web Vitals</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- JavaScript优化 -->
+        <section class="comparison-section">
+            <div class="section-header">
+                <h2>⚡ JavaScript加载优化</h2>
+                <p>JavaScript加载方式对页面性能影响巨大</p>
+            </div>
+            
+            <div class="comparison-grid">
+                <div class="good-practice">
+                    <div class="practice-header">
+                        <span class="icon">✅</span>
+                        好的实践
+                    </div>
+                    
+                    <h4>异步和延迟加载</h4>
+                    <div class="code-block">&lt;!-- 异步加载非关键脚本 --&gt;
+&lt;script src="analytics.js" async&gt;&lt;/script&gt;
+
+&lt;!-- 延迟加载DOM操作脚本 --&gt;
+&lt;script src="main.js" defer&gt;&lt;/script&gt;
+
+&lt;!-- 模块化加载 --&gt;
+&lt;script type="module" src="app.js"&gt;&lt;/script&gt;
+
+&lt;!-- 条件加载 --&gt;
+&lt;script&gt;
+if ('IntersectionObserver' in window) {
+  import('./lazy-load.js');
+}
+&lt;/script&gt;</div>
+                    
+                    <div class="explanation">
+                        <strong>优势：</strong>
+                        <ul>
+                            <li>不阻塞HTML解析</li>
+                            <li>按需加载功能</li>
+                            <li>更快的首屏渲染</li>
+                            <li>更好的用户体验</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bad-practice">
+                    <div class="practice-header">
+                        <span class="icon">❌</span>
+                        坏的实践
+                    </div>
+                    
+                    <h4>阻塞式JavaScript</h4>
+                    <div class="code-block">&lt;!-- 在head中同步加载大量脚本 --&gt;
+&lt;script src="jquery-3.6.0.min.js"&gt;&lt;/script&gt;
+&lt;script src="bootstrap.bundle.min.js"&gt;&lt;/script&gt;
+&lt;script src="lodash.min.js"&gt;&lt;/script&gt;
+&lt;script src="moment.min.js"&gt;&lt;/script&gt;
+&lt;script src="chart.js"&gt;&lt;/script&gt;
+&lt;script src="plugins.js"&gt;&lt;/script&gt;
+&lt;script src="main.js"&gt;&lt;/script&gt;
+
+&lt;!-- 内联大量JavaScript代码 --&gt;</div>
+                    
+                    <div class="explanation">
+                        <strong>问题：</strong>
+                        <ul>
+                            <li>阻塞HTML解析</li>
+                            <li>延迟首屏渲染</li>
+                            <li>加载不必要的代码</li>
+                            <li>影响FID指标</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 图片优化 -->
+        <section class="comparison-section">
+            <div class="section-header">
+                <h2>🖼️ 图片优化</h2>
+                <p>图片优化是提升页面性能的重要环节</p>
+            </div>
+            
+            <div class="comparison-grid">
+                <div class="good-practice">
+                    <div class="practice-header">
+                        <span class="icon">✅</span>
+                        好的实践
+                    </div>
+                    
+                    <h4>现代图片优化</h4>
+                    <div class="code-block">&lt;!-- 响应式图片 --&gt;
+&lt;picture&gt;
+  &lt;source type="image/webp" 
+          srcset="hero-400.webp 400w, 
+                  hero-800.webp 800w, 
+                  hero-1200.webp 1200w"&gt;
+  &lt;source type="image/jpeg" 
+          srcset="hero-400.jpg 400w, 
+                  hero-800.jpg 800w, 
+                  hero-1200.jpg 1200w"&gt;
+  &lt;img src="hero-800.jpg" 
+       alt="英雄图片" 
+       width="800" 
+       height="400" 
+       loading="lazy"&gt;
+&lt;/picture&gt;</div>
+                    
+                    <div class="explanation">
+                        <strong>优势：</strong>
+                        <ul>
+                            <li>使用现代图片格式</li>
+                            <li>响应式图片适配</li>
+                            <li>懒加载节省带宽</li>
+                            <li>指定尺寸避免CLS</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bad-practice">
+                    <div class="practice-header">
+                        <span class="icon">❌</span>
+                        坏的实践
+                    </div>
+                    
+                    <h4>未优化的图片</h4>
+                    <div class="code-block">&lt;!-- 大尺寸未压缩图片 --&gt;
+&lt;img src="hero-original-5mb.jpg"&gt;
+&lt;img src="gallery-1-3mb.png"&gt;
+&lt;img src="gallery-2-4mb.png"&gt;
+&lt;img src="gallery-3-2mb.jpg"&gt;
+
+&lt;!-- 没有alt属性，没有尺寸 --&gt;
+&lt;img src="important-image.jpg"&gt;
+
+&lt;!-- 所有图片立即加载 --&gt;</div>
+                    
+                    <div class="explanation">
+                        <strong>问题：</strong>
+                        <ul>
+                            <li>文件过大影响加载</li>
+                            <li>没有格式优化</li>
+                            <li>造成布局偏移</li>
+                            <li>浪费用户流量</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 性能指标对比 -->
+        <section class="comparison-section">
+            <div class="section-header">
+                <h2>📊 性能指标对比</h2>
+                <p>优化前后的Core Web Vitals对比</p>
+            </div>
+            
+            <div class="performance-metrics">
+                <div class="metric metric-bad">
+                    <div class="metric-value">4.2s</div>
+                    <div class="metric-label">优化前 LCP</div>
+                </div>
+                <div class="metric metric-good">
+                    <div class="metric-value">1.8s</div>
+                    <div class="metric-label">优化后 LCP</div>
+                </div>
+                <div class="metric metric-bad">
+                    <div class="metric-value">180ms</div>
+                    <div class="metric-label">优化前 FID</div>
+                </div>
+                <div class="metric metric-good">
+                    <div class="metric-value">45ms</div>
+                    <div class="metric-label">优化后 FID</div>
+                </div>
+                <div class="metric metric-bad">
+                    <div class="metric-value">0.25</div>
+                    <div class="metric-label">优化前 CLS</div>
+                </div>
+                <div class="metric metric-good">
+                    <div class="metric-value">0.05</div>
+                    <div class="metric-label">优化后 CLS</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 优化建议 -->
+        <div class="tips">
+            <h3>💡 性能优化最佳实践总结</h3>
+            <ul>
+                <li><strong>关键渲染路径优化：</strong>内联关键CSS，异步加载非关键资源</li>
+                <li><strong>资源预加载：</strong>使用preload、preconnect、dns-prefetch等技术</li>
+                <li><strong>JavaScript优化：</strong>使用async/defer，代码分割，按需加载</li>
+                <li><strong>图片优化：</strong>现代格式、响应式图片、懒加载、尺寸指定</li>
+                <li><strong>Core Web Vitals：</strong>持续监控LCP、FID、CLS指标</li>
+                <li><strong>性能监控：</strong>使用Lighthouse、PageSpeed Insights等工具</li>
+                <li><strong>渐进增强：</strong>确保基础功能在所有设备上可用</li>
+                <li><strong>缓存策略：</strong>合理设置浏览器缓存和CDN</li>
+            </ul>
+        </div>
+        
+        <!-- 检测工具 -->
+        <div class="tips">
+            <h3>🔧 推荐的性能检测工具</h3>
+            <ul>
+                <li><strong>Lighthouse：</strong>Chrome内置的综合性能审计工具</li>
+                <li><strong>PageSpeed Insights：</strong>Google的在线页面速度测试</li>
+                <li><strong>WebPageTest：</strong>详细的性能分析和瀑布图</li>
+                <li><strong>GTmetrix：</strong>综合性能分析和优化建议</li>
+                <li><strong>Chrome DevTools：</strong>Performance面板和Network面板</li>
+                <li><strong>Web Vitals Extension：</strong>实时监控Core Web Vitals</li>
+            </ul>
+        </div>
+    </main>
+    
+    <footer style="background: #374151; color: white; padding: 2rem 0; text-align: center; margin-top: 3rem;">
+        <div class="container">
+            <p>&copy; 2024 网页性能优化对比示例. 通过对比学习性能优化最佳实践.</p>
+        </div>
+    </footer>
+    
+    <!-- 性能监控脚本 -->
+    <script>
+        // 简单的性能监控
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                console.log('页面性能数据：');
+                console.log('DNS查询时间：', perfData.domainLookupEnd - perfData.domainLookupStart, 'ms');
+                console.log('TCP连接时间：', perfData.connectEnd - perfData.connectStart, 'ms');
+                console.log('请求响应时间：', perfData.responseEnd - perfData.requestStart, 'ms');
+                console.log('DOM解析时间：', perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart, 'ms');
+                console.log('页面加载总时间：', perfData.loadEventEnd - perfData.navigationStart, 'ms');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

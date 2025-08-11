@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>现代HTML工作流示例</title>
+    <meta
+      name="description"
+      content="展示现代HTML开发工作流的完整示例，包括Vite、Gulp、代码格式化、质量检查等工具的使用。"
+    />
+    <meta name="keywords" content="HTML5, 现代工作流, Vite, Gulp, 前端开发" />
+    <meta name="author" content="HTML5学习者" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://example.com/" />
+    <meta property="og:title" content="现代HTML工作流示例" />
+    <meta
+      property="og:description"
+      content="展示现代HTML开发工作流的完整示例"
+    />
+    <meta property="og:image" content="/images/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://example.com/" />
+    <meta property="twitter:title" content="现代HTML工作流示例" />
+    <meta
+      property="twitter:description"
+      content="展示现代HTML开发工作流的完整示例"
+    />
+    <meta property="twitter:image" content="/images/og-image.jpg" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/css/main.css" as="style" />
+    <link rel="preload" href="/js/main.js" as="script" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/normalize.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="header" role="banner">
+      <div class="container">
+        <nav class="nav" role="navigation" aria-label="主导航">
+          <div class="nav__brand">
+            <a href="/" class="nav__logo">
+              <img
+                src="/images/logo.svg"
+                alt="网站Logo"
+                width="40"
+                height="40"
+              />
+              <span class="nav__title">现代HTML工作流</span>
+            </a>
+          </div>
+
+          <button
+            class="nav__toggle"
+            type="button"
+            aria-controls="nav-menu"
+            aria-expanded="false"
+            aria-label="切换导航菜单"
+          >
+            <span class="nav__toggle-line"></span>
+            <span class="nav__toggle-line"></span>
+            <span class="nav__toggle-line"></span>
+          </button>
+
+          <ul class="nav__menu" id="nav-menu" role="menubar">
+            <li class="nav__item" role="none">
+              <a
+                href="/"
+                class="nav__link nav__link--active"
+                role="menuitem"
+                aria-current="page"
+              >
+                首页
+              </a>
+            </li>
+            <li class="nav__item" role="none">
+              <a href="/about.html" class="nav__link" role="menuitem">
+                关于
+              </a>
+            </li>
+            <li class="nav__item" role="none">
+              <a href="/blog.html" class="nav__link" role="menuitem"> 博客 </a>
+            </li>
+            <li class="nav__item" role="none">
+              <a href="/contact.html" class="nav__link" role="menuitem">
+                联系
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main" role="main">
+      <!-- Hero Section -->
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="container">
+          <div class="hero__content">
+            <h1 id="hero-title" class="hero__title">
+              现代HTML开发工作流
+            </h1>
+            <p class="hero__subtitle">
+              使用最新的工具和最佳实践构建高质量的Web应用
+            </p>
+            <div class="hero__actions">
+              <a href="#features" class="btn btn--primary"> 了解更多 </a>
+              <a
+                href="https://github.com/example/modern-html-workflow"
+                class="btn btn--secondary"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                查看源码
+              </a>
+            </div>
+          </div>
+          <div class="hero__image">
+            <img
+              src="/images/hero-illustration.svg"
+              alt="现代开发工作流插图"
+              width="600"
+              height="400"
+              loading="eager"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section id="features" class="features" aria-labelledby="features-title">
+        <div class="container">
+          <header class="section-header">
+            <h2 id="features-title" class="section-title">核心特性</h2>
+            <p class="section-subtitle">
+              集成了现代前端开发的最佳工具和实践
+            </p>
+          </header>
+
+          <div class="features__grid">
+            <article class="feature-card">
+              <div class="feature-card__icon">
+                <img
+                  src="/images/icons/vite.svg"
+                  alt="Vite图标"
+                  width="48"
+                  height="48"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="feature-card__title">Vite 构建工具</h3>
+              <p class="feature-card__description">
+                极速的开发服务器和优化的生产构建，支持热模块替换和现代ES模块。
+              </p>
+              <ul class="feature-card__list">
+                <li>⚡ 极速冷启动</li>
+                <li>🔥 热模块替换</li>
+                <li>📦 优化构建</li>
+                <li>🔧 插件生态</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-card__icon">
+                <img
+                  src="/images/icons/gulp.svg"
+                  alt="Gulp图标"
+                  width="48"
+                  height="48"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="feature-card__title">Gulp 任务自动化</h3>
+              <p class="feature-card__description">
+                自动化构建流程，包括代码压缩、图片优化、文件监听等任务。
+              </p>
+              <ul class="feature-card__list">
+                <li>🔄 任务自动化</li>
+                <li>📁 文件处理</li>
+                <li>🖼️ 图片优化</li>
+                <li>👀 文件监听</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-card__icon">
+                <img
+                  src="/images/icons/prettier.svg"
+                  alt="Prettier图标"
+                  width="48"
+                  height="48"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="feature-card__title">代码格式化</h3>
+              <p class="feature-card__description">
+                使用Prettier自动格式化代码，保持一致的代码风格和可读性。
+              </p>
+              <ul class="feature-card__list">
+                <li>✨ 自动格式化</li>
+                <li>📏 统一风格</li>
+                <li>🔧 可配置规则</li>
+                <li>💾 保存时格式化</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-card__icon">
+                <img
+                  src="/images/icons/lint.svg"
+                  alt="代码检查图标"
+                  width="48"
+                  height="48"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="feature-card__title">代码质量检查</h3>
+              <p class="feature-card__description">
+                集成HTMLHint和Stylelint，确保代码质量和最佳实践。
+              </p>
+              <ul class="feature-card__list">
+                <li>🔍 HTML验证</li>
+                <li>🎨 CSS检查</li>
+                <li>📋 最佳实践</li>
+                <li>⚠️ 错误提示</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-card__icon">
+                <img
+                  src="/images/icons/responsive.svg"
+                  alt="响应式设计图标"
+                  width="48"
+                  height="48"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="feature-card__title">响应式设计</h3>
+              <p class="feature-card__description">
+                移动优先的响应式设计，确保在所有设备上都有良好的用户体验。
+              </p>
+              <ul class="feature-card__list">
+                <li>📱 移动优先</li>
+                <li>💻 多设备适配</li>
+                <li>🔧 灵活布局</li>
+                <li>⚡ 性能优化</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-card__icon">
+                <img
+                  src="/images/icons/accessibility.svg"
+                  alt="无障碍访问图标"
+                  width="48"
+                  height="48"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="feature-card__title">无障碍访问</h3>
+              <p class="feature-card__description">
+                遵循WCAG指南，确保网站对所有用户都是可访问的。
+              </p>
+              <ul class="feature-card__list">
+                <li>♿ WCAG兼容</li>
+                <li>🎯 语义化HTML</li>
+                <li>⌨️ 键盘导航</li>
+                <li>🔊 屏幕阅读器</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Workflow Section -->
+      <section class="workflow" aria-labelledby="workflow-title">
+        <div class="container">
+          <header class="section-header">
+            <h2 id="workflow-title" class="section-title">开发工作流</h2>
+            <p class="section-subtitle">
+              从开发到部署的完整工作流程
+            </p>
+          </header>
+
+          <div class="workflow__steps">
+            <div class="workflow__step">
+              <div class="workflow__step-number">1</div>
+              <div class="workflow__step-content">
+                <h3 class="workflow__step-title">项目初始化</h3>
+                <p class="workflow__step-description">
+                  使用npm初始化项目，安装必要的开发依赖和工具。
+                </p>
+                <code class="workflow__code">npm install</code>
+              </div>
+            </div>
+
+            <div class="workflow__step">
+              <div class="workflow__step-number">2</div>
+              <div class="workflow__step-content">
+                <h3 class="workflow__step-title">开发环境</h3>
+                <p class="workflow__step-description">
+                  启动Vite开发服务器，享受热模块替换和快速构建。
+                </p>
+                <code class="workflow__code">npm run dev</code>
+              </div>
+            </div>
+
+            <div class="workflow__step">
+              <div class="workflow__step-number">3</div>
+              <div class="workflow__step-content">
+                <h3 class="workflow__step-title">代码开发</h3>
+                <p class="workflow__step-description">
+                  编写HTML、CSS和JavaScript代码，工具会自动格式化和检查。
+                </p>
+                <code class="workflow__code">npm run format</code>
+              </div>
+            </div>
+
+            <div class="workflow__step">
+              <div class="workflow__step-number">4</div>
+              <div class="workflow__step-content">
+                <h3 class="workflow__step-title">质量检查</h3>
+                <p class="workflow__step-description">
+                  运行代码检查工具，确保代码质量和最佳实践。
+                </p>
+                <code class="workflow__code">npm run lint</code>
+              </div>
+            </div>
+
+            <div class="workflow__step">
+              <div class="workflow__step-number">5</div>
+              <div class="workflow__step-content">
+                <h3 class="workflow__step-title">生产构建</h3>
+                <p class="workflow__step-description">
+                  构建优化的生产版本，包括代码压缩和资源优化。
+                </p>
+                <code class="workflow__code">npm run build</code>
+              </div>
+            </div>
+
+            <div class="workflow__step">
+              <div class="workflow__step-number">6</div>
+              <div class="workflow__step-content">
+                <h3 class="workflow__step-title">预览部署</h3>
+                <p class="workflow__step-description">
+                  预览生产构建结果，确保一切正常后进行部署。
+                </p>
+                <code class="workflow__code">npm run preview</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tools Section -->
+      <section class="tools" aria-labelledby="tools-title">
+        <div class="container">
+          <header class="section-header">
+            <h2 id="tools-title" class="section-title">使用的工具</h2>
+            <p class="section-subtitle">
+              现代前端开发的必备工具集合
+            </p>
+          </header>
+
+          <div class="tools__grid">
+            <div class="tool-item">
+              <img
+                src="/images/tools/vite.svg"
+                alt="Vite"
+                class="tool-item__icon"
+                width="64"
+                height="64"
+                loading="lazy"
+              />
+              <h3 class="tool-item__name">Vite</h3>
+              <p class="tool-item__description">下一代前端构建工具</p>
+            </div>
+
+            <div class="tool-item">
+              <img
+                src="/images/tools/gulp.svg"
+                alt="Gulp"
+                class="tool-item__icon"
+                width="64"
+                height="64"
+                loading="lazy"
+              />
+              <h3 class="tool-item__name">Gulp</h3>
+              <p class="tool-item__description">任务自动化工具</p>
+            </div>
+
+            <div class="tool-item">
+              <img
+                src="/images/tools/prettier.svg"
+                alt="Prettier"
+                class="tool-item__icon"
+                width="64"
+                height="64"
+                loading="lazy"
+              />
+              <h3 class="tool-item__name">Prettier</h3>
+              <p class="tool-item__description">代码格式化工具</p>
+            </div>
+
+            <div class="tool-item">
+              <img
+                src="/images/tools/htmlhint.svg"
+                alt="HTMLHint"
+                class="tool-item__icon"
+                width="64"
+                height="64"
+                loading="lazy"
+              />
+              <h3 class="tool-item__name">HTMLHint</h3>
+              <p class="tool-item__description">HTML代码检查</p>
+            </div>
+
+            <div class="tool-item">
+              <img
+                src="/images/tools/stylelint.svg"
+                alt="Stylelint"
+                class="tool-item__icon"
+                width="64"
+                height="64"
+                loading="lazy"
+              />
+              <h3 class="tool-item__name">Stylelint</h3>
+              <p class="tool-item__description">CSS代码检查</p>
+            </div>
+
+            <div class="tool-item">
+              <img
+                src="/images/tools/browsersync.svg"
+                alt="Browser Sync"
+                class="tool-item__icon"
+                width="64"
+                height="64"
+                loading="lazy"
+              />
+              <h3 class="tool-item__name">Browser Sync</h3>
+              <p class="tool-item__description">浏览器同步测试</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+      <div class="container">
+        <div class="footer__content">
+          <div class="footer__section">
+            <h3 class="footer__title">现代HTML工作流</h3>
+            <p class="footer__description">
+              展示现代前端开发工具和最佳实践的完整示例项目。
+            </p>
+            <div class="footer__social">
+              <a
+                href="https://github.com/example/modern-html-workflow"
+                class="footer__social-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub仓库"
+              >
+                <img
+                  src="/images/icons/github.svg"
+                  alt="GitHub"
+                  width="24"
+                  height="24"
+                />
+              </a>
+              <a
+                href="https://twitter.com/example"
+                class="footer__social-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Twitter账号"
+              >
+                <img
+                  src="/images/icons/twitter.svg"
+                  alt="Twitter"
+                  width="24"
+                  height="24"
+                />
+              </a>
+            </div>
+          </div>
+
+          <div class="footer__section">
+            <h4 class="footer__subtitle">快速链接</h4>
+            <ul class="footer__links">
+              <li><a href="/" class="footer__link">首页</a></li>
+              <li><a href="/about.html" class="footer__link">关于</a></li>
+              <li><a href="/blog.html" class="footer__link">博客</a></li>
+              <li><a href="/contact.html" class="footer__link">联系</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__section">
+            <h4 class="footer__subtitle">工具</h4>
+            <ul class="footer__links">
+              <li>
+                <a
+                  href="https://vitejs.dev/"
+                  class="footer__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Vite
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://gulpjs.com/"
+                  class="footer__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Gulp
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://prettier.io/"
+                  class="footer__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Prettier
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://stylelint.io/"
+                  class="footer__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Stylelint
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer__section">
+            <h4 class="footer__subtitle">学习资源</h4>
+            <ul class="footer__links">
+              <li>
+                <a
+                  href="https://developer.mozilla.org/"
+                  class="footer__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  MDN Web Docs
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://web.dev/"
+                  class="footer__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Web.dev
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://css-tricks.com/"
+                  class="footer__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  CSS-Tricks
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer__bottom">
+          <p class="footer__copyright">
+            &copy; 2024 现代HTML工作流示例. 本项目用于学习和演示目的.
+          </p>
+          <p class="footer__build-info">
+            构建时间: <time id="build-time">加载中...</time> |
+            版本: <span id="app-version">1.0.0</span>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>
