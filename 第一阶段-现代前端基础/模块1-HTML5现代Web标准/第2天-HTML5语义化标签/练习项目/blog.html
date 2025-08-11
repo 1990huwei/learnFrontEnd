@@ -3,168 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的技术博客</title>
+    <title>我的技术博客 - HTML5语义化标签详解</title>
+    <meta name="description" content="深入了解HTML5语义化标签的使用方法和最佳实践">
+    <meta name="keywords" content="HTML5, 语义化标签, 前端开发, Web标准">
 </head>
 <body>
     <header>
-        <h1>前端学习笔记</h1>
+        <h1>我的技术博客</h1>
         <nav>
             <ul>
-                <li><a href="#">首页</a></li>
-                <li><a href="#">HTML</a></li>
-                <li><a href="#">CSS</a></li>
-                <li><a href="#">JavaScript</a></li>
-                <li><a href="#">关于我</a></li>
+                <li><a href="../第1天-HTML5基础语法/练习项目/index.html">首页</a></li>
+                <li><a href="blog.html" aria-current="page">博客</a></li>
+                <li><a href="../第1天-HTML5基础语法/练习项目/about.html">关于</a></li>
+                <li><a href="form.html">联系</a></li>
             </ul>
         </nav>
     </header>
     
     <main>
-        <section>
-            <h2>最新文章</h2>
+        <article>
+            <header>
+                <h2>HTML5语义化标签详解</h2>
+                <div class="article-meta">
+                    <p>发布时间：<time datetime="2024-01-15T10:30:00+08:00">2024年1月15日 10:30</time></p>
+                    <p>作者：<address>前端学习者</address></p>
+                    <p>阅读时间：约5分钟</p>
+                </div>
+            </header>
             
-            <article>
-                <header>
-                    <h3><a href="#">HTML5语义化标签详解</a></h3>
-                    <p>
-                        发布时间：<time datetime="2024-01-15">2024年1月15日</time>
-                        作者：前端学习者
-                    </p>
-                </header>
+            <section id="introduction">
+                <h3>什么是语义化标签？</h3>
+                <p>语义化标签是HTML5引入的一系列具有<strong>明确含义</strong>的标签，它们不仅仅是为了样式，更重要的是为了表达内容的<em>结构和意义</em>。</p>
                 
-                <p>今天学习了HTML5的语义化标签，包括header、nav、main、article、section等。这些标签不仅让代码更有意义，还能提升SEO效果和无障碍性。</p>
-                
-                <section>
-                    <h4>主要收获</h4>
-                    <ul>
-                        <li>理解了语义化标签的重要性</li>
-                        <li>学会了正确使用article和section</li>
-                        <li>掌握了time标签的datetime属性</li>
-                    </ul>
-                </section>
-                
-                <footer>
-                    <p>标签：
-                        <mark>HTML5</mark>
-                        <mark>语义化</mark>
-                        <mark>前端基础</mark>
-                    </p>
-                </footer>
-            </article>
+                <blockquote>
+                    <p>"语义化的HTML是Web标准的基础，它让内容对人类和机器都更有意义。"</p>
+                    <cite>— Web标准专家</cite>
+                </blockquote>
+            </section>
             
-            <article>
-                <header>
-                    <h3><a href="#">我的前端学习计划</a></h3>
-                    <p>
-                        发布时间：<time datetime="2024-01-14">2024年1月14日</time>
-                        作者：前端学习者
-                    </p>
-                </header>
+            <section id="semantic-tags">
+                <h3>常用的语义化标签</h3>
                 
-                <p>制定了详细的前端学习计划，包括HTML、CSS、JavaScript等技术栈。希望通过系统性的学习，能够成为一名优秀的前端工程师。</p>
+                <h4>结构性标签</h4>
+                <dl>
+                    <dt><code>&lt;header&gt;</code></dt>
+                    <dd>页面或区块的头部，通常包含标题、导航等</dd>
+                    
+                    <dt><code>&lt;nav&gt;</code></dt>
+                    <dd>导航链接区域，帮助用户在网站中导航</dd>
+                    
+                    <dt><code>&lt;main&gt;</code></dt>
+                    <dd>页面的主要内容，每个页面只能有一个</dd>
+                    
+                    <dt><code>&lt;article&gt;</code></dt>
+                    <dd>独立的文章内容，可以单独分发或重用</dd>
+                    
+                    <dt><code>&lt;section&gt;</code></dt>
+                    <dd>文档中的主题性分组，通常有标题</dd>
+                    
+                    <dt><code>&lt;aside&gt;</code></dt>
+                    <dd>与主内容相关但独立的内容，如侧边栏</dd>
+                    
+                    <dt><code>&lt;footer&gt;</code></dt>
+                    <dd>页面或区块的底部，包含版权、联系信息等</dd>
+                </dl>
+                
+                <h4>内容标签</h4>
+                <ul>
+                    <li><code>&lt;figure&gt;</code> 和 <code>&lt;figcaption&gt;</code> - 图片、图表等内容及其说明</li>
+                    <li><code>&lt;details&gt;</code> 和 <code>&lt;summary&gt;</code> - 可展开的详细信息</li>
+                    <li><code>&lt;mark&gt;</code> - 高亮标记的文本</li>
+                    <li><code>&lt;time&gt;</code> - 时间和日期</li>
+                    <li><code>&lt;address&gt;</code> - 联系信息</li>
+                </ul>
+            </section>
+            
+            <section id="benefits">
+                <h3>语义化标签的好处</h3>
+                
+                <ol>
+                    <li><strong>SEO优化</strong>：搜索引擎更好地理解页面结构</li>
+                    <li><strong>可访问性</strong>：屏幕阅读器能更好地解读内容</li>
+                    <li><strong>代码可读性</strong>：开发者更容易理解和维护</li>
+                    <li><strong>样式分离</strong>：结构与表现更好地分离</li>
+                </ol>
+            </section>
+            
+            <section id="example">
+                <h3>实际应用示例</h3>
+                
+                <figure>
+                    <pre><code>&lt;article&gt;
+  &lt;header&gt;
+    &lt;h2&gt;文章标题&lt;/h2&gt;
+    &lt;time datetime="2024-01-15"&gt;2024年1月15日&lt;/time&gt;
+  &lt;/header&gt;
+  
+  &lt;section&gt;
+    &lt;h3&gt;章节标题&lt;/h3&gt;
+    &lt;p&gt;章节内容...&lt;/p&gt;
+  &lt;/section&gt;
+  
+  &lt;footer&gt;
+    &lt;p&gt;标签：&lt;mark&gt;HTML5&lt;/mark&gt;&lt;/p&gt;
+  &lt;/footer&gt;
+&lt;/article&gt;</code></pre>
+                    <figcaption>语义化标签的基本使用示例</figcaption>
+                </figure>
+            </section>
+            
+            <section id="best-practices">
+                <h3>最佳实践建议</h3>
                 
                 <details>
-                    <summary>查看学习进度</summary>
-                    <p>HTML基础：<progress value="20" max="100">20%</progress></p>
-                    <p>CSS基础：<progress value="5" max="100">5%</progress></p>
-                    <p>JavaScript：<progress value="0" max="100">0%</progress></p>
-                    <p>当前阶段：HTML语义化标签学习中</p>
+                    <summary>点击查看详细建议</summary>
+                    <ul>
+                        <li>根据内容的<em>意义</em>而不是外观选择标签</li>
+                        <li>保持标签的层次结构清晰</li>
+                        <li>避免过度使用div和span</li>
+                        <li>为重要内容使用适当的标题层级</li>
+                        <li>使用ARIA属性增强可访问性</li>
+                    </ul>
                 </details>
-                
-                <footer>
-                    <p>标签：
-                        <mark>学习计划</mark>
-                        <mark>前端</mark>
-                        <mark>目标设定</mark>
-                    </p>
-                </footer>
-            </article>
+            </section>
             
-            <article>
-                <header>
-                    <h3><a href="#">HTML表格和表单的学习心得</a></h3>
-                    <p>
-                        发布时间：<time datetime="2024-01-13">2024年1月13日</time>
-                        作者：前端学习者
-                    </p>
-                </header>
-                
-                <p>学习了HTML表格和表单的创建方法，了解了各种输入类型和表单验证。表格对于展示数据很有用，而表单是用户交互的重要方式。</p>
-                
-                <section>
-                    <h4>表格学习要点</h4>
-                    <ul>
-                        <li>使用thead、tbody、tfoot组织表格结构</li>
-                        <li>rowspan和colspan实现单元格合并</li>
-                        <li>caption为表格添加标题</li>
-                    </ul>
-                </section>
-                
-                <section>
-                    <h4>表单学习要点</h4>
-                    <ul>
-                        <li>HTML5新增的输入类型（email、date、color等）</li>
-                        <li>fieldset和legend组织表单结构</li>
-                        <li>表单验证属性（required、pattern等）</li>
-                    </ul>
-                </section>
-                
-                <footer>
-                    <p>标签：
-                        <mark>HTML表格</mark>
-                        <mark>HTML表单</mark>
-                        <mark>用户交互</mark>
-                    </p>
-                </footer>
-            </article>
-        </section>
+            <footer>
+                <p>文章标签：
+                    <mark>HTML5</mark>
+                    <mark>语义化</mark>
+                    <mark>前端开发</mark>
+                    <mark>Web标准</mark>
+                </p>
+                <p>最后更新：<time datetime="2024-01-15T15:45:00+08:00">2024年1月15日 15:45</time></p>
+            </footer>
+        </article>
         
         <aside>
             <section>
-                <h3>关于我</h3>
-                <figure>
-                    <img src="images/avatar.jpg" alt="我的头像" width="100" height="100">
-                    <figcaption>前端学习者</figcaption>
-                </figure>
-                <p>正在学习现代前端开发技术，记录学习过程中的心得体会。</p>
+                <h3>相关文章推荐</h3>
+                <nav>
+                    <ul>
+                        <li><a href="#">HTML基础入门指南</a></li>
+                        <li><a href="#">CSS样式设计技巧</a></li>
+                        <li><a href="#">JavaScript编程基础</a></li>
+                        <li><a href="#">Web无障碍性设计</a></li>
+                        <li><a href="#">前端性能优化</a></li>
+                    </ul>
+                </nav>
             </section>
             
             <section>
-                <h3>学习统计</h3>
-                <p>HTML学习进度：<meter value="7" min="0" max="10">7/10</meter></p>
-                <p>CSS学习进度：<meter value="3" min="0" max="10">3/10</meter></p>
-                <p>JavaScript学习进度：<meter value="1" min="0" max="10">1/10</meter></p>
+                <h3>技术标签云</h3>
+                <nav>
+                    <a href="#" rel="tag">HTML5</a>
+                    <a href="#" rel="tag">CSS3</a>
+                    <a href="#" rel="tag">JavaScript</a>
+                    <a href="#" rel="tag">前端开发</a>
+                    <a href="#" rel="tag">Web标准</a>
+                    <a href="#" rel="tag">响应式设计</a>
+                    <a href="#" rel="tag">无障碍性</a>
+                    <a href="#" rel="tag">SEO优化</a>
+                </nav>
             </section>
             
             <section>
-                <h3>最近学习的标签</h3>
-                <ul>
-                    <li><code>&lt;article&gt;</code> - 独立的文章内容</li>
-                    <li><code>&lt;section&gt;</code> - 文档中的区块</li>
-                    <li><code>&lt;time&gt;</code> - 时间标记</li>
-                    <li><code>&lt;progress&gt;</code> - 进度条</li>
-                    <li><code>&lt;meter&gt;</code> - 度量值</li>
-                    <li><code>&lt;details&gt;</code> - 详细信息</li>
-                    <li><code>&lt;summary&gt;</code> - 详细信息摘要</li>
-                </ul>
-            </section>
-            
-            <section>
-                <h3>学习资源</h3>
-                <ul>
-                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML" target="_blank">MDN HTML文档</a></li>
-                    <li><a href="https://www.w3schools.com/html/" target="_blank">W3Schools HTML教程</a></li>
-                    <li><a href="https://validator.w3.org/" target="_blank">W3C HTML验证器</a></li>
-                </ul>
+                <h3>学习进度</h3>
+                <p>当前模块：HTML5现代Web标准</p>
+                <progress value="2" max="6">第2天/共6天</progress>
+                <p>完成度：33%</p>
             </section>
         </aside>
     </main>
     
     <footer>
-        <p>&copy; 2024 我的技术博客</p>
+        <nav>
+            <h4>快速导航</h4>
+            <ul>
+                <li><a href="../第1天-HTML5基础语法/练习项目/index.html">返回首页</a></li>
+                <li><a href="table.html">查看表格示例</a></li>
+                <li><a href="form.html">联系表单</a></li>
+            </ul>
+        </nav>
+        
         <address>
-            <a href="mailto:blog@example.com">联系我</a>
+            <p>联系作者：<a href="mailto:learner@example.com">learner@example.com</a></p>
         </address>
+        
+        <p><small>&copy; 2024 我的技术博客. 保留所有权利。</small></p>
     </footer>
 </body>
 </html>

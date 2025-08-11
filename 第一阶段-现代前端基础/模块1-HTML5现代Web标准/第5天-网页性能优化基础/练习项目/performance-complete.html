@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页性能优化完整示例</title>
+    <meta name="description" content="展示网页性能优化的各种技术和最佳实践">
+    
+    <!-- 预连接到外部资源 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://api.example.com">
+    
+    <!-- 关键CSS内联 -->
+    <style>
+        /* 关键渲染路径CSS - 首屏内容样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* 加载指示器 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 骨架屏样式 */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .skeleton-text {
+            height: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .skeleton-title {
+            height: 2rem;
+            width: 60%;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+        
+        .skeleton-image {
+            height: 200px;
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+    </style>
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="#" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNjY3ZWVhIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI0NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaAp+iDveS8mOWMluekuuS+izwvdGV4dD4KICA8dGV4dCB4PSI1MCUiIHk9IjU1JSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+NDAwIHggMzAwPC90ZXh0Pgo8L3N2Zz4K" as="image">
+</head>
+<body>
+    <!-- 首屏内容 -->
+    <header class="header">
+        <div class="container">
+            <h1 class="hero-title">网页性能优化示例</h1>
+            <p class="hero-subtitle">探索现代Web性能优化技术</p>
+        </div>
+    </header>
+    
+    <main class="container" style="margin-top: 2rem;">
+        <!-- Core Web Vitals 监控 -->
+        <section class="section" style="background: white; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #667eea; margin-bottom: 1rem; font-size: 1.8rem;">📊 Core Web Vitals 实时监控</h2>
+            <p style="margin-bottom: 1.5rem; color: #666;">监控页面的核心性能指标：LCP、FID、CLS</p>
+            
+            <div id="vitals-display" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <div class="metric-card" style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #28a745;">
+                    <h3 style="margin-bottom: 0.5rem; color: #28a745;">LCP (Largest Contentful Paint)</h3>
+                    <div class="metric-value" id="lcp-value" style="font-size: 2rem; font-weight: bold; color: #333;">测量中...</div>
+                    <div class="metric-description" style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">最大内容绘制时间</div>
+                </div>
+                
+                <div class="metric-card" style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #ffc107;">
+                    <h3 style="margin-bottom: 0.5rem; color: #ffc107;">FID (First Input Delay)</h3>
+                    <div class="metric-value" id="fid-value" style="font-size: 2rem; font-weight: bold; color: #333;">等待交互...</div>
+                    <div class="metric-description" style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">首次输入延迟</div>
+                </div>
+                
+                <div class="metric-card" style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #17a2b8;">
+                    <h3 style="margin-bottom: 0.5rem; color: #17a2b8;">CLS (Cumulative Layout Shift)</h3>
+                    <div class="metric-value" id="cls-value" style="font-size: 2rem; font-weight: bold; color: #333;">0.000</div>
+                    <div class="metric-description" style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">累积布局偏移</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 1.5rem; padding: 1rem; background: #e3f2fd; border-radius: 4px;">
+                <h4 style="margin-bottom: 0.5rem; color: #1976d2;">性能评分标准：</h4>
+                <ul style="margin-left: 1.5rem; color: #666;">
+                    <li>LCP: 好 (&lt;2.5s) | 需要改进 (2.5-4s) | 差 (&gt;4s)</li>
+                    <li>FID: 好 (&lt;100ms) | 需要改进 (100-300ms) | 差 (&gt;300ms)</li>
+                    <li>CLS: 好 (&lt;0.1) | 需要改进 (0.1-0.25) | 差 (&gt;0.25)</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 图片优化示例 -->
+        <section class="section" style="background: white; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #667eea; margin-bottom: 1rem; font-size: 1.8rem;">🖼️ 图片优化技术</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <!-- 懒加载图片 -->
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">懒加载图片</h3>
+                    <div class="lazy-image-container" style="position: relative; height: 200px; background: #f0f0f0; border-radius: 8px; overflow: hidden;">
+                        <img 
+                            class="lazy-image" 
+                            data-src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNjY3ZWVhIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI0NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaAp+iDveS8mOWMluekuuS+izwvdGV4dD4KICA8dGV4dCB4PSI1MCUiIHk9IjU1JSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+NDAwIHggMzAwPC90ZXh0Pgo8L3N2Zz4K"
+                            alt="性能优化示例图片"
+                            style="width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.3s;"
+                            loading="lazy"
+                        >
+                        <div class="image-placeholder" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #666;">
+                            <div class="loading"></div>
+                            <p style="margin-top: 1rem;">图片加载中...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 响应式图片 -->
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">响应式图片</h3>
+                    <picture style="display: block; height: 200px; border-radius: 8px; overflow: hidden;">
+                        <source media="(max-width: 768px)" srcset="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmY2YjZiIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI0NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuenu+WKqOeJiDwvdGV4dD4KICA8dGV4dCB4PSI1MCUiIHk9IjU1JSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+MzAwIHggMjAwPC90ZXh0Pgo8L3N2Zz4K">
+                        <img 
+                            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNGVjZGMzIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI0NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuahjOmdoueCiTwvdGV4dD4KICA8dGV4dCB4PSI1MCUiIHk9IjU1JSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+NDAwIHggMzAwPC90ZXh0Pgo8L3N2Zz4K" 
+                            alt="响应式图片示例"
+                            style="width: 100%; height: 100%; object-fit: cover;"
+                        >
+                    </picture>
+                </div>
+            </div>
+            
+            <div style="background: #fff3cd; padding: 1rem; border-radius: 4px; border-left: 4px solid #ffc107;">
+                <h4 style="margin-bottom: 0.5rem; color: #856404;">图片优化技巧：</h4>
+                <ul style="margin-left: 1.5rem; color: #856404;">
+                    <li>使用现代图片格式（WebP、AVIF）</li>
+                    <li>实施懒加载减少初始加载时间</li>
+                    <li>使用响应式图片适配不同设备</li>
+                    <li>压缩图片文件大小</li>
+                    <li>使用CDN加速图片传输</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 资源加载优化 -->
+        <section class="section" style="background: white; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #667eea; margin-bottom: 1rem; font-size: 1.8rem;">⚡ 资源加载优化</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <!-- 关键资源优先级 -->
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">资源优先级</h3>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                        <div style="margin-bottom: 0.5rem;">🔴 <strong>关键资源</strong>: 首屏CSS、字体</div>
+                        <div style="margin-bottom: 0.5rem;">🟡 <strong>重要资源</strong>: 首屏图片、主要JS</div>
+                        <div style="margin-bottom: 0.5rem;">🟢 <strong>次要资源</strong>: 非首屏内容、分析脚本</div>
+                    </div>
+                    
+                    <button id="loadCriticalBtn" style="margin-top: 1rem; background: #28a745; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">模拟关键资源加载</button>
+                </div>
+                
+                <!-- 代码分割 -->
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">代码分割</h3>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                        <p style="margin-bottom: 1rem; color: #666;">按需加载JavaScript模块</p>
+                        <div id="moduleStatus" style="margin-bottom: 1rem; padding: 0.5rem; background: #e9ecef; border-radius: 4px;">模块未加载</div>
+                    </div>
+                    
+                    <button id="loadModuleBtn" style="background: #007bff; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">动态加载模块</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 缓存策略 -->
+        <section class="section" style="background: white; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #667eea; margin-bottom: 1rem; font-size: 1.8rem;">💾 缓存策略演示</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <!-- 浏览器缓存 -->
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">浏览器缓存</h3>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                        <div>缓存状态: <span id="cacheStatus" style="font-weight: bold;">检查中...</span></div>
+                        <div>缓存大小: <span id="cacheSize" style="font-weight: bold;">计算中...</span></div>
+                    </div>
+                    
+                    <button id="testCacheBtn" style="background: #6f42c1; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; margin-right: 0.5rem;">测试缓存</button>
+                    <button id="clearCacheBtn" style="background: #dc3545; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">清除缓存</button>
+                </div>
+                
+                <!-- Service Worker -->
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">Service Worker</h3>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                        <div>SW状态: <span id="swStatus" style="font-weight: bold;">检查中...</span></div>
+                        <div>离线支持: <span id="offlineStatus" style="font-weight: bold;">未启用</span></div>
+                    </div>
+                    
+                    <button id="registerSWBtn" style="background: #20c997; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">注册Service Worker</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 性能监控 -->
+        <section class="section" style="background: white; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #667eea; margin-bottom: 1rem; font-size: 1.8rem;">📈 性能监控面板</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                    <h4 style="color: #495057; margin-bottom: 0.5rem;">页面加载时间</h4>
+                    <div id="loadTime" style="font-size: 1.5rem; font-weight: bold; color: #28a745;">计算中...</div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                    <h4 style="color: #495057; margin-bottom: 0.5rem;">DOM节点数量</h4>
+                    <div id="domNodes" style="font-size: 1.5rem; font-weight: bold; color: #007bff;">计算中...</div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                    <h4 style="color: #495057; margin-bottom: 0.5rem;">内存使用</h4>
+                    <div id="memoryUsage" style="font-size: 1.5rem; font-weight: bold; color: #ffc107;">检测中...</div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                    <h4 style="color: #495057; margin-bottom: 0.5rem;">网络状态</h4>
+                    <div id="networkStatus" style="font-size: 1.5rem; font-weight: bold; color: #17a2b8;">检测中...</div>
+                </div>
+            </div>
+            
+            <!-- 性能时间线 -->
+            <div>
+                <h3 style="margin-bottom: 1rem; color: #555;">性能时间线</h3>
+                <div id="performanceTimeline" style="background: #f8f9fa; padding: 1rem; border-radius: 4px; font-family: monospace; font-size: 0.9rem; line-height: 1.4;">加载性能数据...</div>
+            </div>
+            
+            <button id="refreshMetricsBtn" style="margin-top: 1rem; background: #6c757d; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">刷新指标</button>
+        </section>
+        
+        <!-- 优化建议 -->
+        <section class="section" style="background: white; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #667eea; margin-bottom: 1rem; font-size: 1.8rem;">💡 性能优化建议</h2>
+            
+            <div id="optimizationSuggestions" style="display: grid; gap: 1rem;">
+                <!-- 建议将通过JavaScript动态生成 -->
+            </div>
+        </section>
+        
+        <!-- 测试区域 -->
+        <section class="section" style="background: white; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #667eea; margin-bottom: 1rem; font-size: 1.8rem;">🧪 性能测试工具</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <!-- 布局抖动测试 -->
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">布局抖动测试</h3>
+                    <div id="layoutShiftDemo" style="background: #f8f9fa; padding: 1rem; border-radius: 4px; min-height: 150px; position: relative;">
+                        <div id="shiftElement" style="background: #007bff; color: white; padding: 1rem; border-radius: 4px; transition: all 0.3s;">这个元素会发生布局偏移</div>
+                    </div>
+                    <button id="triggerShiftBtn" style="margin-top: 1rem; background: #fd7e14; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">触发布局偏移</button>
+                </div>
+                
+                <!-- 长任务模拟 -->
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">长任务模拟</h3>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                        <p style="color: #666; margin-bottom: 1rem;">模拟阻塞主线程的长任务</p>
+                        <div>任务状态: <span id="taskStatus" style="font-weight: bold;">就绪</span></div>
+                    </div>
+                    <button id="longTaskBtn" style="background: #e83e8c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">执行长任务 (3秒)</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 延迟加载的非关键CSS -->
+    <link rel="preload" href="data:text/css;base64,LyogTm9uLWNyaXRpY2FsIENTUyAqLwouZmFkZS1pbiB7CiAgICBhbmltYXRpb246IGZhZGVJbiAwLjVzIGVhc2UtaW47Cn0KCkBrZXlmcmFtZXMgZmFkZUluIHsKICAgIGZyb20geyBvcGFjaXR5OiAwOyB0cmFuc2Zvcm06IHRyYW5zbGF0ZVkoMjBweCk7IH0KICAgIHRvIHsgb3BhY2l0eTogMTsgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKDApOyB9Cn0=" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- 性能监控脚本 -->
+    <script>
+        // Core Web Vitals 监控
+        let lcpValue = 0;
+        let fidValue = 0;
+        let clsValue = 0;
+        
+        // LCP 监控
+        new PerformanceObserver((entryList) => {
+            const entries = entryList.getEntries();
+            const lastEntry = entries[entries.length - 1];
+            lcpValue = lastEntry.startTime;
+            updateLCPDisplay();
+        }).observe({entryTypes: ['largest-contentful-paint']});
+        
+        // FID 监控
+        new PerformanceObserver((entryList) => {
+            const entries = entryList.getEntries();
+            entries.forEach((entry) => {
+                fidValue = entry.processingStart - entry.startTime;
+                updateFIDDisplay();
+            });
+        }).observe({entryTypes: ['first-input']});
+        
+        // CLS 监控
+        let clsScore = 0;
+        new PerformanceObserver((entryList) => {
+            const entries = entryList.getEntries();
+            entries.forEach((entry) => {
+                if (!entry.hadRecentInput) {
+                    clsScore += entry.value;
+                    clsValue = clsScore;
+                    updateCLSDisplay();
+                }
+            });
+        }).observe({entryTypes: ['layout-shift']});
+        
+        function updateLCPDisplay() {
+            const element = document.getElementById('lcp-value');
+            const value = (lcpValue / 1000).toFixed(2);
+            element.textContent = value + 's';
+            
+            // 根据性能标准设置颜色
+            if (lcpValue < 2500) {
+                element.style.color = '#28a745'; // 好
+            } else if (lcpValue < 4000) {
+                element.style.color = '#ffc107'; // 需要改进
+            } else {
+                element.style.color = '#dc3545'; // 差
+            }
+        }
+        
+        function updateFIDDisplay() {
+            const element = document.getElementById('fid-value');
+            const value = fidValue.toFixed(2);
+            element.textContent = value + 'ms';
+            
+            if (fidValue < 100) {
+                element.style.color = '#28a745';
+            } else if (fidValue < 300) {
+                element.style.color = '#ffc107';
+            } else {
+                element.style.color = '#dc3545';
+            }
+        }
+        
+        function updateCLSDisplay() {
+            const element = document.getElementById('cls-value');
+            const value = clsValue.toFixed(3);
+            element.textContent = value;
+            
+            if (clsValue < 0.1) {
+                element.style.color = '#28a745';
+            } else if (clsValue < 0.25) {
+                element.style.color = '#ffc107';
+            } else {
+                element.style.color = '#dc3545';
+            }
+        }
+        
+        // 懒加载图片
+        const lazyImages = document.querySelectorAll('.lazy-image');
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    const placeholder = img.nextElementSibling;
+                    
+                    img.src = img.dataset.src;
+                    img.onload = () => {
+                        img.style.opacity = '1';
+                        if (placeholder) {
+                            placeholder.style.display = 'none';
+                        }
+                    };
+                    
+                    observer.unobserve(img);
+                }
+            });
+        });
+        
+        lazyImages.forEach(img => imageObserver.observe(img));
+        
+        // 资源加载优化
+        document.getElementById('loadCriticalBtn').addEventListener('click', () => {
+            const btn = event.target;
+            btn.textContent = '加载中...';
+            btn.disabled = true;
+            
+            // 模拟关键资源加载
+            setTimeout(() => {
+                btn.textContent = '✅ 关键资源已加载';
+                btn.style.background = '#28a745';
+            }, 2000);
+        });
+        
+        // 动态模块加载
+        document.getElementById('loadModuleBtn').addEventListener('click', async () => {
+            const statusElement = document.getElementById('moduleStatus');
+            const btn = event.target;
+            
+            btn.textContent = '加载中...';
+            btn.disabled = true;
+            statusElement.textContent = '正在加载模块...';
+            
+            try {
+                // 模拟动态导入
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                statusElement.textContent = '✅ 模块加载成功';
+                statusElement.style.background = '#d4edda';
+                statusElement.style.color = '#155724';
+                
+                btn.textContent = '✅ 已加载';
+                btn.style.background = '#28a745';
+            } catch (error) {
+                statusElement.textContent = '❌ 模块加载失败';
+                statusElement.style.background = '#f8d7da';
+                statusElement.style.color = '#721c24';
+                
+                btn.textContent = '重试';
+                btn.disabled = false;
+            }
+        });
+        
+        // 缓存测试
+        function updateCacheStatus() {
+            const cacheStatus = document.getElementById('cacheStatus');
+            const cacheSize = document.getElementById('cacheSize');
+            
+            // 检查localStorage使用情况
+            let totalSize = 0;
+            for (let key in localStorage) {
+                if (localStorage.hasOwnProperty(key)) {
+                    totalSize += localStorage[key].length;
+                }
+            }
+            
+            cacheStatus.textContent = totalSize > 0 ? '有缓存数据' : '无缓存数据';
+            cacheSize.textContent = (totalSize / 1024).toFixed(2) + ' KB';
+        }
+        
+        document.getElementById('testCacheBtn').addEventListener('click', () => {
+            // 创建测试缓存数据
+            const testData = 'performance-test-data-' + Date.now();
+            localStorage.setItem('performanceTest', testData);
+            updateCacheStatus();
+        });
+        
+        document.getElementById('clearCacheBtn').addEventListener('click', () => {
+            localStorage.clear();
+            updateCacheStatus();
+        });
+        
+        // Service Worker
+        function updateSWStatus() {
+            const swStatus = document.getElementById('swStatus');
+            const offlineStatus = document.getElementById('offlineStatus');
+            
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistration().then(registration => {
+                    if (registration) {
+                        swStatus.textContent = '已注册';
+                        swStatus.style.color = '#28a745';
+                        offlineStatus.textContent = '已启用';
+                        offlineStatus.style.color = '#28a745';
+                    } else {
+                        swStatus.textContent = '未注册';
+                        swStatus.style.color = '#dc3545';
+                    }
+                });
+            } else {
+                swStatus.textContent = '不支持';
+                swStatus.style.color = '#6c757d';
+            }
+        }
+        
+        document.getElementById('registerSWBtn').addEventListener('click', () => {
+            if ('serviceWorker' in navigator) {
+                // 创建简单的Service Worker
+                const swCode = `
+                    self.addEventListener('install', event => {
+                        console.log('Service Worker 安装');
+                    });
+                    
+                    self.addEventListener('fetch', event => {
+                        // 简单的缓存策略
+                        event.respondWith(
+                            caches.match(event.request).then(response => {
+                                return response || fetch(event.request);
+                            })
+                        );
+                    });
+                `;
+                
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl).then(() => {
+                    updateSWStatus();
+                    alert('Service Worker 注册成功！');
+                }).catch(error => {
+                    console.error('Service Worker 注册失败:', error);
+                });
+            }
+        });
+        
+        // 性能监控
+        function updatePerformanceMetrics() {
+            const loadTime = document.getElementById('loadTime');
+            const domNodes = document.getElementById('domNodes');
+            const memoryUsage = document.getElementById('memoryUsage');
+            const networkStatus = document.getElementById('networkStatus');
+            const timeline = document.getElementById('performanceTimeline');
+            
+            // 页面加载时间
+            const navigation = performance.getEntriesByType('navigation')[0];
+            if (navigation) {
+                const loadTimeValue = (navigation.loadEventEnd - navigation.navigationStart) / 1000;
+                loadTime.textContent = loadTimeValue.toFixed(2) + 's';
+            }
+            
+            // DOM节点数量
+            domNodes.textContent = document.querySelectorAll('*').length;
+            
+            // 内存使用（如果支持）
+            if (performance.memory) {
+                const memoryMB = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
+                memoryUsage.textContent = memoryMB + ' MB';
+            } else {
+                memoryUsage.textContent = '不支持';
+            }
+            
+            // 网络状态
+            if (navigator.connection) {
+                const connection = navigator.connection;
+                networkStatus.textContent = connection.effectiveType || '未知';
+            } else {
+                networkStatus.textContent = '不支持';
+            }
+            
+            // 性能时间线
+            if (navigation) {
+                timeline.innerHTML = `
+                    DNS查询: ${(navigation.domainLookupEnd - navigation.domainLookupStart).toFixed(2)}ms<br>
+                    TCP连接: ${(navigation.connectEnd - navigation.connectStart).toFixed(2)}ms<br>
+                    请求响应: ${(navigation.responseEnd - navigation.requestStart).toFixed(2)}ms<br>
+                    DOM解析: ${(navigation.domContentLoadedEventEnd - navigation.responseEnd).toFixed(2)}ms<br>
+                    资源加载: ${(navigation.loadEventEnd - navigation.domContentLoadedEventEnd).toFixed(2)}ms
+                `;
+            }
+        }
+        
+        document.getElementById('refreshMetricsBtn').addEventListener('click', updatePerformanceMetrics);
+        
+        // 优化建议
+        function generateOptimizationSuggestions() {
+            const container = document.getElementById('optimizationSuggestions');
+            const suggestions = [];
+            
+            // 基于当前性能指标生成建议
+            if (lcpValue > 2500) {
+                suggestions.push({
+                    type: 'warning',
+                    title: 'LCP优化建议',
+                    content: '最大内容绘制时间较长，建议优化图片加载、减少服务器响应时间、使用CDN。'
+                });
+            }
+            
+            if (clsValue > 0.1) {
+                suggestions.push({
+                    type: 'error',
+                    title: 'CLS优化建议',
+                    content: '累积布局偏移较大，建议为图片和广告设置尺寸属性、避免在现有内容上方插入内容。'
+                });
+            }
+            
+            if (document.querySelectorAll('*').length > 1500) {
+                suggestions.push({
+                    type: 'info',
+                    title: 'DOM优化建议',
+                    content: 'DOM节点数量较多，建议简化HTML结构、使用虚拟滚动、延迟渲染非关键内容。'
+                });
+            }
+            
+            // 通用建议
+            suggestions.push(
+                {
+                    type: 'success',
+                    title: '图片优化',
+                    content: '使用现代图片格式（WebP、AVIF）、实施懒加载、压缩图片文件大小。'
+                },
+                {
+                    type: 'info',
+                    title: '代码分割',
+                    content: '使用动态导入分割JavaScript代码、按路由分割、移除未使用的代码。'
+                },
+                {
+                    type: 'success',
+                    title: '缓存策略',
+                    content: '配置适当的HTTP缓存头、使用Service Worker、实施资源版本控制。'
+                }
+            );
+            
+            container.innerHTML = suggestions.map(suggestion => {
+                const colors = {
+                    success: { bg: '#d4edda', border: '#28a745', text: '#155724' },
+                    info: { bg: '#d1ecf1', border: '#17a2b8', text: '#0c5460' },
+                    warning: { bg: '#fff3cd', border: '#ffc107', text: '#856404' },
+                    error: { bg: '#f8d7da', border: '#dc3545', text: '#721c24' }
+                };
+                
+                const color = colors[suggestion.type];
+                
+                return `
+                    <div style="background: ${color.bg}; border-left: 4px solid ${color.border}; padding: 1rem; border-radius: 4px;">
+                        <h4 style="color: ${color.text}; margin-bottom: 0.5rem;">${suggestion.title}</h4>
+                        <p style="color: ${color.text}; margin: 0;">${suggestion.content}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // 布局抖动测试
+        document.getElementById('triggerShiftBtn').addEventListener('click', () => {
+            const element = document.getElementById('shiftElement');
+            const isShifted = element.style.marginTop === '50px';
+            
+            element.style.marginTop = isShifted ? '0px' : '50px';
+            element.style.marginLeft = isShifted ? '0px' : '100px';
+            
+            event.target.textContent = isShifted ? '触发布局偏移' : '恢复原位';
+        });
+        
+        // 长任务模拟
+        document.getElementById('longTaskBtn').addEventListener('click', () => {
+            const statusElement = document.getElementById('taskStatus');
+            const btn = event.target;
+            
+            btn.disabled = true;
+            statusElement.textContent = '执行中...';
+            statusElement.style.color = '#ffc107';
+            
+            // 模拟长任务（阻塞主线程）
+            const startTime = Date.now();
+            while (Date.now() - startTime < 3000) {
+                // 空循环，阻塞主线程
+            }
+            
+            statusElement.textContent = '已完成';
+            statusElement.style.color = '#28a745';
+            btn.disabled = false;
+        });
+        
+        // 页面加载完成后初始化
+        window.addEventListener('load', () => {
+            updateCacheStatus();
+            updateSWStatus();
+            updatePerformanceMetrics();
+            generateOptimizationSuggestions();
+            
+            // 延迟更新指标以获取更准确的数据
+            setTimeout(() => {
+                updatePerformanceMetrics();
+                generateOptimizationSuggestions();
+            }, 2000);
+        });
+        
+        // 监听网络状态变化
+        window.addEventListener('online', () => {
+            document.getElementById('networkStatus').textContent = '在线';
+        });
+        
+        window.addEventListener('offline', () => {
+            document.getElementById('networkStatus').textContent = '离线';
+        });
+    </script>
+    
+    <!-- 性能分析脚本（延迟加载） -->
+    <script async>
+        // 用户体验指标收集
+        function collectUXMetrics() {
+            // 收集用户交互数据
+            let clickCount = 0;
+            let scrollDepth = 0;
+            
+            document.addEventListener('click', () => {
+                clickCount++;
+            });
+            
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.pageYOffset;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                scrollDepth = Math.max(scrollDepth, (scrollTop / docHeight) * 100);
+            });
+            
+            // 页面卸载时发送数据
+            window.addEventListener('beforeunload', () => {
+                const metrics = {
+                    clickCount,
+                    scrollDepth: scrollDepth.toFixed(2),
+                    timeOnPage: (Date.now() - performance.timing.navigationStart) / 1000
+                };
+                
+                console.log('用户体验指标:', metrics);
+                // 在实际应用中，这里会发送到分析服务
+            });
+        }
+        
+        // 延迟执行以避免影响关键渲染路径
+        setTimeout(collectUXMetrics, 3000);
+    </script>
+</body>
+</html>

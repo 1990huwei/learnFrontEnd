@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>现代HTML工具和工作流完整示例</title>
+    <meta name="description" content="展示现代前端开发工具和工作流的完整示例">
+    
+    <!-- 现代开发工具配置示例 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <style>
+        /* 现代CSS特性和工具链示例 */
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            
+            --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+            
+            --border-radius: 8px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family-base);
+            line-height: 1.6;
+            color: var(--dark-color);
+            background: var(--light-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* 现代布局技术 */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+        
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 现代卡片设计 */
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+        
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* 现代网格布局 */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+        
+        /* 现代按钮设计 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: var(--warning-color);
+            color: var(--dark-color);
+        }
+        
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-info {
+            background: var(--info-color);
+            color: white;
+        }
+        
+        /* 代码块样式 */
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            font-family: var(--font-family-mono);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: attr(data-language);
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+        
+        /* 工具卡片 */
+        .tool-card {
+            background: var(--light-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .tool-card:hover {
+            background: #e9ecef;
+            border-left-color: var(--secondary-color);
+        }
+        
+        .tool-name {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .tool-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tool-features {
+            list-style: none;
+        }
+        
+        .tool-features li {
+            padding: 0.25rem 0;
+            color: #495057;
+            font-size: 0.85rem;
+        }
+        
+        .tool-features li::before {
+            content: '✓';
+            color: var(--success-color);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        /* 状态指示器 */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-success {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+        
+        .status-warning {
+            background: rgba(255, 193, 7, 0.1);
+            color: #856404;
+        }
+        
+        .status-error {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+        
+        .status-info {
+            background: rgba(23, 162, 184, 0.1);
+            color: var(--info-color);
+        }
+        
+        /* 进度条 */
+        .progress {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 深色模式支持 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --light-color: #1a1a1a;
+                --dark-color: #ffffff;
+            }
+            
+            body {
+                background: #121212;
+            }
+            
+            .section {
+                background: #1e1e1e;
+                color: #ffffff;
+            }
+            
+            .tool-card {
+                background: #2a2a2a;
+            }
+            
+            .tool-card:hover {
+                background: #333333;
+            }
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="hero-title">🛠️ 现代HTML工具和工作流</h1>
+            <p class="hero-subtitle">探索现代前端开发的完整工具链和最佳实践</p>
+        </div>
+    </header>
+    
+    <main class="container" style="margin-top: 2rem;">
+        <!-- 开发环境配置 -->
+        <section class="section fade-in-up">
+            <h2 class="section-title">
+                <span>⚙️</span>
+                开发环境配置
+            </h2>
+            
+            <div class="grid grid-2">
+                <div class="tool-card">
+                    <div class="tool-name">VS Code 配置</div>
+                    <div class="tool-description">现代代码编辑器的完整配置</div>
+                    <ul class="tool-features">
+                        <li>智能代码补全和语法高亮</li>
+                        <li>集成终端和调试器</li>
+                        <li>丰富的扩展生态系统</li>
+                        <li>Git集成和版本控制</li>
+                        <li>实时预览和热重载</li>
+                    </ul>
+                    <div style="margin-top: 1rem;">
+                        <span class="status status-success">✓ 已配置</span>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-name">Node.js 环境</div>
+                    <div class="tool-description">JavaScript运行时和包管理器</div>
+                    <ul class="tool-features">
+                        <li>npm/yarn 包管理</li>
+                        <li>模块化开发支持</li>
+                        <li>构建工具集成</li>
+                        <li>服务器端开发能力</li>
+                        <li>丰富的第三方库</li>
+                    </ul>
+                    <div style="margin-top: 1rem;">
+                        <span class="status status-warning" id="nodeStatus">⚠️ 需要安装</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; padding: 1rem; background: #e3f2fd; border-radius: var(--border-radius);">
+                <h4 style="color: #1976d2; margin-bottom: 1rem;">🚀 快速开始指南：</h4>
+                <ol style="margin-left: 1.5rem; color: #1565c0;">
+                    <li>下载并安装 <a href="https://nodejs.org" target="_blank" style="color: #1976d2;">Node.js</a></li>
+                    <li>安装 <a href="https://code.visualstudio.com" target="_blank" style="color: #1976d2;">VS Code</a></li>
+                    <li>安装推荐的VS Code扩展</li>
+                    <li>配置项目工作区设置</li>
+                    <li>初始化项目并安装依赖</li>
+                </ol>
+            </div>
+        </section>
+        
+        <!-- 构建工具 -->
+        <section class="section fade-in-up">
+            <h2 class="section-title">
+                <span>🔧</span>
+                现代构建工具
+            </h2>
+            
+            <div class="grid grid-3">
+                <div class="tool-card">
+                    <div class="tool-name">Vite</div>
+                    <div class="tool-description">下一代前端构建工具</div>
+                    <ul class="tool-features">
+                        <li>极速的开发服务器</li>
+                        <li>原生ES模块支持</li>
+                        <li>热模块替换(HMR)</li>
+                        <li>优化的生产构建</li>
+                        <li>插件生态丰富</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="demonstrateVite()">演示 Vite</button>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-name">Webpack</div>
+                    <div class="tool-description">强大的模块打包器</div>
+                    <ul class="tool-features">
+                        <li>模块化打包</li>
+                        <li>代码分割</li>
+                        <li>资源优化</li>
+                        <li>插件系统</li>
+                        <li>开发服务器</li>
+                    </ul>
+                    <button class="btn btn-info" onclick="demonstrateWebpack()">演示 Webpack</button>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-name">Gulp</div>
+                    <div class="tool-description">流式构建系统</div>
+                    <ul class="tool-features">
+                        <li>任务自动化</li>
+                        <li>文件流处理</li>
+                        <li>插件丰富</li>
+                        <li>配置灵活</li>
+                        <li>增量构建</li>
+                    </ul>
+                    <button class="btn btn-success" onclick="demonstrateGulp()">演示 Gulp</button>
+                </div>
+            </div>
+            
+            <div id="buildDemo" style="margin-top: 2rem; display: none;">
+                <h3 style="margin-bottom: 1rem; color: var(--primary-color);">构建过程演示</h3>
+                <div class="code-block" data-language="bash" id="buildOutput">
+                    # 构建输出将在这里显示
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" id="buildProgress" style="width: 0%;"></div>
+                </div>
+                <div id="buildStatus" style="margin-top: 1rem;"></div>
+            </div>
+        </section>
+        
+        <!-- 代码质量工具 -->
+        <section class="section fade-in-up">
+            <h2 class="section-title">
+                <span>🔍</span>
+                代码质量保证
+            </h2>
+            
+            <div class="grid grid-2">
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">代码检查工具</h3>
+                    <div class="grid" style="gap: 1rem;">
+                        <div class="tool-card">
+                            <div class="tool-name">ESLint</div>
+                            <div class="tool-description">JavaScript代码检查工具</div>
+                            <button class="btn btn-warning" onclick="runESLint()">运行 ESLint</button>
+                        </div>
+                        
+                        <div class="tool-card">
+                            <div class="tool-name">Prettier</div>
+                            <div class="tool-description">代码格式化工具</div>
+                            <button class="btn btn-info" onclick="runPrettier()">运行 Prettier</button>
+                        </div>
+                        
+                        <div class="tool-card">
+                            <div class="tool-name">Stylelint</div>
+                            <div class="tool-description">CSS代码检查工具</div>
+                            <button class="btn btn-success" onclick="runStylelint()">运行 Stylelint</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">检查结果</h3>
+                    <div id="lintResults" style="background: #f8f9fa; padding: 1rem; border-radius: var(--border-radius); min-height: 200px; font-family: var(--font-family-mono); font-size: 0.9rem;">
+                        点击上方按钮运行代码检查工具...
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 版本控制 -->
+        <section class="section fade-in-up">
+            <h2 class="section-title">
+                <span>📝</span>
+                版本控制工作流
+            </h2>
+            
+            <div class="grid grid-2">
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">Git 工作流</h3>
+                    <div class="code-block" data-language="bash">
+# 初始化仓库
+git init
+
+# 添加文件
+git add .
+
+# 提交更改
+git commit -m "feat: 添加现代工具链示例"
+
+# 创建分支
+git checkout -b feature/new-component
+
+# 推送到远程
+git push origin feature/new-component
+                    </div>
+                    
+                    <div style="margin-top: 1rem;">
+                        <button class="btn btn-primary" onclick="simulateGitWorkflow()">模拟 Git 工作流</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">提交规范</h3>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: var(--border-radius);">
+                        <h4 style="margin-bottom: 0.5rem; color: #495057;">Conventional Commits</h4>
+                        <ul style="margin-left: 1.5rem; color: #6c757d;">
+                            <li><code>feat:</code> 新功能</li>
+                            <li><code>fix:</code> 修复bug</li>
+                            <li><code>docs:</code> 文档更新</li>
+                            <li><code>style:</code> 代码格式</li>
+                            <li><code>refactor:</code> 重构</li>
+                            <li><code>test:</code> 测试</li>
+                            <li><code>chore:</code> 构建过程或辅助工具的变动</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="gitStatus" style="margin-top: 1rem; padding: 1rem; background: #e9ecef; border-radius: var(--border-radius); font-family: var(--font-family-mono); font-size: 0.9rem;">
+                        Git 状态: 准备就绪
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 自动化工作流 -->
+        <section class="section fade-in-up">
+            <h2 class="section-title">
+                <span>🤖</span>
+                自动化工作流
+            </h2>
+            
+            <div class="grid grid-3">
+                <div class="tool-card">
+                    <div class="tool-name">GitHub Actions</div>
+                    <div class="tool-description">CI/CD 自动化平台</div>
+                    <ul class="tool-features">
+                        <li>自动化测试</li>
+                        <li>代码部署</li>
+                        <li>代码质量检查</li>
+                        <li>依赖更新</li>
+                    </ul>
+                    <div style="margin-top: 1rem;">
+                        <span class="status status-info">ℹ️ 配置中</span>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-name">Husky</div>
+                    <div class="tool-description">Git hooks 管理工具</div>
+                    <ul class="tool-features">
+                        <li>pre-commit 检查</li>
+                        <li>commit-msg 验证</li>
+                        <li>pre-push 测试</li>
+                        <li>自动化质量控制</li>
+                    </ul>
+                    <div style="margin-top: 1rem;">
+                        <span class="status status-success">✓ 已启用</span>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-name">Lint-staged</div>
+                    <div class="tool-description">暂存文件检查工具</div>
+                    <ul class="tool-features">
+                        <li>只检查暂存文件</li>
+                        <li>提高检查效率</li>
+                        <li>自动修复问题</li>
+                        <li>与Git hooks集成</li>
+                    </ul>
+                    <div style="margin-top: 1rem;">
+                        <span class="status status-success">✓ 已配置</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <h3 style="margin-bottom: 1rem; color: #555;">工作流演示</h3>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="runAutomatedWorkflow()">运行完整工作流</button>
+                    <button class="btn btn-success" onclick="runTests()">运行测试</button>
+                    <button class="btn btn-warning" onclick="runLinting()">代码检查</button>
+                    <button class="btn btn-info" onclick="runBuild()">构建项目</button>
+                </div>
+                
+                <div id="workflowOutput" style="margin-top: 1rem; display: none;">
+                    <div class="code-block" data-language="log" id="workflowLog">
+                        # 工作流输出
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 性能监控 -->
+        <section class="section fade-in-up">
+            <h2 class="section-title">
+                <span>📊</span>
+                开发工具性能监控
+            </h2>
+            
+            <div class="grid grid-4">
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: var(--border-radius); text-align: center;">
+                    <h4 style="color: #495057; margin-bottom: 0.5rem;">构建时间</h4>
+                    <div id="buildTime" style="font-size: 1.5rem; font-weight: bold; color: var(--success-color);">--</div>
+                    <div style="font-size: 0.8rem; color: #6c757d;">秒</div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: var(--border-radius); text-align: center;">
+                    <h4 style="color: #495057; margin-bottom: 0.5rem;">包大小</h4>
+                    <div id="bundleSize" style="font-size: 1.5rem; font-weight: bold; color: var(--info-color);">--</div>
+                    <div style="font-size: 0.8rem; color: #6c757d;">KB</div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: var(--border-radius); text-align: center;">
+                    <h4 style="color: #495057; margin-bottom: 0.5rem;">代码覆盖率</h4>
+                    <div id="coverage" style="font-size: 1.5rem; font-weight: bold; color: var(--warning-color);">--</div>
+                    <div style="font-size: 0.8rem; color: #6c757d;">%</div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: var(--border-radius); text-align: center;">
+                    <h4 style="color: #495057; margin-bottom: 0.5rem;">依赖数量</h4>
+                    <div id="dependencies" style="font-size: 1.5rem; font-weight: bold; color: var(--danger-color);">--</div>
+                    <div style="font-size: 0.8rem; color: #6c757d;">个</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <button class="btn btn-primary" onclick="updateMetrics()">刷新指标</button>
+                <button class="btn btn-info" onclick="analyzeBundle()">分析包大小</button>
+            </div>
+        </section>
+        
+        <!-- 最佳实践 -->
+        <section class="section fade-in-up">
+            <h2 class="section-title">
+                <span>💡</span>
+                开发最佳实践
+            </h2>
+            
+            <div class="grid grid-2">
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">项目结构</h3>
+                    <div class="code-block" data-language="text">
+project/
+├── src/
+│   ├── components/
+│   ├── styles/
+│   ├── scripts/
+│   └── assets/
+├── dist/
+├── tests/
+├── docs/
+├── .vscode/
+├── .github/
+├── package.json
+├── vite.config.js
+├── .eslintrc.js
+├── .prettierrc
+├── .gitignore
+└── README.md
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #555;">开发规范</h3>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: var(--border-radius);">
+                        <h4 style="margin-bottom: 0.5rem; color: #495057;">代码规范</h4>
+                        <ul style="margin-left: 1.5rem; color: #6c757d; margin-bottom: 1rem;">
+                            <li>使用一致的代码风格</li>
+                            <li>编写有意义的注释</li>
+                            <li>遵循命名约定</li>
+                            <li>保持函数简洁</li>
+                        </ul>
+                        
+                        <h4 style="margin-bottom: 0.5rem; color: #495057;">Git 规范</h4>
+                        <ul style="margin-left: 1.5rem; color: #6c757d; margin-bottom: 1rem;">
+                            <li>使用语义化提交信息</li>
+                            <li>保持提交原子性</li>
+                            <li>定期同步远程分支</li>
+                            <li>使用分支进行功能开发</li>
+                        </ul>
+                        
+                        <h4 style="margin-bottom: 0.5rem; color: #495057;">性能优化</h4>
+                        <ul style="margin-left: 1.5rem; color: #6c757d;">
+                            <li>代码分割和懒加载</li>
+                            <li>资源压缩和优化</li>
+                            <li>缓存策略配置</li>
+                            <li>监控和分析工具</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        // 检查Node.js环境
+        function checkNodeEnvironment() {
+            // 模拟检查Node.js环境
+            const nodeStatus = document.getElementById('nodeStatus');
+            
+            // 在实际环境中，这里会检查是否安装了Node.js
+            setTimeout(() => {
+                const hasNode = Math.random() > 0.5; // 模拟检查结果
+                
+                if (hasNode) {
+                    nodeStatus.className = 'status status-success';
+                    nodeStatus.textContent = '✓ Node.js 已安装';
+                } else {
+                    nodeStatus.className = 'status status-error';
+                    nodeStatus.textContent = '❌ 需要安装 Node.js';
+                }
+            }, 1000);
+        }
+        
+        // 构建工具演示
+        function demonstrateVite() {
+            showBuildDemo('Vite', [
+                '🚀 启动 Vite 开发服务器...',
+                '📦 解析依赖关系...',
+                '⚡ 启用热模块替换...',
+                '🌐 服务器运行在 http://localhost:3000',
+                '✅ Vite 开发服务器启动完成！'
+            ]);
+        }
+        
+        function demonstrateWebpack() {
+            showBuildDemo('Webpack', [
+                '📦 Webpack 开始打包...',
+                '🔍 分析模块依赖...',
+                '🔧 应用加载器和插件...',
+                '📊 优化代码分割...',
+                '✅ Webpack 打包完成！'
+            ]);
+        }
+        
+        function demonstrateGulp() {
+            showBuildDemo('Gulp', [
+                '🌊 Gulp 任务开始执行...',
+                '🎨 处理 CSS 文件...',
+                '📝 处理 JavaScript 文件...',
+                '🖼️ 优化图片资源...',
+                '✅ Gulp 任务执行完成！'
+            ]);
+        }
+        
+        function showBuildDemo(tool, steps) {
+            const demo = document.getElementById('buildDemo');
+            const output = document.getElementById('buildOutput');
+            const progress = document.getElementById('buildProgress');
+            const status = document.getElementById('buildStatus');
+            
+            demo.style.display = 'block';
+            output.textContent = `# ${tool} 构建过程\n`;
+            progress.style.width = '0%';
+            status.innerHTML = `<span class="status status-info">🔄 正在运行 ${tool}...</span>`;
+            
+            let currentStep = 0;
+            const interval = setInterval(() => {
+                if (currentStep < steps.length) {
+                    output.textContent += steps[currentStep] + '\n';
+                    progress.style.width = ((currentStep + 1) / steps.length * 100) + '%';
+                    currentStep++;
+                } else {
+                    clearInterval(interval);
+                    status.innerHTML = `<span class="status status-success">✅ ${tool} 执行完成！</span>`;
+                }
+            }, 800);
+        }
+        
+        // 代码检查工具
+        function runESLint() {
+            showLintResults('ESLint', [
+                '✓ src/main.js - 无问题',
+                '⚠ src/utils.js:15:1 - 缺少分号',
+                '❌ src/components.js:23:5 - 未使用的变量 "temp"',
+                '✓ src/styles.js - 无问题',
+                '',
+                '总计: 2个问题 (1个错误, 1个警告)'
+            ]);
+        }
+        
+        function runPrettier() {
+            showLintResults('Prettier', [
+                '✓ src/main.js - 已格式化',
+                '✓ src/utils.js - 已格式化',
+                '✓ src/components.js - 已格式化',
+                '✓ src/styles.css - 已格式化',
+                '',
+                '所有文件格式化完成！'
+            ]);
+        }
+        
+        function runStylelint() {
+            showLintResults('Stylelint', [
+                '✓ src/styles/main.css - 无问题',
+                '⚠ src/styles/components.css:45:3 - 建议使用简写属性',
+                '✓ src/styles/utils.css - 无问题',
+                '',
+                '总计: 1个警告'
+            ]);
+        }
+        
+        function showLintResults(tool, results) {
+            const output = document.getElementById('lintResults');
+            output.innerHTML = `<strong>${tool} 检查结果:</strong>\n\n`;
+            
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index < results.length) {
+                    output.innerHTML += results[index] + '\n';
+                    index++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 300);
+        }
+        
+        // Git工作流模拟
+        function simulateGitWorkflow() {
+            const status = document.getElementById('gitStatus');
+            const steps = [
+                'Git 状态: 初始化仓库...',
+                'Git 状态: 添加文件到暂存区...',
+                'Git 状态: 提交更改...',
+                'Git 状态: 创建功能分支...',
+                'Git 状态: 推送到远程仓库...',
+                'Git 状态: 工作流完成！'
+            ];
+            
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index < steps.length) {
+                    status.textContent = steps[index];
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    status.innerHTML = '<span style="color: var(--success-color);">✅ Git 工作流执行完成！</span>';
+                }
+            }, 1000);
+        }
+        
+        // 自动化工作流
+        function runAutomatedWorkflow() {
+            showWorkflowOutput([
+                '🚀 启动自动化工作流...',
+                '🔍 运行代码检查...',
+                '🧪 执行单元测试...',
+                '📦 构建生产版本...',
+                '🚀 部署到测试环境...',
+                '✅ 工作流执行完成！'
+            ]);
+        }
+        
+        function runTests() {
+            showWorkflowOutput([
+                '🧪 运行测试套件...',
+                '✓ 单元测试: 25/25 通过',
+                '✓ 集成测试: 8/8 通过',
+                '✓ E2E测试: 5/5 通过',
+                '📊 代码覆盖率: 92%',
+                '✅ 所有测试通过！'
+            ]);
+        }
+        
+        function runLinting() {
+            showWorkflowOutput([
+                '🔍 运行代码检查...',
+                '✓ ESLint: 无错误',
+                '✓ Prettier: 格式正确',
+                '✓ Stylelint: CSS规范正确',
+                '✓ TypeScript: 类型检查通过',
+                '✅ 代码质量检查完成！'
+            ]);
+        }
+        
+        function runBuild() {
+            showWorkflowOutput([
+                '📦 开始构建项目...',
+                '🔧 编译 TypeScript...',
+                '🎨 处理 CSS 文件...',
+                '🖼️ 优化图片资源...',
+                '📊 生成构建报告...',
+                '✅ 构建完成！输出到 dist/ 目录'
+            ]);
+        }
+        
+        function showWorkflowOutput(steps) {
+            const output = document.getElementById('workflowOutput');
+            const log = document.getElementById('workflowLog');
+            
+            output.style.display = 'block';
+            log.textContent = '# 工作流执行日志\n\n';
+            
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index < steps.length) {
+                    const timestamp = new Date().toLocaleTimeString();
+                    log.textContent += `[${timestamp}] ${steps[index]}\n`;
+                    index++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 800);
+        }
+        
+        // 性能指标更新
+        function updateMetrics() {
+            const metrics = {
+                buildTime: Math.random() * 10 + 2,
+                bundleSize: Math.random() * 500 + 100,
+                coverage: Math.random() * 30 + 70,
+                dependencies: Math.floor(Math.random() * 50 + 20)
+            };
+            
+            animateCounter('buildTime', metrics.buildTime.toFixed(1));
+            animateCounter('bundleSize', metrics.bundleSize.toFixed(0));
+            animateCounter('coverage', metrics.coverage.toFixed(1));
+            animateCounter('dependencies', metrics.dependencies);
+        }
+        
+        function animateCounter(elementId, targetValue) {
+            const element = document.getElementById(elementId);
+            const startValue = 0;
+            const duration = 1000;
+            const startTime = Date.now();
+            
+            function update() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const currentValue = startValue + (targetValue - startValue) * progress;
+                
+                element.textContent = Math.round(currentValue * 10) / 10;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            update();
+        }
+        
+        function analyzeBundle() {
+            alert('📊 包分析报告:\n\n' +
+                  '• 主包: 245KB\n' +
+                  '• 供应商包: 156KB\n' +
+                  '• CSS: 23KB\n' +
+                  '• 图片: 89KB\n\n' +
+                  '建议: 考虑代码分割以减少初始包大小');
+        }
+        
+        // 页面加载动画
+        function initializeAnimations() {
+            const sections = document.querySelectorAll('.fade-in-up');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationDelay = '0.1s';
+                        entry.target.style.animationFillMode = 'both';
+                    }
+                });
+            });
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('load', () => {
+            checkNodeEnvironment();
+            initializeAnimations();
+            updateMetrics();
+        });
+        
+        // 主题切换（如果系统支持）
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('dark-theme');
+        }
+        
+        // 监听主题变化
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (e.matches) {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+            }
+        });
+    </script>
+</body>
+</html>

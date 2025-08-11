@@ -1,0 +1,16 @@
+{
+  "emmet.includeLanguages": {
+    "html": "html"
+  },
+  "html.format.indentInnerHtml": true,
+  "html.format.wrapLineLength": 80,
+  "html.suggest.html5": true,
+  "liveServer.settings.port": 5500,
+  "liveServer.settings.CustomBrowser": "chrome",
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.wordWrap": "on"
+}

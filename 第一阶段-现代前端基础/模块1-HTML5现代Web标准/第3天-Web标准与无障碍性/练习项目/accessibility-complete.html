@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无障碍性完整示例 - Web标准学习</title>
+    <meta name="description" content="展示Web无障碍性设计的完整示例，包含ARIA属性、键盘导航、屏幕阅读器支持等">
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* 跳转链接 */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #000;
+            color: #fff;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 1000;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* 导航样式 */
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            background: #333;
+            border-radius: 4px;
+        }
+        
+        nav li {
+            margin: 0;
+        }
+        
+        nav a {
+            display: block;
+            padding: 12px 16px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        nav a:hover,
+        nav a:focus {
+            background-color: #555;
+            outline: 2px solid #007bff;
+            outline-offset: -2px;
+        }
+        
+        nav a[aria-current="page"] {
+            background-color: #007bff;
+        }
+        
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+        }
+        
+        .error {
+            border-color: #dc3545;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+        }
+        
+        .btn:focus {
+            outline: 2px solid #007bff;
+            outline-offset: 2px;
+        }
+        
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 标签页样式 */
+        .tab-list {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            background: none;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab[aria-selected="true"] {
+            border-bottom-color: #007bff;
+            background: #f8f9fa;
+        }
+        
+        .tab:focus {
+            outline: 2px solid #007bff;
+            outline-offset: -2px;
+        }
+        
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel[aria-hidden="false"] {
+            display: block;
+        }
+        
+        /* 进度条样式 */
+        .progress-container {
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background: #007bff;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        
+        /* 警告框样式 */
+        .alert {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            border-left: 4px solid;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            border-color: #17a2b8;
+            color: #0c5460;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+            }
+            
+            .tab-list {
+                flex-direction: column;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 20px;
+            }
+        }
+        
+        /* 高对比度模式支持 */
+        @media (prefers-contrast: high) {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .container {
+                border: 2px solid black;
+            }
+        }
+        
+        /* 减少动画模式支持 */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 跳转链接 -->
+    <a href="#main-content" class="skip-link">跳转到主要内容</a>
+    
+    <div class="container">
+        <header>
+            <h1>Web无障碍性完整示例</h1>
+            <p>这个页面展示了各种无障碍性设计的最佳实践</p>
+        </header>
+        
+        <!-- 主导航 -->
+        <nav role="navigation" aria-label="主导航">
+            <ul>
+                <li><a href="#" aria-current="page">首页</a></li>
+                <li><a href="#forms">表单示例</a></li>
+                <li><a href="#interactive">交互组件</a></li>
+                <li><a href="#multimedia">多媒体</a></li>
+                <li><a href="#help">帮助</a></li>
+            </ul>
+        </nav>
+        
+        <main id="main-content">
+            <!-- 信息提示 -->
+            <div class="alert alert-info" role="alert" aria-live="polite">
+                <strong>提示：</strong>本页面已针对屏幕阅读器和键盘导航进行优化。按Tab键可以在可交互元素间导航。
+            </div>
+            
+            <!-- 表单部分 -->
+            <section id="forms" aria-labelledby="forms-heading">
+                <h2 id="forms-heading">无障碍表单示例</h2>
+                
+                <form novalidate>
+                    <fieldset>
+                        <legend>个人信息</legend>
+                        
+                        <div class="form-group">
+                            <label for="name">姓名 <span aria-label="必填项">*</span></label>
+                            <input 
+                                type="text" 
+                                id="name" 
+                                name="name" 
+                                required 
+                                aria-describedby="name-help name-error"
+                                autocomplete="name"
+                            >
+                            <div id="name-help" class="help-text">请输入您的真实姓名</div>
+                            <div id="name-error" class="error-message" role="alert" aria-live="polite"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">邮箱地址 <span aria-label="必填项">*</span></label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                required 
+                                aria-describedby="email-help email-error"
+                                autocomplete="email"
+                            >
+                            <div id="email-help" class="help-text">我们将使用此邮箱与您联系</div>
+                            <div id="email-error" class="error-message" role="alert" aria-live="polite"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">电话号码</label>
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                name="phone" 
+                                aria-describedby="phone-help"
+                                autocomplete="tel"
+                            >
+                            <div id="phone-help" class="help-text">格式：+86 138 0013 8000</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="country">国家/地区</label>
+                            <select id="country" name="country" aria-describedby="country-help">
+                                <option value="">请选择</option>
+                                <option value="cn">中国</option>
+                                <option value="us">美国</option>
+                                <option value="uk">英国</option>
+                                <option value="jp">日本</option>
+                            </select>
+                            <div id="country-help" class="help-text">选择您所在的国家或地区</div>
+                        </div>
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend>偏好设置</legend>
+                        
+                        <div class="form-group">
+                            <fieldset>
+                                <legend>通知方式</legend>
+                                <div>
+                                    <input type="radio" id="notify-email" name="notification" value="email">
+                                    <label for="notify-email">邮件通知</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="notify-sms" name="notification" value="sms">
+                                    <label for="notify-sms">短信通知</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="notify-none" name="notification" value="none">
+                                    <label for="notify-none">不接收通知</label>
+                                </div>
+                            </fieldset>
+                        </div>
+                        
+                        <div class="form-group">
+                            <fieldset>
+                                <legend>兴趣领域（可多选）</legend>
+                                <div>
+                                    <input type="checkbox" id="interest-web" name="interests" value="web">
+                                    <label for="interest-web">Web开发</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="interest-mobile" name="interests" value="mobile">
+                                    <label for="interest-mobile">移动开发</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="interest-ai" name="interests" value="ai">
+                                    <label for="interest-ai">人工智能</label>
+                                </div>
+                            </fieldset>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">留言</label>
+                            <textarea 
+                                id="message" 
+                                name="message" 
+                                rows="4" 
+                                aria-describedby="message-help"
+                                maxlength="500"
+                            ></textarea>
+                            <div id="message-help" class="help-text">
+                                <span id="char-count" aria-live="polite">还可输入500个字符</span>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn">提交表单</button>
+                        <button type="reset" class="btn" style="background: #6c757d; margin-left: 10px;">重置</button>
+                    </div>
+                </form>
+            </section>
+            
+            <!-- 交互组件部分 -->
+            <section id="interactive" aria-labelledby="interactive-heading">
+                <h2 id="interactive-heading">交互组件示例</h2>
+                
+                <!-- 标签页组件 -->
+                <div class="tabs" role="tablist" aria-label="示例标签页">
+                    <h3>标签页组件</h3>
+                    <div class="tab-list">
+                        <button 
+                            class="tab" 
+                            role="tab" 
+                            aria-selected="true" 
+                            aria-controls="tab1-panel" 
+                            id="tab1"
+                        >
+                            HTML基础
+                        </button>
+                        <button 
+                            class="tab" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="tab2-panel" 
+                            id="tab2"
+                        >
+                            CSS样式
+                        </button>
+                        <button 
+                            class="tab" 
+                            role="tab" 
+                            aria-selected="false" 
+                            aria-controls="tab3-panel" 
+                            id="tab3"
+                        >
+                            JavaScript
+                        </button>
+                    </div>
+                    
+                    <div id="tab1-panel" class="tab-panel" role="tabpanel" aria-labelledby="tab1" aria-hidden="false">
+                        <h4>HTML基础知识</h4>
+                        <p>HTML是构建网页的基础标记语言。它使用标签来定义内容的结构和语义。</p>
+                        <ul>
+                            <li>语义化标签的重要性</li>
+                            <li>文档结构的最佳实践</li>
+                            <li>无障碍性属性的使用</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="tab2-panel" class="tab-panel" role="tabpanel" aria-labelledby="tab2" aria-hidden="true">
+                        <h4>CSS样式设计</h4>
+                        <p>CSS用于控制网页的视觉表现，包括布局、颜色、字体等。</p>
+                        <ul>
+                            <li>响应式设计原则</li>
+                            <li>Flexbox和Grid布局</li>
+                            <li>CSS动画和过渡</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="tab3-panel" class="tab-panel" role="tabpanel" aria-labelledby="tab3" aria-hidden="true">
+                        <h4>JavaScript编程</h4>
+                        <p>JavaScript为网页添加交互性和动态功能。</p>
+                        <ul>
+                            <li>DOM操作和事件处理</li>
+                            <li>异步编程和Promise</li>
+                            <li>现代JavaScript特性</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 进度条 -->
+                <div class="progress-example">
+                    <h3>学习进度</h3>
+                    <p>当前课程完成度：</p>
+                    <div class="progress-container">
+                        <div 
+                            class="progress-bar" 
+                            role="progressbar" 
+                            aria-valuenow="65" 
+                            aria-valuemin="0" 
+                            aria-valuemax="100" 
+                            aria-label="课程完成进度"
+                            style="width: 65%;"
+                        >
+                            65%
+                        </div>
+                    </div>
+                    <button class="btn" onclick="updateProgress()">更新进度</button>
+                </div>
+                
+                <!-- 模态框触发器 -->
+                <div class="modal-example">
+                    <h3>模态框示例</h3>
+                    <button class="btn" onclick="openModal()" aria-describedby="modal-description">
+                        打开帮助对话框
+                    </button>
+                    <p id="modal-description">点击按钮打开包含帮助信息的对话框</p>
+                </div>
+            </section>
+            
+            <!-- 多媒体部分 -->
+            <section id="multimedia" aria-labelledby="multimedia-heading">
+                <h2 id="multimedia-heading">多媒体内容</h2>
+                
+                <figure>
+                    <img 
+                        src="../第1天-HTML5基础语法/练习项目/images/placeholder.svg" 
+                        alt="Web无障碍性概念图：显示了不同用户使用各种辅助技术访问网页的场景"
+                        width="400"
+                        height="300"
+                    >
+                    <figcaption>
+                        Web无障碍性确保所有用户都能平等地访问和使用网页内容
+                    </figcaption>
+                </figure>
+                
+                <div class="video-example">
+                    <h3>视频示例</h3>
+                    <p>以下是一个包含字幕和音频描述的视频示例：</p>
+                    <!-- 注意：实际项目中应该提供真实的视频文件和字幕 -->
+                    <video controls width="400" height="300">
+                        <source src="example-video.mp4" type="video/mp4">
+                        <track kind="captions" src="captions.vtt" srclang="zh" label="中文字幕">
+                        <track kind="descriptions" src="descriptions.vtt" srclang="zh" label="音频描述">
+                        <p>您的浏览器不支持视频播放。请<a href="example-video.mp4">下载视频文件</a>观看。</p>
+                    </video>
+                </div>
+            </section>
+        </main>
+        
+        <!-- 模态框 -->
+        <div id="help-modal" class="modal" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-title">帮助信息</h2>
+                    <button class="close" onclick="closeModal()" aria-label="关闭对话框">
+                        ×
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3>键盘导航说明</h3>
+                    <ul>
+                        <li><kbd>Tab</kbd> - 移动到下一个可交互元素</li>
+                        <li><kbd>Shift + Tab</kbd> - 移动到上一个可交互元素</li>
+                        <li><kbd>Enter</kbd> 或 <kbd>Space</kbd> - 激活按钮或链接</li>
+                        <li><kbd>Arrow keys</kbd> - 在单选按钮组或标签页间导航</li>
+                        <li><kbd>Esc</kbd> - 关闭模态框或下拉菜单</li>
+                    </ul>
+                    
+                    <h3>屏幕阅读器支持</h3>
+                    <p>本页面已针对以下屏幕阅读器进行测试：</p>
+                    <ul>
+                        <li>NVDA (Windows)</li>
+                        <li>JAWS (Windows)</li>
+                        <li>VoiceOver (macOS/iOS)</li>
+                        <li>TalkBack (Android)</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" onclick="closeModal()">关闭</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <h2>页面信息</h2>
+            <p>本页面展示了Web无障碍性的各种最佳实践，包括：</p>
+            <ul>
+                <li>语义化HTML结构</li>
+                <li>ARIA属性的正确使用</li>
+                <li>键盘导航支持</li>
+                <li>屏幕阅读器优化</li>
+                <li>色彩对比度考虑</li>
+                <li>响应式设计</li>
+            </ul>
+            
+            <address>
+                <p>如有问题，请联系：<a href="mailto:accessibility@example.com">accessibility@example.com</a></p>
+            </address>
+            
+            <p><small>&copy; 2024 Web无障碍性学习示例</small></p>
+        </footer>
+    </div>
+    
+    <script>
+        // 表单验证
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            
+            // 清除之前的错误
+            clearErrors();
+            
+            let hasErrors = false;
+            
+            // 验证姓名
+            if (!name.value.trim()) {
+                showError('name', '请输入姓名');
+                hasErrors = true;
+            }
+            
+            // 验证邮箱
+            if (!email.value.trim()) {
+                showError('email', '请输入邮箱地址');
+                hasErrors = true;
+            } else if (!isValidEmail(email.value)) {
+                showError('email', '请输入有效的邮箱地址');
+                hasErrors = true;
+            }
+            
+            if (!hasErrors) {
+                alert('表单提交成功！');
+            }
+        });
+        
+        function showError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + '-error');
+            
+            field.classList.add('error');
+            field.setAttribute('aria-invalid', 'true');
+            errorElement.textContent = message;
+            
+            // 聚焦到第一个错误字段
+            if (!document.querySelector('.error:focus')) {
+                field.focus();
+            }
+        }
+        
+        function clearErrors() {
+            const errorFields = document.querySelectorAll('.error');
+            const errorMessages = document.querySelectorAll('.error-message');
+            
+            errorFields.forEach(field => {
+                field.classList.remove('error');
+                field.removeAttribute('aria-invalid');
+            });
+            
+            errorMessages.forEach(msg => {
+                msg.textContent = '';
+            });
+        }
+        
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+        
+        // 字符计数
+        const messageTextarea = document.getElementById('message');
+        const charCount = document.getElementById('char-count');
+        
+        messageTextarea.addEventListener('input', function() {
+            const remaining = 500 - this.value.length;
+            charCount.textContent = `还可输入${remaining}个字符`;
+            
+            if (remaining < 50) {
+                charCount.style.color = '#dc3545';
+            } else {
+                charCount.style.color = '';
+            }
+        });
+        
+        // 标签页功能
+        const tabs = document.querySelectorAll('.tab');
+        const panels = document.querySelectorAll('.tab-panel');
+        
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => {
+                switchTab(index);
+            });
+            
+            tab.addEventListener('keydown', (e) => {
+                let newIndex = index;
+                
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        newIndex = index > 0 ? index - 1 : tabs.length - 1;
+                        break;
+                    case 'ArrowRight':
+                        newIndex = index < tabs.length - 1 ? index + 1 : 0;
+                        break;
+                    case 'Home':
+                        newIndex = 0;
+                        break;
+                    case 'End':
+                        newIndex = tabs.length - 1;
+                        break;
+                    default:
+                        return;
+                }
+                
+                e.preventDefault();
+                switchTab(newIndex);
+                tabs[newIndex].focus();
+            });
+        });
+        
+        function switchTab(index) {
+            // 更新标签页状态
+            tabs.forEach((tab, i) => {
+                const isSelected = i === index;
+                tab.setAttribute('aria-selected', isSelected);
+                tab.setAttribute('tabindex', isSelected ? '0' : '-1');
+            });
+            
+            // 更新面板状态
+            panels.forEach((panel, i) => {
+                const isVisible = i === index;
+                panel.setAttribute('aria-hidden', !isVisible);
+            });
+        }
+        
+        // 初始化标签页
+        switchTab(0);
+        
+        // 模态框功能
+        function openModal() {
+            const modal = document.getElementById('help-modal');
+            const closeButton = modal.querySelector('.close');
+            
+            modal.style.display = 'block';
+            modal.setAttribute('aria-hidden', 'false');
+            
+            // 聚焦到关闭按钮
+            closeButton.focus();
+            
+            // 捕获焦点
+            trapFocus(modal);
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('help-modal');
+            
+            modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+            
+            // 返回焦点到触发按钮
+            document.querySelector('[onclick="openModal()"]').focus();
+        }
+        
+        // 焦点捕获
+        function trapFocus(element) {
+            const focusableElements = element.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            element.addEventListener('keydown', function(e) {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstElement) {
+                            e.preventDefault();
+                            lastElement.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastElement) {
+                            e.preventDefault();
+                            firstElement.focus();
+                        }
+                    }
+                } else if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        }
+        
+        // 进度条更新
+        function updateProgress() {
+            const progressBar = document.querySelector('.progress-bar');
+            const currentValue = parseInt(progressBar.getAttribute('aria-valuenow'));
+            const newValue = Math.min(currentValue + 10, 100);
+            
+            progressBar.setAttribute('aria-valuenow', newValue);
+            progressBar.style.width = newValue + '%';
+            progressBar.textContent = newValue + '%';
+            
+            // 宣布进度更新
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.style.position = 'absolute';
+            announcement.style.left = '-10000px';
+            announcement.textContent = `进度已更新到 ${newValue}%`;
+            
+            document.body.appendChild(announcement);
+            
+            setTimeout(() => {
+                document.body.removeChild(announcement);
+            }, 1000);
+        }
+        
+        // 键盘快捷键
+        document.addEventListener('keydown', function(e) {
+            // Alt + 1: 跳转到主要内容
+            if (e.altKey && e.key === '1') {
+                e.preventDefault();
+                document.getElementById('main-content').focus();
+            }
+            
+            // Alt + 2: 跳转到导航
+            if (e.altKey && e.key === '2') {
+                e.preventDefault();
+                document.querySelector('nav a').focus();
+            }
+        });
+        
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 宣布页面已加载
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.style.position = 'absolute';
+            announcement.style.left = '-10000px';
+            announcement.textContent = '页面已加载完成，可以开始浏览';
+            
+            document.body.appendChild(announcement);
+            
+            setTimeout(() => {
+                document.body.removeChild(announcement);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

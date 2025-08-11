@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5多媒体与API完整示例</title>
+    <meta name="description" content="展示HTML5多媒体元素和现代Web API的完整使用示例">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .section h3 {
+            color: #555;
+            margin: 20px 0 15px 0;
+            font-size: 1.3em;
+        }
+        
+        /* 视频样式 */
+        .video-container {
+            position: relative;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .custom-controls {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .control-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .control-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .progress-container {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: #667eea;
+            border-radius: 3px;
+            transition: width 0.1s;
+        }
+        
+        .time-display {
+            font-size: 0.9em;
+            min-width: 80px;
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .volume-slider {
+            width: 80px;
+        }
+        
+        /* 音频样式 */
+        .audio-container {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .audio-info {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .track-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .track-artist {
+            opacity: 0.8;
+        }
+        
+        /* Canvas样式 */
+        .canvas-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        canvas {
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            cursor: crosshair;
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .canvas-controls {
+            margin: 15px 0;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .color-picker {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .brush-size {
+            width: 100px;
+        }
+        
+        /* 地理位置样式 */
+        .location-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .location-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .data-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .data-label {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        /* 存储示例样式 */
+        .storage-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .storage-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .storage-section h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .storage-display {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 100px;
+            border: 1px solid #ddd;
+        }
+        
+        /* 拖拽上传样式 */
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .upload-area.dragover {
+            border-color: #5a6fd8;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .upload-area:hover {
+            border-color: #5a6fd8;
+        }
+        
+        .file-list {
+            margin-top: 20px;
+        }
+        
+        .file-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .file-info {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .file-size {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .custom-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .audio-player {
+                flex-direction: column;
+            }
+            
+            .canvas-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        /* 状态指示器 */
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HTML5多媒体与API示例</h1>
+            <p class="subtitle">探索现代Web技术的强大功能</p>
+        </header>
+        
+        <!-- 视频部分 -->
+        <section class="section">
+            <h2>🎥 HTML5视频播放器</h2>
+            <p>这是一个自定义的HTML5视频播放器，展示了视频元素的各种功能和控制选项。</p>
+            
+            <div class="video-container">
+                <video id="mainVideo" width="800" height="450" poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNjY3ZWVhIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI0NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuinhumikea1i+ivleWZqDwvdGV4dD4KICA8dGV4dCB4PSI1MCUiIHk9IjU1JSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ODAwIHggNDUwPC90ZXh0Pgo8L3N2Zz4K">
+                    <!-- 注意：在实际项目中，您需要提供真实的视频文件 -->
+                    <source src="sample-video.mp4" type="video/mp4">
+                    <source src="sample-video.webm" type="video/webm">
+                    <track kind="captions" src="captions-zh.vtt" srclang="zh" label="中文字幕" default>
+                    <track kind="captions" src="captions-en.vtt" srclang="en" label="English Subtitles">
+                    <p>您的浏览器不支持视频播放。请升级您的浏览器或<a href="sample-video.mp4">下载视频</a>。</p>
+                </video>
+                
+                <div class="custom-controls">
+                    <button class="control-btn" id="playPauseBtn">▶️ 播放</button>
+                    <button class="control-btn" id="stopBtn">⏹️ 停止</button>
+                    <button class="control-btn" id="muteBtn">🔊 静音</button>
+                    
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    
+                    <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
+                    
+                    <div class="volume-control">
+                        <span>音量:</span>
+                        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+                    </div>
+                    
+                    <button class="control-btn" id="fullscreenBtn">⛶ 全屏</button>
+                    <button class="control-btn" id="speedBtn">1x</button>
+                </div>
+            </div>
+            
+            <h3>视频信息</h3>
+            <div id="videoInfo" class="status info">
+                点击播放按钮开始播放视频
+            </div>
+        </section>
+        
+        <!-- 音频部分 -->
+        <section class="section">
+            <h2>🎵 HTML5音频播放器</h2>
+            <p>自定义音频播放器，支持播放列表和可视化效果。</p>
+            
+            <div class="audio-container">
+                <div class="audio-player">
+                    <div class="audio-info">
+                        <div class="track-title" id="trackTitle">示例音频文件</div>
+                        <div class="track-artist" id="trackArtist">HTML5 Audio Demo</div>
+                    </div>
+                    
+                    <div class="audio-controls">
+                        <button class="control-btn" id="prevBtn">⏮️</button>
+                        <button class="control-btn" id="audioPlayBtn">▶️</button>
+                        <button class="control-btn" id="nextBtn">⏭️</button>
+                    </div>
+                </div>
+                
+                <audio id="audioPlayer" preload="metadata">
+                    <source src="sample-audio.mp3" type="audio/mpeg">
+                    <source src="sample-audio.ogg" type="audio/ogg">
+                    您的浏览器不支持音频播放。
+                </audio>
+                
+                <!-- 音频可视化 -->
+                <canvas id="audioVisualizer" width="400" height="100" style="width: 100%; height: 100px; margin-top: 15px; border-radius: 5px;"></canvas>
+            </div>
+            
+            <h3>播放列表</h3>
+            <div id="playlist">
+                <div class="file-item">
+                    <div class="file-info">
+                        <div class="file-name">示例音频 1</div>
+                        <div class="file-size">3:24</div>
+                    </div>
+                    <button class="btn" onclick="playTrack(0)">播放</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Canvas绘图 -->
+        <section class="section">
+            <h2>🎨 Canvas绘图板</h2>
+            <p>使用HTML5 Canvas API创建的交互式绘图板。</p>
+            
+            <div class="canvas-container">
+                <canvas id="drawingCanvas" width="800" height="400"></canvas>
+                
+                <div class="canvas-controls">
+                    <input type="color" id="colorPicker" class="color-picker" value="#667eea">
+                    <label for="brushSize">画笔大小:</label>
+                    <input type="range" id="brushSize" class="brush-size" min="1" max="50" value="5">
+                    <span id="brushSizeDisplay">5px</span>
+                    
+                    <button class="btn" id="clearCanvas">清空画布</button>
+                    <button class="btn" id="saveCanvas">保存图片</button>
+                    <button class="btn" id="undoBtn">撤销</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 地理位置API -->
+        <section class="section">
+            <h2>📍 地理位置API</h2>
+            <p>获取用户的地理位置信息并显示相关数据。</p>
+            
+            <button class="btn" id="getLocationBtn">获取我的位置</button>
+            <button class="btn btn-secondary" id="watchLocationBtn">监听位置变化</button>
+            <button class="btn btn-danger" id="stopWatchBtn" disabled>停止监听</button>
+            
+            <div id="locationStatus" class="status info" style="display: none;">
+                正在获取位置信息...
+            </div>
+            
+            <div class="location-info" id="locationInfo" style="display: none;">
+                <h3>位置信息</h3>
+                <div class="location-data">
+                    <div class="data-item">
+                        <div class="data-label">纬度</div>
+                        <div id="latitude">-</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label">经度</div>
+                        <div id="longitude">-</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label">精度</div>
+                        <div id="accuracy">-</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label">海拔</div>
+                        <div id="altitude">-</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label">速度</div>
+                        <div id="speed">-</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="data-label">方向</div>
+                        <div id="heading">-</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 本地存储 -->
+        <section class="section">
+            <h2>💾 本地存储API</h2>
+            <p>演示localStorage、sessionStorage和IndexedDB的使用。</p>
+            
+            <div class="storage-demo">
+                <div class="storage-section">
+                    <h4>localStorage</h4>
+                    <div class="input-group">
+                        <label for="localKey">键名:</label>
+                        <input type="text" id="localKey" placeholder="输入键名">
+                    </div>
+                    <div class="input-group">
+                        <label for="localValue">值:</label>
+                        <input type="text" id="localValue" placeholder="输入值">
+                    </div>
+                    <button class="btn" onclick="setLocalStorage()">保存</button>
+                    <button class="btn btn-secondary" onclick="getLocalStorage()">获取</button>
+                    <button class="btn btn-danger" onclick="clearLocalStorage()">清空</button>
+                    
+                    <div class="storage-display" id="localStorageDisplay">
+                        localStorage内容将显示在这里
+                    </div>
+                </div>
+                
+                <div class="storage-section">
+                    <h4>sessionStorage</h4>
+                    <div class="input-group">
+                        <label for="sessionKey">键名:</label>
+                        <input type="text" id="sessionKey" placeholder="输入键名">
+                    </div>
+                    <div class="input-group">
+                        <label for="sessionValue">值:</label>
+                        <input type="text" id="sessionValue" placeholder="输入值">
+                    </div>
+                    <button class="btn" onclick="setSessionStorage()">保存</button>
+                    <button class="btn btn-secondary" onclick="getSessionStorage()">获取</button>
+                    <button class="btn btn-danger" onclick="clearSessionStorage()">清空</button>
+                    
+                    <div class="storage-display" id="sessionStorageDisplay">
+                        sessionStorage内容将显示在这里
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 文件API -->
+        <section class="section">
+            <h2>📁 文件API</h2>
+            <p>拖拽上传文件并读取文件内容。</p>
+            
+            <div class="upload-area" id="uploadArea">
+                <p>📁 拖拽文件到这里或点击选择文件</p>
+                <input type="file" id="fileInput" multiple style="display: none;">
+            </div>
+            
+            <div class="file-list" id="fileList"></div>
+        </section>
+        
+        <!-- Web Workers -->
+        <section class="section">
+            <h2>⚡ Web Workers</h2>
+            <p>使用Web Workers进行后台计算，不阻塞主线程。</p>
+            
+            <div class="input-group">
+                <label for="numberInput">计算数字的阶乘:</label>
+                <input type="number" id="numberInput" value="10" min="1" max="20">
+            </div>
+            
+            <button class="btn" id="calculateBtn">开始计算</button>
+            <button class="btn btn-secondary" id="calculateSyncBtn">同步计算（会阻塞）</button>
+            
+            <div id="workerResult" class="status info" style="display: none;">
+                计算结果将显示在这里
+            </div>
+            
+            <div id="performanceInfo" style="margin-top: 15px;">
+                <p>点击按钮测试性能差异：</p>
+                <ul>
+                    <li>Web Worker计算：不会阻塞页面交互</li>
+                    <li>同步计算：会阻塞页面，导致界面卡顿</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // 视频播放器功能
+        const video = document.getElementById('mainVideo');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const speedBtn = document.getElementById('speedBtn');
+        const videoInfo = document.getElementById('videoInfo');
+        
+        let playbackSpeeds = [0.5, 1, 1.25, 1.5, 2];
+        let currentSpeedIndex = 1;
+        
+        // 播放/暂停
+        playPauseBtn.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+                playPauseBtn.textContent = '⏸️ 暂停';
+            } else {
+                video.pause();
+                playPauseBtn.textContent = '▶️ 播放';
+            }
+        });
+        
+        // 停止
+        stopBtn.addEventListener('click', () => {
+            video.pause();
+            video.currentTime = 0;
+            playPauseBtn.textContent = '▶️ 播放';
+        });
+        
+        // 静音
+        muteBtn.addEventListener('click', () => {
+            video.muted = !video.muted;
+            muteBtn.textContent = video.muted ? '🔇 取消静音' : '🔊 静音';
+        });
+        
+        // 音量控制
+        volumeSlider.addEventListener('input', () => {
+            video.volume = volumeSlider.value;
+        });
+        
+        // 进度条
+        video.addEventListener('timeupdate', () => {
+            const progress = (video.currentTime / video.duration) * 100;
+            progressBar.style.width = progress + '%';
+            
+            const currentMinutes = Math.floor(video.currentTime / 60);
+            const currentSeconds = Math.floor(video.currentTime % 60);
+            const durationMinutes = Math.floor(video.duration / 60);
+            const durationSeconds = Math.floor(video.duration % 60);
+            
+            timeDisplay.textContent = 
+                `${currentMinutes.toString().padStart(2, '0')}:${currentSeconds.toString().padStart(2, '0')} / ` +
+                `${durationMinutes.toString().padStart(2, '0')}:${durationSeconds.toString().padStart(2, '0')}`;
+        });
+        
+        // 点击进度条跳转
+        progressContainer.addEventListener('click', (e) => {
+            const rect = progressContainer.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            const newTime = (clickX / width) * video.duration;
+            video.currentTime = newTime;
+        });
+        
+        // 全屏
+        fullscreenBtn.addEventListener('click', () => {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            } else if (video.msRequestFullscreen) {
+                video.msRequestFullscreen();
+            }
+        });
+        
+        // 播放速度
+        speedBtn.addEventListener('click', () => {
+            currentSpeedIndex = (currentSpeedIndex + 1) % playbackSpeeds.length;
+            const speed = playbackSpeeds[currentSpeedIndex];
+            video.playbackRate = speed;
+            speedBtn.textContent = speed + 'x';
+        });
+        
+        // 视频事件监听
+        video.addEventListener('loadstart', () => {
+            videoInfo.textContent = '开始加载视频...';
+            videoInfo.className = 'status info';
+        });
+        
+        video.addEventListener('loadedmetadata', () => {
+            videoInfo.textContent = `视频已加载 - 分辨率: ${video.videoWidth}x${video.videoHeight}, 时长: ${Math.floor(video.duration)}秒`;
+            videoInfo.className = 'status success';
+        });
+        
+        video.addEventListener('error', () => {
+            videoInfo.textContent = '视频加载失败，请检查文件路径';
+            videoInfo.className = 'status error';
+        });
+        
+        // 音频播放器功能
+        const audioPlayer = document.getElementById('audioPlayer');
+        const audioPlayBtn = document.getElementById('audioPlayBtn');
+        const audioVisualizer = document.getElementById('audioVisualizer');
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let audioSource, analyser, dataArray;
+        
+        // 音频可视化设置
+        function setupAudioVisualization() {
+            if (!audioSource) {
+                audioSource = audioCtx.createMediaElementSource(audioPlayer);
+                analyser = audioCtx.createAnalyser();
+                audioSource.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                
+                analyser.fftSize = 256;
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+            }
+        }
+        
+        // 绘制音频可视化
+        function drawAudioVisualization() {
+            if (!analyser) return;
+            
+            const canvas = audioVisualizer;
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            analyser.getByteFrequencyData(dataArray);
+            
+            ctx.fillStyle = 'rgba(102, 126, 234, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+            
+            const barWidth = (width / dataArray.length) * 2.5;
+            let barHeight;
+            let x = 0;
+            
+            for (let i = 0; i < dataArray.length; i++) {
+                barHeight = (dataArray[i] / 255) * height;
+                
+                const r = barHeight + 25 * (i / dataArray.length);
+                const g = 250 * (i / dataArray.length);
+                const b = 50;
+                
+                ctx.fillStyle = `rgb(${r},${g},${b})`;
+                ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+                
+                x += barWidth + 1;
+            }
+            
+            requestAnimationFrame(drawAudioVisualization);
+        }
+        
+        audioPlayBtn.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                setupAudioVisualization();
+                audioPlayer.play();
+                audioPlayBtn.textContent = '⏸️';
+                drawAudioVisualization();
+            } else {
+                audioPlayer.pause();
+                audioPlayBtn.textContent = '▶️';
+            }
+        });
+        
+        // Canvas绘图功能
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        const colorPicker = document.getElementById('colorPicker');
+        const brushSize = document.getElementById('brushSize');
+        const brushSizeDisplay = document.getElementById('brushSizeDisplay');
+        const clearCanvas = document.getElementById('clearCanvas');
+        const saveCanvas = document.getElementById('saveCanvas');
+        const undoBtn = document.getElementById('undoBtn');
+        
+        let isDrawing = false;
+        let drawingHistory = [];
+        
+        // 保存画布状态
+        function saveCanvasState() {
+            drawingHistory.push(canvas.toDataURL());
+            if (drawingHistory.length > 10) {
+                drawingHistory.shift();
+            }
+        }
+        
+        // 初始保存空白画布
+        saveCanvasState();
+        
+        // 画笔大小显示
+        brushSize.addEventListener('input', () => {
+            brushSizeDisplay.textContent = brushSize.value + 'px';
+        });
+        
+        // 鼠标事件
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        
+        // 触摸事件（移动设备支持）
+        canvas.addEventListener('touchstart', handleTouch);
+        canvas.addEventListener('touchmove', handleTouch);
+        canvas.addEventListener('touchend', stopDrawing);
+        
+        function startDrawing(e) {
+            isDrawing = true;
+            saveCanvasState();
+            draw(e);
+        }
+        
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ctx.lineWidth = brushSize.value;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = colorPicker.value;
+            
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+        
+        function stopDrawing() {
+            if (isDrawing) {
+                isDrawing = false;
+                ctx.beginPath();
+            }
+        }
+        
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                            e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+        
+        // 清空画布
+        clearCanvas.addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            saveCanvasState();
+        });
+        
+        // 保存图片
+        saveCanvas.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'drawing.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+        
+        // 撤销
+        undoBtn.addEventListener('click', () => {
+            if (drawingHistory.length > 1) {
+                drawingHistory.pop();
+                const img = new Image();
+                img.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                };
+                img.src = drawingHistory[drawingHistory.length - 1];
+            }
+        });
+        
+        // 地理位置API
+        const getLocationBtn = document.getElementById('getLocationBtn');
+        const watchLocationBtn = document.getElementById('watchLocationBtn');
+        const stopWatchBtn = document.getElementById('stopWatchBtn');
+        const locationStatus = document.getElementById('locationStatus');
+        const locationInfo = document.getElementById('locationInfo');
+        
+        let watchId = null;
+        
+        function displayLocation(position) {
+            const coords = position.coords;
+            
+            document.getElementById('latitude').textContent = coords.latitude.toFixed(6);
+            document.getElementById('longitude').textContent = coords.longitude.toFixed(6);
+            document.getElementById('accuracy').textContent = coords.accuracy + ' 米';
+            document.getElementById('altitude').textContent = coords.altitude ? coords.altitude.toFixed(2) + ' 米' : '不可用';
+            document.getElementById('speed').textContent = coords.speed ? coords.speed.toFixed(2) + ' m/s' : '不可用';
+            document.getElementById('heading').textContent = coords.heading ? coords.heading.toFixed(2) + '°' : '不可用';
+            
+            locationStatus.style.display = 'none';
+            locationInfo.style.display = 'block';
+        }
+        
+        function handleLocationError(error) {
+            let message = '';
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    message = '用户拒绝了地理位置请求';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    message = '位置信息不可用';
+                    break;
+                case error.TIMEOUT:
+                    message = '请求超时';
+                    break;
+                default:
+                    message = '获取位置时发生未知错误';
+                    break;
+            }
+            
+            locationStatus.textContent = message;
+            locationStatus.className = 'status error';
+        }
+        
+        getLocationBtn.addEventListener('click', () => {
+            if (navigator.geolocation) {
+                locationStatus.style.display = 'block';
+                locationStatus.textContent = '正在获取位置信息...';
+                locationStatus.className = 'status info';
+                
+                navigator.geolocation.getCurrentPosition(displayLocation, handleLocationError, {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 60000
+                });
+            } else {
+                alert('您的浏览器不支持地理位置API');
+            }
+        });
+        
+        watchLocationBtn.addEventListener('click', () => {
+            if (navigator.geolocation) {
+                watchId = navigator.geolocation.watchPosition(displayLocation, handleLocationError, {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 60000
+                });
+                
+                watchLocationBtn.disabled = true;
+                stopWatchBtn.disabled = false;
+                
+                locationStatus.style.display = 'block';
+                locationStatus.textContent = '正在监听位置变化...';
+                locationStatus.className = 'status info';
+            }
+        });
+        
+        stopWatchBtn.addEventListener('click', () => {
+            if (watchId !== null) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+                
+                watchLocationBtn.disabled = false;
+                stopWatchBtn.disabled = true;
+                
+                locationStatus.textContent = '已停止监听位置变化';
+                locationStatus.className = 'status success';
+            }
+        });
+        
+        // 本地存储功能
+        function setLocalStorage() {
+            const key = document.getElementById('localKey').value;
+            const value = document.getElementById('localValue').value;
+            
+            if (key && value) {
+                localStorage.setItem(key, value);
+                getLocalStorage();
+            }
+        }
+        
+        function getLocalStorage() {
+            const display = document.getElementById('localStorageDisplay');
+            let content = '<h4>localStorage内容:</h4>';
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const value = localStorage.getItem(key);
+                content += `<p><strong>${key}:</strong> ${value}</p>`;
+            }
+            
+            display.innerHTML = content || '<p>localStorage为空</p>';
+        }
+        
+        function clearLocalStorage() {
+            localStorage.clear();
+            getLocalStorage();
+        }
+        
+        function setSessionStorage() {
+            const key = document.getElementById('sessionKey').value;
+            const value = document.getElementById('sessionValue').value;
+            
+            if (key && value) {
+                sessionStorage.setItem(key, value);
+                getSessionStorage();
+            }
+        }
+        
+        function getSessionStorage() {
+            const display = document.getElementById('sessionStorageDisplay');
+            let content = '<h4>sessionStorage内容:</h4>';
+            
+            for (let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                const value = sessionStorage.getItem(key);
+                content += `<p><strong>${key}:</strong> ${value}</p>`;
+            }
+            
+            display.innerHTML = content || '<p>sessionStorage为空</p>';
+        }
+        
+        function clearSessionStorage() {
+            sessionStorage.clear();
+            getSessionStorage();
+        }
+        
+        // 初始化存储显示
+        getLocalStorage();
+        getSessionStorage();
+        
+        // 文件API功能
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+        
+        function handleFiles(files) {
+            fileList.innerHTML = '';
+            
+            Array.from(files).forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                
+                const fileInfo = document.createElement('div');
+                fileInfo.className = 'file-info';
+                
+                const fileName = document.createElement('div');
+                fileName.className = 'file-name';
+                fileName.textContent = file.name;
+                
+                const fileSize = document.createElement('div');
+                fileSize.className = 'file-size';
+                fileSize.textContent = formatFileSize(file.size);
+                
+                fileInfo.appendChild(fileName);
+                fileInfo.appendChild(fileSize);
+                
+                const readBtn = document.createElement('button');
+                readBtn.className = 'btn';
+                readBtn.textContent = '读取内容';
+                readBtn.onclick = () => readFile(file, index);
+                
+                fileItem.appendChild(fileInfo);
+                fileItem.appendChild(readBtn);
+                
+                fileList.appendChild(fileItem);
+            });
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function readFile(file, index) {
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+                const content = e.target.result;
+                
+                // 创建预览窗口
+                const preview = document.createElement('div');
+                preview.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: white;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                    max-width: 80%;
+                    max-height: 80%;
+                    overflow: auto;
+                    z-index: 1000;
+                `;
+                
+                if (file.type.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = content;
+                    img.style.maxWidth = '100%';
+                    preview.appendChild(img);
+                } else {
+                    const pre = document.createElement('pre');
+                    pre.textContent = content.substring(0, 1000) + (content.length > 1000 ? '...' : '');
+                    pre.style.whiteSpace = 'pre-wrap';
+                    preview.appendChild(pre);
+                }
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.textContent = '关闭';
+                closeBtn.className = 'btn';
+                closeBtn.style.marginTop = '10px';
+                closeBtn.onclick = () => document.body.removeChild(preview);
+                
+                preview.appendChild(closeBtn);
+                document.body.appendChild(preview);
+            };
+            
+            if (file.type.startsWith('image/')) {
+                reader.readAsDataURL(file);
+            } else {
+                reader.readAsText(file);
+            }
+        }
+        
+        // Web Workers
+        const calculateBtn = document.getElementById('calculateBtn');
+        const calculateSyncBtn = document.getElementById('calculateSyncBtn');
+        const numberInput = document.getElementById('numberInput');
+        const workerResult = document.getElementById('workerResult');
+        
+        // 创建Web Worker
+        const workerCode = `
+            self.onmessage = function(e) {
+                const num = e.data;
+                let result = 1;
+                
+                for (let i = 1; i <= num; i++) {
+                    result *= i;
+                }
+                
+                self.postMessage({
+                    number: num,
+                    factorial: result,
+                    time: Date.now()
+                });
+            };
+        `;
+        
+        const blob = new Blob([workerCode], { type: 'application/javascript' });
+        const workerUrl = URL.createObjectURL(blob);
+        
+        calculateBtn.addEventListener('click', () => {
+            const num = parseInt(numberInput.value);
+            const startTime = Date.now();
+            
+            workerResult.style.display = 'block';
+            workerResult.textContent = '正在使用Web Worker计算...';
+            workerResult.className = 'status info';
+            
+            const worker = new Worker(workerUrl);
+            
+            worker.postMessage(num);
+            
+            worker.onmessage = function(e) {
+                const endTime = Date.now();
+                const result = e.data;
+                
+                workerResult.innerHTML = `
+                    <strong>Web Worker计算结果:</strong><br>
+                    ${result.number}! = ${result.factorial}<br>
+                    计算时间: ${endTime - startTime}ms<br>
+                    <em>注意：页面在计算过程中保持响应</em>
+                `;
+                workerResult.className = 'status success';
+                
+                worker.terminate();
+            };
+        });
+        
+        calculateSyncBtn.addEventListener('click', () => {
+            const num = parseInt(numberInput.value);
+            const startTime = Date.now();
+            
+            workerResult.style.display = 'block';
+            workerResult.textContent = '正在同步计算（页面可能会卡顿）...';
+            workerResult.className = 'status info';
+            
+            // 同步计算（会阻塞主线程）
+            setTimeout(() => {
+                let result = 1;
+                for (let i = 1; i <= num; i++) {
+                    result *= i;
+                }
+                
+                const endTime = Date.now();
+                
+                workerResult.innerHTML = `
+                    <strong>同步计算结果:</strong><br>
+                    ${num}! = ${result}<br>
+                    计算时间: ${endTime - startTime}ms<br>
+                    <em>注意：页面在计算过程中被阻塞</em>
+                `;
+                workerResult.className = 'status success';
+            }, 100);
+        });
+        
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('HTML5多媒体与API示例页面已加载');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5标签速查表 - 学习辅助工具</title>
+    <meta name="description" content="HTML5标签完整速查表，包含所有常用标签的用法和示例">
+    
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --border-radius: 8px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background: var(--light-color);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .search-container {
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--border-radius);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tab {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: var(--border-radius);
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        
+        .nav-tab:hover,
+        .nav-tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        .main-content {
+            padding: 2rem 0;
+        }
+        
+        .category-section {
+            margin-bottom: 3rem;
+        }
+        
+        .category-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .tags-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .tag-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .tag-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .tag-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .tag-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .tag-attributes {
+            margin-bottom: 1rem;
+        }
+        
+        .tag-attributes h4 {
+            font-size: 0.9rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .attributes-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .attribute {
+            background: var(--light-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--dark-color);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .tag-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .tag-example::before {
+            content: 'HTML';
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 4rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: var(--transition);
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .tag-support {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+        
+        .support-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .support-html5 {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+        
+        .support-deprecated {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+        
+        .support-new {
+            background: rgba(23, 162, 184, 0.1);
+            color: var(--info-color);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        
+        .no-results h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .tags-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                gap: 0.5rem;
+            }
+            
+            .nav-tab {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* 深色模式支持 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --light-color: #1a1a1a;
+                --dark-color: #ffffff;
+            }
+            
+            body {
+                background: #121212;
+            }
+            
+            .tag-card {
+                background: #1e1e1e;
+                color: #ffffff;
+            }
+            
+            .tag-description {
+                color: #cccccc;
+            }
+            
+            .attribute {
+                background: #2a2a2a;
+                color: #ffffff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>📚 HTML5标签速查表</h1>
+            <p>完整的HTML5标签参考指南，包含用法示例和属性说明</p>
+            
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput" 
+                    placeholder="搜索标签名称、描述或属性..."
+                    autocomplete="off"
+                >
+            </div>
+            
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-category="all">全部</button>
+                <button class="nav-tab" data-category="structure">文档结构</button>
+                <button class="nav-tab" data-category="text">文本内容</button>
+                <button class="nav-tab" data-category="semantic">语义化</button>
+                <button class="nav-tab" data-category="form">表单</button>
+                <button class="nav-tab" data-category="media">多媒体</button>
+                <button class="nav-tab" data-category="table">表格</button>
+                <button class="nav-tab" data-category="interactive">交互</button>
+            </div>
+        </div>
+    </header>
+    
+    <main class="main-content">
+        <div class="container">
+            <div id="noResults" class="no-results hidden">
+                <h3>🔍 未找到匹配的标签</h3>
+                <p>请尝试其他关键词或浏览不同的分类</p>
+            </div>
+            
+            <!-- 文档结构 -->
+            <section class="category-section" data-category="structure">
+                <h2 class="category-title">
+                    <span>🏗️</span>
+                    文档结构标签
+                </h2>
+                <div class="tags-grid" id="structureTags"></div>
+            </section>
+            
+            <!-- 文本内容 -->
+            <section class="category-section" data-category="text">
+                <h2 class="category-title">
+                    <span>📝</span>
+                    文本内容标签
+                </h2>
+                <div class="tags-grid" id="textTags"></div>
+            </section>
+            
+            <!-- 语义化标签 -->
+            <section class="category-section" data-category="semantic">
+                <h2 class="category-title">
+                    <span>🎯</span>
+                    语义化标签
+                </h2>
+                <div class="tags-grid" id="semanticTags"></div>
+            </section>
+            
+            <!-- 表单标签 -->
+            <section class="category-section" data-category="form">
+                <h2 class="category-title">
+                    <span>📋</span>
+                    表单标签
+                </h2>
+                <div class="tags-grid" id="formTags"></div>
+            </section>
+            
+            <!-- 多媒体标签 -->
+            <section class="category-section" data-category="media">
+                <h2 class="category-title">
+                    <span>🎬</span>
+                    多媒体标签
+                </h2>
+                <div class="tags-grid" id="mediaTags"></div>
+            </section>
+            
+            <!-- 表格标签 -->
+            <section class="category-section" data-category="table">
+                <h2 class="category-title">
+                    <span>📊</span>
+                    表格标签
+                </h2>
+                <div class="tags-grid" id="tableTags"></div>
+            </section>
+            
+            <!-- 交互标签 -->
+            <section class="category-section" data-category="interactive">
+                <h2 class="category-title">
+                    <span>🖱️</span>
+                    交互标签
+                </h2>
+                <div class="tags-grid" id="interactiveTags"></div>
+            </section>
+        </div>
+    </main>
+    
+    <script>
+        // HTML标签数据
+        const htmlTags = {
+            structure: [
+                {
+                    name: '&lt;html&gt;',
+                    description: '文档根元素，包含整个HTML文档',
+                    attributes: ['lang', 'dir'],
+                    example: `&lt;html lang="zh-CN"&gt;\n  &lt;head&gt;...&lt;/head&gt;\n  &lt;body&gt;...&lt;/body&gt;\n&lt;/html&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;head&gt;',
+                    description: '文档头部，包含元数据信息',
+                    attributes: [],
+                    example: `&lt;head&gt;\n  &lt;meta charset="UTF-8"&gt;\n  &lt;title&gt;页面标题&lt;/title&gt;\n&lt;/head&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;body&gt;',
+                    description: '文档主体，包含可见内容',
+                    attributes: ['onload', 'onunload'],
+                    example: `&lt;body&gt;\n  &lt;h1&gt;欢迎来到我的网站&lt;/h1&gt;\n  &lt;p&gt;这是页面内容&lt;/p&gt;\n&lt;/body&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;title&gt;',
+                    description: '文档标题，显示在浏览器标签页',
+                    attributes: [],
+                    example: `&lt;title&gt;我的网站 - 首页&lt;/title&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;meta&gt;',
+                    description: '元数据标签，提供页面信息',
+                    attributes: ['charset', 'name', 'content', 'http-equiv'],
+                    example: `&lt;meta charset="UTF-8"&gt;\n&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;\n&lt;meta name="description" content="页面描述"&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;link&gt;',
+                    description: '外部资源链接，如CSS样式表',
+                    attributes: ['rel', 'href', 'type', 'media'],
+                    example: `&lt;link rel="stylesheet" href="styles.css"&gt;\n&lt;link rel="icon" href="favicon.ico"&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;script&gt;',
+                    description: 'JavaScript脚本标签',
+                    attributes: ['src', 'type', 'async', 'defer'],
+                    example: `&lt;script src="script.js"&gt;&lt;/script&gt;\n&lt;script&gt;\n  console.log('Hello World');\n&lt;/script&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;style&gt;',
+                    description: '内部CSS样式定义',
+                    attributes: ['type', 'media'],
+                    example: `&lt;style&gt;\n  body { font-family: Arial, sans-serif; }\n  h1 { color: blue; }\n&lt;/style&gt;`,
+                    support: 'html5'
+                }
+            ],
+            text: [
+                {
+                    name: '&lt;h1&gt; - &lt;h6&gt;',
+                    description: '标题标签，h1为最高级别',
+                    attributes: [],
+                    example: `&lt;h1&gt;主标题&lt;/h1&gt;\n&lt;h2&gt;二级标题&lt;/h2&gt;\n&lt;h3&gt;三级标题&lt;/h3&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;p&gt;',
+                    description: '段落标签，用于文本段落',
+                    attributes: [],
+                    example: `&lt;p&gt;这是一个段落。段落通常包含一段完整的文本内容。&lt;/p&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;br&gt;',
+                    description: '换行标签，强制换行',
+                    attributes: [],
+                    example: `第一行文本&lt;br&gt;\n第二行文本`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;hr&gt;',
+                    description: '水平分割线',
+                    attributes: [],
+                    example: `&lt;p&gt;第一部分内容&lt;/p&gt;\n&lt;hr&gt;\n&lt;p&gt;第二部分内容&lt;/p&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;strong&gt;',
+                    description: '重要文本，通常显示为粗体',
+                    attributes: [],
+                    example: `&lt;p&gt;这是&lt;strong&gt;重要&lt;/strong&gt;的信息。&lt;/p&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;em&gt;',
+                    description: '强调文本，通常显示为斜体',
+                    attributes: [],
+                    example: `&lt;p&gt;这是&lt;em&gt;强调&lt;/em&gt;的内容。&lt;/p&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;span&gt;',
+                    description: '内联容器，用于样式化文本片段',
+                    attributes: ['class', 'id', 'style'],
+                    example: `&lt;p&gt;这是&lt;span class="highlight"&gt;高亮&lt;/span&gt;文本。&lt;/p&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;div&gt;',
+                    description: '块级容器，用于布局和分组',
+                    attributes: ['class', 'id', 'style'],
+                    example: `&lt;div class="container"&gt;\n  &lt;h2&gt;标题&lt;/h2&gt;\n  &lt;p&gt;内容&lt;/p&gt;\n&lt;/div&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;a&gt;',
+                    description: '超链接标签',
+                    attributes: ['href', 'target', 'rel', 'download'],
+                    example: `&lt;a href="https://example.com"&gt;访问网站&lt;/a&gt;\n&lt;a href="mailto:email@example.com"&gt;发送邮件&lt;/a&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;ul&gt;',
+                    description: '无序列表',
+                    attributes: [],
+                    example: `&lt;ul&gt;\n  &lt;li&gt;第一项&lt;/li&gt;\n  &lt;li&gt;第二项&lt;/li&gt;\n  &lt;li&gt;第三项&lt;/li&gt;\n&lt;/ul&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;ol&gt;',
+                    description: '有序列表',
+                    attributes: ['type', 'start', 'reversed'],
+                    example: `&lt;ol&gt;\n  &lt;li&gt;第一步&lt;/li&gt;\n  &lt;li&gt;第二步&lt;/li&gt;\n  &lt;li&gt;第三步&lt;/li&gt;\n&lt;/ol&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;li&gt;',
+                    description: '列表项',
+                    attributes: ['value'],
+                    example: `&lt;li&gt;列表项内容&lt;/li&gt;`,
+                    support: 'html5'
+                }
+            ],
+            semantic: [
+                {
+                    name: '&lt;header&gt;',
+                    description: '页面或区域的头部',
+                    attributes: [],
+                    example: `&lt;header&gt;\n  &lt;h1&gt;网站标题&lt;/h1&gt;\n  &lt;nav&gt;导航菜单&lt;/nav&gt;\n&lt;/header&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;nav&gt;',
+                    description: '导航链接区域',
+                    attributes: [],
+                    example: `&lt;nav&gt;\n  &lt;ul&gt;\n    &lt;li&gt;&lt;a href="/"&gt;首页&lt;/a&gt;&lt;/li&gt;\n    &lt;li&gt;&lt;a href="/about"&gt;关于&lt;/a&gt;&lt;/li&gt;\n  &lt;/ul&gt;\n&lt;/nav&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;main&gt;',
+                    description: '文档主要内容',
+                    attributes: [],
+                    example: `&lt;main&gt;\n  &lt;h1&gt;页面主标题&lt;/h1&gt;\n  &lt;p&gt;主要内容...&lt;/p&gt;\n&lt;/main&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;article&gt;',
+                    description: '独立的文章内容',
+                    attributes: [],
+                    example: `&lt;article&gt;\n  &lt;h2&gt;文章标题&lt;/h2&gt;\n  &lt;p&gt;文章内容...&lt;/p&gt;\n&lt;/article&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;section&gt;',
+                    description: '文档中的区域或章节',
+                    attributes: [],
+                    example: `&lt;section&gt;\n  &lt;h2&gt;章节标题&lt;/h2&gt;\n  &lt;p&gt;章节内容...&lt;/p&gt;\n&lt;/section&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;aside&gt;',
+                    description: '侧边栏或相关内容',
+                    attributes: [],
+                    example: `&lt;aside&gt;\n  &lt;h3&gt;相关链接&lt;/h3&gt;\n  &lt;ul&gt;\n    &lt;li&gt;&lt;a href="#"&gt;链接1&lt;/a&gt;&lt;/li&gt;\n  &lt;/ul&gt;\n&lt;/aside&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;footer&gt;',
+                    description: '页面或区域的底部',
+                    attributes: [],
+                    example: `&lt;footer&gt;\n  &lt;p&gt;&copy; 2024 我的网站. 保留所有权利。&lt;/p&gt;\n&lt;/footer&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;figure&gt;',
+                    description: '独立的内容单元，如图片',
+                    attributes: [],
+                    example: `&lt;figure&gt;\n  &lt;img src="image.jpg" alt="描述"&gt;\n  &lt;figcaption&gt;图片说明&lt;/figcaption&gt;\n&lt;/figure&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;figcaption&gt;',
+                    description: 'figure元素的标题',
+                    attributes: [],
+                    example: `&lt;figcaption&gt;这是图片的说明文字&lt;/figcaption&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;time&gt;',
+                    description: '时间或日期',
+                    attributes: ['datetime'],
+                    example: `&lt;time datetime="2024-01-01"&gt;2024年1月1日&lt;/time&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;mark&gt;',
+                    description: '高亮标记文本',
+                    attributes: [],
+                    example: `&lt;p&gt;这是&lt;mark&gt;重要&lt;/mark&gt;的信息。&lt;/p&gt;`,
+                    support: 'new'
+                }
+            ],
+            form: [
+                {
+                    name: '&lt;form&gt;',
+                    description: '表单容器',
+                    attributes: ['action', 'method', 'enctype', 'target'],
+                    example: `&lt;form action="/submit" method="post"&gt;\n  &lt;!-- 表单内容 --&gt;\n&lt;/form&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;input&gt;',
+                    description: '输入控件',
+                    attributes: ['type', 'name', 'value', 'placeholder', 'required'],
+                    example: `&lt;input type="text" name="username" placeholder="用户名" required&gt;\n&lt;input type="email" name="email" placeholder="邮箱"&gt;\n&lt;input type="password" name="password"&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;textarea&gt;',
+                    description: '多行文本输入',
+                    attributes: ['rows', 'cols', 'placeholder', 'maxlength'],
+                    example: `&lt;textarea rows="4" cols="50" placeholder="请输入您的留言..."&gt;&lt;/textarea&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;select&gt;',
+                    description: '下拉选择框',
+                    attributes: ['name', 'multiple', 'size'],
+                    example: `&lt;select name="city"&gt;\n  &lt;option value="beijing"&gt;北京&lt;/option&gt;\n  &lt;option value="shanghai"&gt;上海&lt;/option&gt;\n&lt;/select&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;option&gt;',
+                    description: '选择项',
+                    attributes: ['value', 'selected', 'disabled'],
+                    example: `&lt;option value="value1"&gt;选项1&lt;/option&gt;\n&lt;option value="value2" selected&gt;选项2&lt;/option&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;button&gt;',
+                    description: '按钮元素',
+                    attributes: ['type', 'name', 'value', 'disabled'],
+                    example: `&lt;button type="submit"&gt;提交&lt;/button&gt;\n&lt;button type="button" onclick="alert('点击')"&gt;点击我&lt;/button&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;label&gt;',
+                    description: '表单控件标签',
+                    attributes: ['for'],
+                    example: `&lt;label for="username"&gt;用户名:&lt;/label&gt;\n&lt;input type="text" id="username" name="username"&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;fieldset&gt;',
+                    description: '表单字段分组',
+                    attributes: ['disabled'],
+                    example: `&lt;fieldset&gt;\n  &lt;legend&gt;个人信息&lt;/legend&gt;\n  &lt;input type="text" name="name"&gt;\n&lt;/fieldset&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;legend&gt;',
+                    description: 'fieldset的标题',
+                    attributes: [],
+                    example: `&lt;legend&gt;联系信息&lt;/legend&gt;`,
+                    support: 'html5'
+                }
+            ],
+            media: [
+                {
+                    name: '&lt;img&gt;',
+                    description: '图片元素',
+                    attributes: ['src', 'alt', 'width', 'height', 'loading'],
+                    example: `&lt;img src="image.jpg" alt="图片描述" width="300" height="200"&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;video&gt;',
+                    description: '视频播放器',
+                    attributes: ['src', 'controls', 'autoplay', 'loop', 'muted'],
+                    example: `&lt;video controls width="400"&gt;\n  &lt;source src="video.mp4" type="video/mp4"&gt;\n  您的浏览器不支持视频播放。\n&lt;/video&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;audio&gt;',
+                    description: '音频播放器',
+                    attributes: ['src', 'controls', 'autoplay', 'loop', 'muted'],
+                    example: `&lt;audio controls&gt;\n  &lt;source src="audio.mp3" type="audio/mpeg"&gt;\n  您的浏览器不支持音频播放。\n&lt;/audio&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;source&gt;',
+                    description: '媒体资源',
+                    attributes: ['src', 'type', 'media'],
+                    example: `&lt;source src="video.mp4" type="video/mp4"&gt;\n&lt;source src="video.webm" type="video/webm"&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;canvas&gt;',
+                    description: '画布元素，用于绘图',
+                    attributes: ['width', 'height'],
+                    example: `&lt;canvas id="myCanvas" width="400" height="300"&gt;\n  您的浏览器不支持Canvas。\n&lt;/canvas&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;svg&gt;',
+                    description: '可缩放矢量图形',
+                    attributes: ['width', 'height', 'viewBox'],
+                    example: `&lt;svg width="100" height="100"&gt;\n  &lt;circle cx="50" cy="50" r="40" fill="red"&gt;&lt;/circle&gt;\n&lt;/svg&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;picture&gt;',
+                    description: '响应式图片容器',
+                    attributes: [],
+                    example: `&lt;picture&gt;\n  &lt;source media="(max-width: 768px)" srcset="small.jpg"&gt;\n  &lt;img src="large.jpg" alt="响应式图片"&gt;\n&lt;/picture&gt;`,
+                    support: 'new'
+                }
+            ],
+            table: [
+                {
+                    name: '&lt;table&gt;',
+                    description: '表格容器',
+                    attributes: [],
+                    example: `&lt;table&gt;\n  &lt;tr&gt;\n    &lt;th&gt;姓名&lt;/th&gt;\n    &lt;th&gt;年龄&lt;/th&gt;\n  &lt;/tr&gt;\n  &lt;tr&gt;\n    &lt;td&gt;张三&lt;/td&gt;\n    &lt;td&gt;25&lt;/td&gt;\n  &lt;/tr&gt;\n&lt;/table&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;thead&gt;',
+                    description: '表格头部',
+                    attributes: [],
+                    example: `&lt;thead&gt;\n  &lt;tr&gt;\n    &lt;th&gt;列标题1&lt;/th&gt;\n    &lt;th&gt;列标题2&lt;/th&gt;\n  &lt;/tr&gt;\n&lt;/thead&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;tbody&gt;',
+                    description: '表格主体',
+                    attributes: [],
+                    example: `&lt;tbody&gt;\n  &lt;tr&gt;\n    &lt;td&gt;数据1&lt;/td&gt;\n    &lt;td&gt;数据2&lt;/td&gt;\n  &lt;/tr&gt;\n&lt;/tbody&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;tfoot&gt;',
+                    description: '表格底部',
+                    attributes: [],
+                    example: `&lt;tfoot&gt;\n  &lt;tr&gt;\n    &lt;td&gt;总计&lt;/td&gt;\n    &lt;td&gt;100&lt;/td&gt;\n  &lt;/tr&gt;\n&lt;/tfoot&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;tr&gt;',
+                    description: '表格行',
+                    attributes: [],
+                    example: `&lt;tr&gt;\n  &lt;td&gt;单元格1&lt;/td&gt;\n  &lt;td&gt;单元格2&lt;/td&gt;\n&lt;/tr&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;th&gt;',
+                    description: '表格头单元格',
+                    attributes: ['scope', 'colspan', 'rowspan'],
+                    example: `&lt;th scope="col"&gt;列标题&lt;/th&gt;\n&lt;th scope="row"&gt;行标题&lt;/th&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;td&gt;',
+                    description: '表格数据单元格',
+                    attributes: ['colspan', 'rowspan'],
+                    example: `&lt;td&gt;普通单元格&lt;/td&gt;\n&lt;td colspan="2"&gt;跨列单元格&lt;/td&gt;`,
+                    support: 'html5'
+                },
+                {
+                    name: '&lt;caption&gt;',
+                    description: '表格标题',
+                    attributes: [],
+                    example: `&lt;caption&gt;员工信息表&lt;/caption&gt;`,
+                    support: 'html5'
+                }
+            ],
+            interactive: [
+                {
+                    name: '&lt;details&gt;',
+                    description: '可展开的详细信息',
+                    attributes: ['open'],
+                    example: `&lt;details&gt;\n  &lt;summary&gt;点击展开&lt;/summary&gt;\n  &lt;p&gt;这里是详细内容...&lt;/p&gt;\n&lt;/details&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;summary&gt;',
+                    description: 'details元素的摘要',
+                    attributes: [],
+                    example: `&lt;summary&gt;查看更多信息&lt;/summary&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;dialog&gt;',
+                    description: '对话框元素',
+                    attributes: ['open'],
+                    example: `&lt;dialog id="myDialog"&gt;\n  &lt;p&gt;这是一个对话框&lt;/p&gt;\n  &lt;button onclick="closeDialog()"&gt;关闭&lt;/button&gt;\n&lt;/dialog&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;progress&gt;',
+                    description: '进度条',
+                    attributes: ['value', 'max'],
+                    example: `&lt;progress value="70" max="100"&gt;70%&lt;/progress&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;meter&gt;',
+                    description: '度量器',
+                    attributes: ['value', 'min', 'max', 'low', 'high'],
+                    example: `&lt;meter value="6" min="0" max="10"&gt;6 out of 10&lt;/meter&gt;`,
+                    support: 'new'
+                },
+                {
+                    name: '&lt;datalist&gt;',
+                    description: '输入建议列表',
+                    attributes: [],
+                    example: `&lt;input list="browsers" name="browser"&gt;\n&lt;datalist id="browsers"&gt;\n  &lt;option value="Chrome"&gt;\n  &lt;option value="Firefox"&gt;\n&lt;/datalist&gt;`,
+                    support: 'new'
+                }
+            ]
+        };
+        
+        // 渲染标签卡片
+        function renderTagCard(tag) {
+            const supportClass = {
+                'html5': 'support-html5',
+                'new': 'support-new',
+                'deprecated': 'support-deprecated'
+            }[tag.support] || 'support-html5';
+            
+            const supportText = {
+                'html5': 'HTML5',
+                'new': 'HTML5新增',
+                'deprecated': '已废弃'
+            }[tag.support] || 'HTML5';
+            
+            return `
+                <div class="tag-card" data-tag="${tag.name.toLowerCase()}" data-description="${tag.description.toLowerCase()}" data-attributes="${tag.attributes.join(' ').toLowerCase()}">
+                    <div class="tag-name">${tag.name}</div>
+                    <div class="tag-description">${tag.description}</div>
+                    
+                    ${tag.attributes.length > 0 ? `
+                        <div class="tag-attributes">
+                            <h4>常用属性:</h4>
+                            <div class="attributes-list">
+                                ${tag.attributes.map(attr => `<span class="attribute">${attr}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="tag-example">
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        ${tag.example}
+                    </div>
+                    
+                    <div class="tag-support">
+                        <span class="support-badge ${supportClass}">${supportText}</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 渲染所有标签
+        function renderAllTags() {
+            Object.keys(htmlTags).forEach(category => {
+                const container = document.getElementById(category + 'Tags');
+                if (container) {
+                    container.innerHTML = htmlTags[category].map(renderTagCard).join('');
+                }
+            });
+        }
+        
+        // 搜索功能
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const noResults = document.getElementById('noResults');
+            
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                const allCards = document.querySelectorAll('.tag-card');
+                const allSections = document.querySelectorAll('.category-section');
+                let hasResults = false;
+                
+                if (query === '') {
+                    // 显示所有内容
+                    allCards.forEach(card => card.classList.remove('hidden'));
+                    allSections.forEach(section => section.classList.remove('hidden'));
+                    noResults.classList.add('hidden');
+                    return;
+                }
+                
+                allCards.forEach(card => {
+                    const tagName = card.dataset.tag;
+                    const description = card.dataset.description;
+                    const attributes = card.dataset.attributes;
+                    
+                    const matches = tagName.includes(query) || 
+                                  description.includes(query) || 
+                                  attributes.includes(query);
+                    
+                    if (matches) {
+                        card.classList.remove('hidden');
+                        hasResults = true;
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+                
+                // 隐藏没有可见卡片的分类
+                allSections.forEach(section => {
+                    const visibleCards = section.querySelectorAll('.tag-card:not(.hidden)');
+                    if (visibleCards.length === 0) {
+                        section.classList.add('hidden');
+                    } else {
+                        section.classList.remove('hidden');
+                    }
+                });
+                
+                // 显示/隐藏无结果提示
+                if (hasResults) {
+                    noResults.classList.add('hidden');
+                } else {
+                    noResults.classList.remove('hidden');
+                }
+            });
+        }
+        
+        // 分类导航
+        function setupNavigation() {
+            const navTabs = document.querySelectorAll('.nav-tab');
+            const sections = document.querySelectorAll('.category-section');
+            
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const category = tab.dataset.category;
+                    
+                    // 更新活跃标签
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // 清空搜索
+                    document.getElementById('searchInput').value = '';
+                    document.getElementById('noResults').classList.add('hidden');
+                    
+                    // 显示/隐藏分类
+                    if (category === 'all') {
+                        sections.forEach(section => {
+                            section.classList.remove('hidden');
+                            section.querySelectorAll('.tag-card').forEach(card => {
+                                card.classList.remove('hidden');
+                            });
+                        });
+                    } else {
+                        sections.forEach(section => {
+                            if (section.dataset.category === category) {
+                                section.classList.remove('hidden');
+                                section.querySelectorAll('.tag-card').forEach(card => {
+                                    card.classList.remove('hidden');
+                                });
+                            } else {
+                                section.classList.add('hidden');
+                            }
+                        });
+                    }
+                });
+            });
+        }
+        
+        // 复制代码功能
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.textContent.replace('复制', '').trim();
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '已复制';
+                button.style.background = 'rgba(40, 167, 69, 0.3)';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = 'rgba(255, 255, 255, 0.1)';
+                }, 2000);
+            }).catch(() => {
+                alert('复制失败，请手动复制代码');
+            });
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('load', () => {
+            renderAllTags();
+            setupSearch();
+            setupNavigation();
+        });
+        
+        // 全局复制函数
+        window.copyCode = copyCode;
+    </script>
+</body>
+</html>

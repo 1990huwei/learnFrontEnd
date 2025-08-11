@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模块1学习进度跟踪表</title>
+    <meta name="description" content="HTML5现代Web标准学习进度管理工具">
+    
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --border-radius: 8px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background: var(--light-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .progress-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .progress-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .progress-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .progress-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .progress-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .overall-progress {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .overall-progress h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .progress-bar-container {
+            background: #e9ecef;
+            border-radius: 25px;
+            height: 30px;
+            overflow: hidden;
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, var(--success-color) 0%, var(--info-color) 100%);
+            height: 100%;
+            border-radius: 25px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .day-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .day-card.completed {
+            border-left-color: var(--success-color);
+            background: rgba(40, 167, 69, 0.05);
+        }
+        
+        .day-card.in-progress {
+            border-left-color: var(--warning-color);
+            background: rgba(255, 193, 7, 0.05);
+        }
+        
+        .day-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .day-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .day-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-not-started {
+            background: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+        }
+        
+        .status-in-progress {
+            background: rgba(255, 193, 7, 0.1);
+            color: var(--warning-color);
+        }
+        
+        .status-completed {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+        
+        .day-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .learning-objectives {
+            margin-bottom: 1rem;
+        }
+        
+        .learning-objectives h4 {
+            font-size: 0.9rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .objectives-list {
+            list-style: none;
+        }
+        
+        .objectives-list li {
+            padding: 0.25rem 0;
+            font-size: 0.85rem;
+            color: #666;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .objectives-list li::before {
+            content: '📚';
+            position: absolute;
+            left: 0;
+            top: 0.25rem;
+        }
+        
+        .task-checklist {
+            margin-top: 1rem;
+        }
+        
+        .task-checklist h4 {
+            font-size: 0.9rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .task-item:last-child {
+            border-bottom: none;
+        }
+        
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .task-label {
+            flex: 1;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .task-item.completed .task-label {
+            text-decoration: line-through;
+            color: #999;
+        }
+        
+        .day-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .study-tips {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .study-tips h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .tip-item {
+            background: var(--light-color);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--info-color);
+        }
+        
+        .tip-item h4 {
+            color: var(--info-color);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .tip-item p {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .export-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+        
+        .export-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .export-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .days-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .export-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        /* 深色模式支持 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --light-color: #1a1a1a;
+                --dark-color: #ffffff;
+            }
+            
+            body {
+                background: #121212;
+            }
+            
+            .day-card,
+            .progress-card,
+            .overall-progress,
+            .study-tips,
+            .export-section {
+                background: #1e1e1e;
+                color: #ffffff;
+            }
+            
+            .day-description,
+            .progress-label,
+            .objectives-list li,
+            .tip-item p {
+                color: #cccccc;
+            }
+            
+            .tip-item {
+                background: #2a2a2a;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>📊 学习进度跟踪表</h1>
+            <p>模块1 - HTML5现代Web标准学习管理</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <!-- 进度概览 -->
+        <section class="progress-overview">
+            <div class="progress-card">
+                <h3>总体进度</h3>
+                <div class="progress-number" id="overallProgress">0%</div>
+                <div class="progress-label">完成度</div>
+            </div>
+            <div class="progress-card">
+                <h3>已完成天数</h3>
+                <div class="progress-number" id="completedDays">0</div>
+                <div class="progress-label">/ 6 天</div>
+            </div>
+            <div class="progress-card">
+                <h3>学习时长</h3>
+                <div class="progress-number" id="studyTime">0</div>
+                <div class="progress-label">小时</div>
+            </div>
+            <div class="progress-card">
+                <h3>完成任务</h3>
+                <div class="progress-number" id="completedTasks">0</div>
+                <div class="progress-label">个任务</div>
+            </div>
+        </section>
+        
+        <!-- 整体进度条 -->
+        <section class="overall-progress">
+            <h2>📈 整体学习进度</h2>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%">
+                    <div class="progress-text" id="progressText">0% 完成</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 每日学习卡片 -->
+        <section class="days-grid" id="daysGrid">
+            <!-- 动态生成内容 -->
+        </section>
+        
+        <!-- 学习建议 -->
+        <section class="study-tips">
+            <h2>💡 学习建议</h2>
+            <div class="tips-grid">
+                <div class="tip-item">
+                    <h4>🎯 制定计划</h4>
+                    <p>每天安排固定的学习时间，建议每天2-3小时，保持学习的连续性和规律性。</p>
+                </div>
+                <div class="tip-item">
+                    <h4>🛠️ 动手实践</h4>
+                    <p>理论学习后立即进行实践练习，通过编写代码加深理解和记忆。</p>
+                </div>
+                <div class="tip-item">
+                    <h4>📝 做好笔记</h4>
+                    <p>记录重要知识点和遇到的问题，建立自己的知识库和问题解决方案。</p>
+                </div>
+                <div class="tip-item">
+                    <h4>🔄 复习巩固</h4>
+                    <p>定期回顾之前学过的内容，通过重复练习巩固知识点。</p>
+                </div>
+                <div class="tip-item">
+                    <h4>🤝 交流讨论</h4>
+                    <p>与其他学习者交流经验，分享学习心得，共同解决问题。</p>
+                </div>
+                <div class="tip-item">
+                    <h4>🎨 项目实战</h4>
+                    <p>完成每天的练习项目，将所学知识应用到实际项目中。</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 导出功能 -->
+        <section class="export-section">
+            <h2>📤 导出学习记录</h2>
+            <p>保存您的学习进度，便于后续回顾和分享</p>
+            <div class="export-buttons">
+                <button class="btn btn-primary" onclick="exportProgress()">导出进度报告</button>
+                <button class="btn btn-outline" onclick="resetProgress()">重置进度</button>
+                <button class="btn btn-success" onclick="backupProgress()">备份数据</button>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        // 学习数据
+        const learningData = {
+            day1: {
+                title: '第1天 - HTML5基础语法',
+                description: '学习HTML5的基本语法、文档结构、常用标签和开发环境配置',
+                estimatedTime: 3,
+                objectives: [
+                    '理解HTML5文档结构',
+                    '掌握常用HTML标签',
+                    '配置开发环境',
+                    '创建第一个网页'
+                ],
+                tasks: [
+                    { id: 'day1_task1', label: '阅读学习指南', completed: false },
+                    { id: 'day1_task2', label: '配置VS Code环境', completed: false },
+                    { id: 'day1_task3', label: '创建基础HTML页面', completed: false },
+                    { id: 'day1_task4', label: '添加图片和链接', completed: false },
+                    { id: 'day1_task5', label: '创建多页面网站', completed: false },
+                    { id: 'day1_task6', label: '完成练习项目', completed: false }
+                ]
+            },
+            day2: {
+                title: '第2天 - HTML5语义化标签',
+                description: '深入学习HTML5语义化标签，理解语义化的重要性和最佳实践',
+                estimatedTime: 3,
+                objectives: [
+                    '理解语义化标签的意义',
+                    '掌握HTML5新增语义标签',
+                    '学习表单和表格的使用',
+                    '提升代码可读性'
+                ],
+                tasks: [
+                    { id: 'day2_task1', label: '学习语义化标签概念', completed: false },
+                    { id: 'day2_task2', label: '使用header、nav、main等标签', completed: false },
+                    { id: 'day2_task3', label: '创建复杂表单', completed: false },
+                    { id: 'day2_task4', label: '制作数据表格', completed: false },
+                    { id: 'day2_task5', label: '完成博客页面', completed: false },
+                    { id: 'day2_task6', label: '语义化重构练习', completed: false }
+                ]
+            },
+            day3: {
+                title: '第3天 - Web标准与无障碍性',
+                description: '学习Web标准、无障碍性设计原则和最佳实践',
+                estimatedTime: 3,
+                objectives: [
+                    '理解Web标准的重要性',
+                    '掌握无障碍性设计原则',
+                    '学习ARIA属性使用',
+                    '提升用户体验'
+                ],
+                tasks: [
+                    { id: 'day3_task1', label: '学习Web标准概念', completed: false },
+                    { id: 'day3_task2', label: '了解无障碍性原则', completed: false },
+                    { id: 'day3_task3', label: '使用ARIA属性', completed: false },
+                    { id: 'day3_task4', label: '键盘导航测试', completed: false },
+                    { id: 'day3_task5', label: '屏幕阅读器测试', completed: false },
+                    { id: 'day3_task6', label: '完成无障碍页面', completed: false }
+                ]
+            },
+            day4: {
+                title: '第4天 - HTML5多媒体与API',
+                description: '探索HTML5多媒体功能和Web API的使用',
+                estimatedTime: 4,
+                objectives: [
+                    '掌握音视频标签使用',
+                    '学习Canvas绘图基础',
+                    '了解常用Web API',
+                    '实现交互功能'
+                ],
+                tasks: [
+                    { id: 'day4_task1', label: '使用video和audio标签', completed: false },
+                    { id: 'day4_task2', label: 'Canvas基础绘图', completed: false },
+                    { id: 'day4_task3', label: '地理位置API', completed: false },
+                    { id: 'day4_task4', label: '本地存储API', completed: false },
+                    { id: 'day4_task5', label: '文件API使用', completed: false },
+                    { id: 'day4_task6', label: '完成多媒体页面', completed: false }
+                ]
+            },
+            day5: {
+                title: '第5天 - 网页性能优化基础',
+                description: '学习网页性能优化的基本概念和实践方法',
+                estimatedTime: 3,
+                objectives: [
+                    '理解性能优化重要性',
+                    '掌握Core Web Vitals',
+                    '学习优化技术',
+                    '性能监控方法'
+                ],
+                tasks: [
+                    { id: 'day5_task1', label: '学习性能指标', completed: false },
+                    { id: 'day5_task2', label: '图片优化技术', completed: false },
+                    { id: 'day5_task3', label: '资源加载优化', completed: false },
+                    { id: 'day5_task4', label: '缓存策略实现', completed: false },
+                    { id: 'day5_task5', label: '性能监控工具', completed: false },
+                    { id: 'day5_task6', label: '完成性能优化页面', completed: false }
+                ]
+            },
+            day6: {
+                title: '第6天 - 现代HTML工具和工作流',
+                description: '掌握现代前端开发工具和工作流程',
+                estimatedTime: 4,
+                objectives: [
+                    '配置现代开发环境',
+                    '使用构建工具',
+                    '代码质量保证',
+                    '自动化工作流'
+                ],
+                tasks: [
+                    { id: 'day6_task1', label: '配置Node.js环境', completed: false },
+                    { id: 'day6_task2', label: '使用Vite构建工具', completed: false },
+                    { id: 'day6_task3', label: '配置代码格式化', completed: false },
+                    { id: 'day6_task4', label: 'Git版本控制', completed: false },
+                    { id: 'day6_task5', label: '自动化部署', completed: false },
+                    { id: 'day6_task6', label: '完成完整项目', completed: false }
+                ]
+            }
+        };
+        
+        // 从localStorage加载进度
+        function loadProgress() {
+            const saved = localStorage.getItem('html5_learning_progress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                // 更新任务状态
+                Object.keys(progress).forEach(dayKey => {
+                    if (learningData[dayKey]) {
+                        learningData[dayKey].tasks.forEach(task => {
+                            if (progress[dayKey][task.id] !== undefined) {
+                                task.completed = progress[dayKey][task.id];
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        
+        // 保存进度到localStorage
+        function saveProgress() {
+            const progress = {};
+            Object.keys(learningData).forEach(dayKey => {
+                progress[dayKey] = {};
+                learningData[dayKey].tasks.forEach(task => {
+                    progress[dayKey][task.id] = task.completed;
+                });
+            });
+            localStorage.setItem('html5_learning_progress', JSON.stringify(progress));
+        }
+        
+        // 计算进度统计
+        function calculateStats() {
+            let totalTasks = 0;
+            let completedTasks = 0;
+            let completedDays = 0;
+            let totalTime = 0;
+            
+            Object.keys(learningData).forEach(dayKey => {
+                const day = learningData[dayKey];
+                const dayTasks = day.tasks.length;
+                const dayCompleted = day.tasks.filter(task => task.completed).length;
+                
+                totalTasks += dayTasks;
+                completedTasks += dayCompleted;
+                totalTime += day.estimatedTime;
+                
+                if (dayCompleted === dayTasks) {
+                    completedDays++;
+                }
+            });
+            
+            const overallProgress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            const studyTime = Math.round((completedTasks / totalTasks) * totalTime);
+            
+            return {
+                overallProgress,
+                completedDays,
+                totalDays: Object.keys(learningData).length,
+                studyTime,
+                completedTasks,
+                totalTasks
+            };
+        }
+        
+        // 更新进度显示
+        function updateProgressDisplay() {
+            const stats = calculateStats();
+            
+            document.getElementById('overallProgress').textContent = stats.overallProgress + '%';
+            document.getElementById('completedDays').textContent = stats.completedDays;
+            document.getElementById('studyTime').textContent = stats.studyTime;
+            document.getElementById('completedTasks').textContent = stats.completedTasks;
+            
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            progressBar.style.width = stats.overallProgress + '%';
+            progressText.textContent = stats.overallProgress + '% 完成';
+        }
+        
+        // 获取天的状态
+        function getDayStatus(day) {
+            const completed = day.tasks.filter(task => task.completed).length;
+            const total = day.tasks.length;
+            
+            if (completed === 0) return 'not-started';
+            if (completed === total) return 'completed';
+            return 'in-progress';
+        }
+        
+        // 渲染天卡片
+        function renderDayCard(dayKey, day) {
+            const status = getDayStatus(day);
+            const completed = day.tasks.filter(task => task.completed).length;
+            const total = day.tasks.length;
+            
+            const statusText = {
+                'not-started': '未开始',
+                'in-progress': '进行中',
+                'completed': '已完成'
+            }[status];
+            
+            const statusClass = `status-${status}`;
+            const cardClass = status === 'completed' ? 'day-card completed' : 
+                            status === 'in-progress' ? 'day-card in-progress' : 'day-card';
+            
+            return `
+                <div class="${cardClass}">
+                    <div class="day-header">
+                        <div class="day-title">${day.title}</div>
+                        <div class="day-status ${statusClass}">${statusText}</div>
+                    </div>
+                    
+                    <div class="day-description">${day.description}</div>
+                    
+                    <div class="learning-objectives">
+                        <h4>📚 学习目标:</h4>
+                        <ul class="objectives-list">
+                            ${day.objectives.map(obj => `<li>${obj}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="task-checklist">
+                        <h4>✅ 任务清单 (${completed}/${total}):</h4>
+                        ${day.tasks.map(task => `
+                            <div class="task-item ${task.completed ? 'completed' : ''}">
+                                <input type="checkbox" class="task-checkbox" 
+                                       id="${task.id}" 
+                                       ${task.completed ? 'checked' : ''}
+                                       onchange="toggleTask('${task.id}')">
+                                <label class="task-label" for="${task.id}">${task.label}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="day-actions">
+                        <a href="${dayKey.replace('day', '第')}天-${day.title.split(' - ')[1]}/学习指南.md" 
+                           class="btn btn-primary">查看指南</a>
+                        <a href="${dayKey.replace('day', '第')}天-${day.title.split(' - ')[1]}/练习项目/" 
+                           class="btn btn-outline">练习项目</a>
+                        ${status === 'completed' ? 
+                            '<button class="btn btn-success">✅ 已完成</button>' : 
+                            '<button class="btn btn-outline" onclick="markDayComplete(\'' + dayKey + '\')">' + 
+                            (status === 'in-progress' ? '继续学习' : '开始学习') + '</button>'
+                        }
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 渲染所有天卡片
+        function renderAllDays() {
+            const daysGrid = document.getElementById('daysGrid');
+            daysGrid.innerHTML = Object.keys(learningData)
+                .map(dayKey => renderDayCard(dayKey, learningData[dayKey]))
+                .join('');
+        }
+        
+        // 切换任务状态
+        function toggleTask(taskId) {
+            Object.keys(learningData).forEach(dayKey => {
+                const task = learningData[dayKey].tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.completed = !task.completed;
+                }
+            });
+            
+            saveProgress();
+            updateProgressDisplay();
+            renderAllDays();
+        }
+        
+        // 标记天完成
+        function markDayComplete(dayKey) {
+            learningData[dayKey].tasks.forEach(task => {
+                task.completed = true;
+            });
+            
+            saveProgress();
+            updateProgressDisplay();
+            renderAllDays();
+        }
+        
+        // 导出进度报告
+        function exportProgress() {
+            const stats = calculateStats();
+            const report = {
+                exportDate: new Date().toISOString(),
+                stats: stats,
+                detailedProgress: {}
+            };
+            
+            Object.keys(learningData).forEach(dayKey => {
+                const day = learningData[dayKey];
+                report.detailedProgress[dayKey] = {
+                    title: day.title,
+                    status: getDayStatus(day),
+                    completedTasks: day.tasks.filter(t => t.completed).length,
+                    totalTasks: day.tasks.length,
+                    tasks: day.tasks.map(t => ({
+                        label: t.label,
+                        completed: t.completed
+                    }))
+                };
+            });
+            
+            const blob = new Blob([JSON.stringify(report, null, 2)], 
+                                { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `HTML5学习进度报告_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // 重置进度
+        function resetProgress() {
+            if (confirm('确定要重置所有学习进度吗？此操作不可撤销。')) {
+                localStorage.removeItem('html5_learning_progress');
+                Object.keys(learningData).forEach(dayKey => {
+                    learningData[dayKey].tasks.forEach(task => {
+                        task.completed = false;
+                    });
+                });
+                updateProgressDisplay();
+                renderAllDays();
+            }
+        }
+        
+        // 备份数据
+        function backupProgress() {
+            const backup = {
+                backupDate: new Date().toISOString(),
+                learningData: learningData
+            };
+            
+            const blob = new Blob([JSON.stringify(backup, null, 2)], 
+                                { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `HTML5学习数据备份_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('load', () => {
+            loadProgress();
+            updateProgressDisplay();
+            renderAllDays();
+        });
+        
+        // 全局函数
+        window.toggleTask = toggleTask;
+        window.markDayComplete = markDayComplete;
+        window.exportProgress = exportProgress;
+        window.resetProgress = resetProgress;
+        window.backupProgress = backupProgress;
+    </script>
+</body>
+</html>
